@@ -1,5 +1,8 @@
 # revane
 
+[![Build Status](https://travis-ci.org/SerayaEryn/revane.svg?branch=master)](https://travis-ci.org/SerayaEryn/revane)
+[![Coverage Status](https://coveralls.io/repos/github/SerayaEryn/revane/badge.svg?branch=master)](https://coveralls.io/github/SerayaEryn/revane?branch=master)
+
 Revane is a inversion of control framework inspired by spring.
 
 ## Features
@@ -20,7 +23,7 @@ Revane is a inversion of control framework inspired by spring.
     * [via Component Scan](#component-scanning)
   * [Dependency Injection](#dependency-injection)
   * [Post Construct](#post-construct)
-  * [Scopes](#Scopes)
+  * [Scopes](#scopes)
   * [Express Support](#express-support)
 * [API](#api)
 
