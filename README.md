@@ -11,18 +11,18 @@ Revane is a inversion of control framework inspired by spring.
 
 ## Table of Content
 
-* [Installation](#Installation)
-* [Example](#Example)
-* [Usage](#Usage)
-  * [Component registration](#Component-registration)
-    * [via Json file](#Json-File)
-    * [via Xml file](#Xml-File)
-    * [via Component Scan](#Component-Scanning)
-  * [Dependency Injection](#Dependency-Injection)
-  * [Post Construct](#Post-Construct)
+* [Installation](#installation)
+* [Example](#example)
+* [Usage](#usage)
+  * [Component registration](#component-registration)
+    * [via Json file](#json-file)
+    * [via Xml file](#xml-file)
+    * [via Component Scan](#component-scanning)
+  * [Dependency Injection](#dependency-injection)
+  * [Post Construct](#post-construct)
   * [Scopes](#Scopes)
-  * [Express Support](#Express-Support)
-* [API](#API)
+  * [Express Support](#express-support)
+* [API](#api)
 
 ## Installation
 
