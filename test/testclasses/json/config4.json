@@ -1,0 +1,11 @@
+[
+  {
+    "id": "test6",
+    "class": "./testclasses/test6.js"
+  },
+  {
+    "id": "test12",
+    "class": "./testclasses/test12.js",
+    "type": "controller"
+  }
+]

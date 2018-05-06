@@ -1,0 +1,29 @@
+{
+  "name": "revane",
+  "version": "0.0.0",
+  "description": "",
+  "main": "revane.js",
+  "scripts": {
+    "unit": "tap test/*.test.js",
+    "test": "npm run lint && npm run unit",
+    "lint": "./node_modules/eslint/bin/eslint.js index.js lib/*",
+    "coveralls": "npm run unit --  --cov",
+    "coverage": "npm run coveralls && tap --coverage-report=lcov"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "author": "Denis Fäcke",
+  "license": "MIT",
+  "dependencies": {
+    "esprima": "^4.0.0",
+    "fast-xml-parser": "^3.9.10",
+    "recursive-readdir": "^2.2.2"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "eslint": "^4.19.1",
+    "tap": "^11.1.1"
+  },
+  "types": "revane.d.ts"
+}

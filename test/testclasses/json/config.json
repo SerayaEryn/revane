@@ -1,0 +1,13 @@
+[
+  {
+    "id": "json1",
+    "class": "./testclasses/json/json1.js"
+  },
+  {
+    "id": "json2",
+    "class": "./testclasses/json/json2",
+    "properties": [{
+      "ref": "json1"
+    }]
+  }
+]

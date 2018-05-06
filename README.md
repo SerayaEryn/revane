@@ -1,0 +1,322 @@
+# revane
+
+Revane is a inversion of control framework inspired by spring.
+
+## Features
+
+* Dependency injection for classes
+* Component scanning
+* xml and json file configuration
+* express support
+
+## Table of Content
+
+* [Installation](#Installation)
+* [Example](#Example)
+* [Usage](#Usage)
+  * [Component registration](#Component\ registration)
+    * [via Json file](#Json\ File)
+    * [via Xml file](#Xml\ File)
+    * [via Component Scan](#Component\ Scanning)
+  * [Dependency Injection](#Dependency\ Injection)
+  * [Post Construct](#Post\ Construct)
+  * [Scopes](#Scopes)
+  * [Express Support](#Express\ Support)
+* [API](#API)
+
+## Installation
+
+```bash
+npm install revane --save
+```
+
+## Example
+
+```js
+//userRepository.js
+const { Repository } = require('revane/decorators');
+
+class UserRepository {
+  getUser(id) {
+    return {name: 'max'}
+  }
+};
+
+module.exports = Repository(UserRepository);
+
+//controller.js
+const { Controller } = require('revane/decorators');
+
+class UserController {
+  constructor(userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  addRoutes(router) {
+    router.get('/user/:id', (req, res, next) => {
+      res.json(this.userRepository.getUser(req.params.id));
+    });
+  }
+};
+
+module.exports = Controller(UserController);
+
+//app.js
+const Revane = require('revane');
+
+const options = {
+  basePackage: __dirname
+};
+const revane = new Revane(options);
+revane.initialize()
+  .then(() => {
+    revane.get('userController');
+  });
+```
+
+## Usage
+
+### Component registration
+
+Components are registered by json file, xml file or by scanning for components.
+The class property accepts three different kind of paths:
+
+* Absolute paths starting with `/`
+* Relative paths starting with `./`
+* Names of modules
+
+#### Json File
+
+```json
+[
+  {
+    "id": "userRepository",
+    "class": "./lib/UserRepository"
+  },
+  {
+    "id": "userController",
+    "class": "./lib/UserControllre",
+    "properties": [{
+      "ref": "userRepository"
+    }]
+  }
+]
+```
+
+```js
+//app.js
+const options = {
+  basePackage: __dirname,
+  configurationFiles: [
+    __dirname + '/config.json'
+  ]
+};
+const revane = new Revane(options);
+revane.initialize()
+```
+
+#### Xml File
+
+```xml
+<?xml version="1" encoding="utf-8">
+<beans>
+  <bean id="userRepository" class="./lib/UserRepository"/>
+  <bean id="userController" class="./lib/UserController">
+    <ref bean="userRepository"/>
+  </bean>
+</beans>
+```
+
+```js
+//app.js
+const options = {
+  basePackage: __dirname,
+  configurationFiles: [
+    __dirname + '/config.xml'
+  ]
+};
+const revane = new Revane(options);
+revane.initialize()
+```
+
+#### Component Scanning
+
+The id of a bean is based on the class name. The dependencies will be determined by the constructor of the class and passed to the constructor at the creation of a bean.
+
+**Note**: The component scan is enabled by default.
+
+**Note**: The `basePackage` option determines which folder will be scanned.
+
+**Note**: The component scan may be deactivated with the `componentScan` option.
+
+```js
+//userRepository.js
+const { Repository } = require('revane/decorators');
+
+class UserRepository {
+  getUser(id) {
+    return {name: 'max'}
+  }
+};
+
+module.exports = Repository()(UserRepository);
+
+//controller.js
+const { Controller } = require('revane/decorators');
+
+class UserController {
+  constructor(userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  addRoutes(router) {
+    router.get('/user/:id', (req, res, next) => {
+      res.json(this.userRepository.getUser(req.params.id));
+    });
+  }
+};
+```
+
+### Dependency Injection
+
+If configuration by json file is used it is possible to inject dependencies to a class by adding a reference or a value object to the `properties`:
+
+```json
+[
+  {
+    "id": "userController",
+    "class": "./lib/UserControllre",
+    "properties": [
+      {"ref": "userRepository"},
+      {"value": "hello world"}
+    ]
+  }
+]
+```
+
+The xml files work the same way.<br>
+If component scanning is used the dependencies defined by the constructor parameters of a class or defined by the options of the decorator are being injected.
+
+### Post Construct
+
+If a class has a `postConstruct` function it will be executed after the creation of the bean.
+
+```js
+class Example {
+  postConstruct() {
+    // do something amazing
+  }
+}
+```
+
+### Scopes
+
+There are two possible scopes: `singleton` and `prototype`. If no scope is specified `singleton` will be used.
+
+### Express Support
+
+```js
+//app.js
+const Revane = require('revane');
+const revaneExpress = require('revane/express');
+const express = require('express');
+
+const options = {
+  basePackage: __dirname
+};
+const revane = new Revane(options);
+revane.initialize()
+  .then(() => {
+    const app = express();
+    revaneExpress.useInOrder(app, revane, [
+      'middleware1',
+      'middleware2'
+    ]);
+    revaneExpress.addRouter(app, revane, express);
+    app.listen(3000);
+  });
+```
+
+#### useInOrder(app, revane, ids)
+
+#### addRouter(app, revane, express)
+
+## API
+
+### Container
+
+```js
+const Revane = require('revane');
+
+const options = {
+  basePackage: __dirname
+};
+const revane = new Revane(options);
+revane.initialize()
+  .then(() => /*...*/)
+```
+
+#### get(id)
+
+Returns the bean for the `id`. Throws an error if no bean with the `id` is found.
+
+#### getMultiple(ids)
+
+Returns multiple beans.
+
+#### initialize()
+
+Initializes the container by reading all configured configuration files and performes the component scan. Returns a Promise.
+
+#### options
+
+##### componentScan
+
+A `boolean` that enables or disables the component scan. Defaults to `true`.
+
+##### basePackage (required)
+
+The base package where the container looks for files.
+
+##### noRedefinition
+
+Prevents the duplicate defininion of beans. If a duplicate definition is found an error will be thrown. Defaults to `true`.
+
+##### configurationFiles
+
+An `array` of absolute paths to configuration files, that provide bean definitions.
+
+### Decorators
+
+#### Service, Repository, Controller, Component
+
+Used to declare class as components to be considered by the component scan.
+
+```js
+const { Service } = require('revane/decorators');
+class Example {}
+Service()(Example)
+```
+
+##### options
+
+* **id** - the id of the bean
+* **dependencies** - the dependencies of the class
+
+```js
+Service({id: 'example', dependencies: ['test']})(Example)
+```
+
+#### Scope
+
+Adds a scope to a class. Possible values: `singleton`, `prototype`
+
+```js
+const { Scope } = require('revane/decorators');
+class Example {}
+Scope('prototype')(Example)
+```
+
+## License
+
+[MIT](./LICENSE)
