@@ -175,8 +175,18 @@ test('Should inject dependencies - ignore order', (t) => {
   t.plan(2);
 
   const beanDefinitions = [
-    {id: 'test1', class: './testclasses/test1', scope: 'singleton'},
-    {id: 'test2', class: './testclasses/test2', scope: 'singleton', properties: [{value: 'test1'}]}
+    {
+      id: 'test1',
+      class: './testclasses/test1',
+      scope: 'singleton'
+    },
+    {
+      id: 'test2',
+      class: './testclasses/test2',
+      scope: 'singleton', properties: [{
+        value: 'test1'
+      }]
+    }
   ];
   const options = {
     basePackage: __dirname
@@ -368,5 +378,25 @@ test('should throw error if error on post construct', (t) => {
   } catch (err) {
     t.ok(err);
     t.strictEqual(err.code, 'REV_ERR_DEPENDENCY_REGISTER');
+  }
+});
+
+test('should throw error if not found', (t) => {
+  t.plan(2);
+
+  const beanDefinitions = [];
+
+  const options = {
+    basePackage: __dirname
+  };
+  const context = new Context(options);
+  context.addBeanDefinitions(beanDefinitions);
+  context.initialize();
+
+  try {
+    context.get('test');
+  } catch (err) {
+    t.ok(err);
+    t.strictEqual(err.code, 'REV_ERR_NOT_FOUND');
   }
 });
