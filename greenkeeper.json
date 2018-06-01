@@ -1,0 +1,11 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "decorators/package.json",
+        "express/package.json",
+        "package.json"
+      ]
+    }
+  }
+}
