@@ -5,7 +5,14 @@
   },
   {
     "id": "test12",
-    "class": "./testclasses/test12.js",
-    "type": "controller"
+    "class": "./testclasses/test12.js"
+  },
+  {
+    "id": "test13",
+    "class": "./testclasses/test13.js"
+  },
+  {
+    "id": "test14",
+    "class": "./testclasses/test14.js"
   }
 ]

@@ -221,23 +221,22 @@ There are two possible scopes: `singleton` and `prototype`. If no scope is speci
 ```js
 //app.js
 const Revane = require('revane');
-const revaneExpress = require('revane/express');
+const RevaneExpress = require('revane/express');
 const express = require('express');
 
 const options = {
   basePackage: __dirname
 };
 const revane = new Revane(options);
-revane.initialize()
-  .then(() => {
-    const app = express();
-    revaneExpress.useInOrder(app, revane, [
-      'middleware1',
-      'middleware2'
-    ]);
-    revaneExpress.addRouter(app, revane, express);
-    app.listen(3000);
-  });
+await revane.initialize()
+
+const options = {
+  port: 3000
+}
+const app = new RevaneExpress(revane, options);
+return app.use('middleware1')
+  .useControllers('controller1')
+  .listen();
 ```
 
 #### useInOrder(app, revane, ids)

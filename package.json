@@ -18,12 +18,13 @@
   "dependencies": {
     "esprima": "^4.0.0",
     "fast-xml-parser": "^3.9.10",
-    "recursive-readdir": "^2.2.2"
+    "recursive-readdir": "^2.2.2",
+    "express": "^4.16.3"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
-    "tap": "^11.1.1"
+    "tap": "~12.0.1"
   },
   "types": "revane.d.ts"
 }

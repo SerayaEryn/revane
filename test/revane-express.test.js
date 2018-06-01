@@ -1,9 +1,10 @@
 'use strict';
 
 const Revane = require('..');
-const revaneExpress = require('../express');
+const RevaneExpress = require('../express');
 const t = require('tap');
 const test = t.test;
+const http = require('http');
 
 test('should use router', (t) => {
   t.plan(2);
@@ -13,69 +14,44 @@ test('should use router', (t) => {
     configurationFiles: [
       __dirname + '/testclasses/json/config4.json'
     ],
-    componentScan: true
+    componentScan: false
   };
   const revane = new Revane(options);
   return revane.initialize()
     .then(() => {
-      const express = {
-        Router() {
-          return {
-            get() {
-              t.pass();
-            }
-          };
-        }
-      };
-      const app = {
-        use(router) {
-          t.ok(router);
-        }
-      };
-      revaneExpress.addRouter(app, revane, express);
+      t.pass();
+      const app = new RevaneExpress(revane);
+      return app.use('test12')
+        .use('test14')
+        .useControllers('test13')
+        .listen()
+        .then(() => {
+          t.ok(app.server.get('port'));
+          app.server.get('server').close();
+        });
     });
 });
 
-test('should use middlewares', (t) => {
-  t.plan(1);
+test('should reject with error', (t) => {
+  t.plan(2);
 
   const options = {
     basePackage: __dirname,
     configurationFiles: [
       __dirname + '/testclasses/json/config4.json'
     ],
-    componentScan: true
+    componentScan: false
   };
   const revane = new Revane(options);
   return revane.initialize()
     .then(() => {
-      const app = {
-        use(router) {
-          t.ok(router);
-        }
-      };
-      revaneExpress.useInOrder(app, revane, ['test9']);
-    });
-});
-
-test('should use middlewares', (t) => {
-  t.plan(1);
-
-  const options = {
-    basePackage: __dirname,
-    configurationFiles: [
-      __dirname + '/testclasses/json/config4.json'
-    ],
-    componentScan: true
-  };
-  const revane = new Revane(options);
-  return revane.initialize()
-    .then(() => {
-      const app = {
-        use(router) {
-          t.ok(router);
-        }
-      };
-      revaneExpress.useInOrder(app, revane, ['test12']);
+      t.pass();
+      const app = new RevaneExpress(revane, {port: -1});
+      return app.use('test12')
+        .useControllers('test13')
+        .listen()
+        .catch((err) => {
+          t.ok(err);
+        });
     });
 });
