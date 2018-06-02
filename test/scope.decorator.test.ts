@@ -1,5 +1,3 @@
-'use strict';
-
 import * as test from 'tape-catch';
 import { Scope, Service } from '../src/revane';
 

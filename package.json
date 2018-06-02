@@ -6,7 +6,7 @@
   "scripts": {
     "unit": "tape bin/test/**/*.test.js | tspec",
     "test": "npm run lint && npm run compile && npm run unit",
-    "lint": "tslint lib/**/*",
+    "lint": "tslint src/**/*",
     "coveralls": "npm run compile && npm run coverage -s && coveralls < coverage/lcov.info",
     "coverage": "npm run compile && nyc npm run unit",
     "compile": "tsc",

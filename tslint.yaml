@@ -70,3 +70,4 @@ rules:
   curly: false
   object-literal-sort-keys: false
   interface-name: false
+  ban-types: false

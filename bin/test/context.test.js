@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const test = require("tape-catch");
 const BeanDefinition_1 = require("../src/BeanDefinition");
@@ -276,7 +276,7 @@ test('initialize should fail on error', (t) => {
 test('throw error if get on uninitialized context', (t) => {
     t.plan(2);
     const options = {
-        dirname: __dirname
+        basePackage: __dirname
     };
     const context = new Context_1.default(options);
     try {

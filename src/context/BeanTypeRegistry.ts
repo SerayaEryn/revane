@@ -1,4 +1,4 @@
-'use strict';
+import Bean from './bean/Bean';
 
 export default class BeanTypeRegistry {
   private typesByScope: Map<string, any>;
@@ -7,7 +7,7 @@ export default class BeanTypeRegistry {
     this.typesByScope = new Map();
   }
 
-  public register(beanType) {
+  public register(beanType: any): void {
     this.typesByScope[beanType.scope] = beanType;
   }
 

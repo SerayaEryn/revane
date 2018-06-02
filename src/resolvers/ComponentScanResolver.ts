@@ -3,19 +3,21 @@
 import BeanDefinition from '../BeanDefinition';
 import Filter from './Filter';
 import RegexFilter from './RegexFilter';
+import Resolver from './Resolver';
 
 import recursiveReaddir = require('recursive-readdir');
+import Options from '../Options';
 
 const filterByType = {
   regex: RegexFilter
 };
 
-export default class ComponentScanResolver {
+export default class ComponentScanResolver implements Resolver {
   private basePackage: string;
   private includeFilters: any[];
   private excludeFilters: any[];
 
-  constructor(options) {
+  constructor(options: Options) {
     this.basePackage = options.basePackage;
     this.includeFilters = convert(options.includeFilters || []);
     this.excludeFilters = convert(options.excludeFilters || []);

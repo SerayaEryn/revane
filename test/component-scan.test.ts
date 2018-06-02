@@ -1,5 +1,3 @@
-'use strict';
-
 import * as path from 'path';
 import * as test from 'tape-catch';
 import ComponentScanResolver from '../src/resolvers/ComponentScanResolver';

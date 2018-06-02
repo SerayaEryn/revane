@@ -1,9 +1,8 @@
-'use strict';
+import AbstractBean from './AbstractBean';
 
-import Bean from './Bean';
-
-export default class SingletonBean extends Bean {
+export default class SingletonBean extends AbstractBean {
   public static scope: string = 'singleton';
+  protected isClass: boolean;
   private type;
   private instance;
 
@@ -17,7 +16,7 @@ export default class SingletonBean extends Bean {
       this.instance.postConstruct();
   }
 
-  public getInstance() {
+  public getInstance(): any {
     return this.instance;
   }
 }

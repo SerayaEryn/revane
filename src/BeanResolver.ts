@@ -1,6 +1,5 @@
-'use strict';
-
 import BeanResolverRegistry from './BeanResolverRegistry';
+import Options from './Options';
 import ComponentScanResolver from './resolvers/ComponentScanResolver';
 import JsonFileResolver from './resolvers/JsonFileResolver';
 import XmlFileResolver from './resolvers/XmlFileResolver';
@@ -15,7 +14,7 @@ const supportedFileEndings = [
   '.xml'
 ];
 
-function getBeanDefinitions(options) {
+function getBeanDefinitions(options: Options) {
   try {
     const beanResolverRegistry = getBeanResolverRegistry(options);
     return beanResolverRegistry.get();
@@ -24,7 +23,7 @@ function getBeanDefinitions(options) {
   }
 }
 
-function getBeanResolverRegistry(options) {
+function getBeanResolverRegistry(options: Options) {
   const files = options.configurationFiles || [];
   const beanResolverRegistry = new BeanResolverRegistry();
   for (const file of files) {
@@ -41,7 +40,7 @@ function getResolver(file) {
   return new fileResolvers[ending](file);
 }
 
-function getEnding(file) {
+function getEnding(file: string): string {
   for (const ending of supportedFileEndings) {
     if (file.endsWith(ending)) {
       return ending;

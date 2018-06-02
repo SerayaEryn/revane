@@ -5,7 +5,7 @@ import Filter from './Filter';
 export default class RegexFilter implements Filter {
   private regex: RegExp;
 
-  constructor(options) {
+  constructor(options: any) {
     this.regex = new RegExp(options.regex);
     this.applies.bind(this);
   }

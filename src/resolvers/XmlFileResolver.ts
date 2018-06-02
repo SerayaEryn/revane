@@ -3,6 +3,7 @@
 import * as fastXmlParser from 'fast-xml-parser';
 import * as fileSystem from 'fs';
 import BeanDefinition from '../BeanDefinition';
+import Resolver from './Resolver';
 
 const options = {
   allowBooleanAttributes: false,
@@ -14,14 +15,14 @@ const options = {
   parseNodeValue: true
 };
 
-export default class XmlFileResolver {
+export default class XmlFileResolver implements Resolver {
   private path: string;
 
   constructor(path) {
     this.path = path;
   }
 
-  public resolve() {
+  public resolve(): Promise<BeanDefinition[]> {
     return new Promise((resolve, reject) => {
       fileSystem.readFile(this.path, (error, data) => {
         if (error) {
@@ -41,7 +42,7 @@ export default class XmlFileResolver {
   }
 }
 
-function toBeanDefinition(bean) {
+function toBeanDefinition(bean): BeanDefinition {
   const beanDefinition = new BeanDefinition(bean.attr.id);
   beanDefinition.class = bean.attr.class;
   if (bean.attr.type) {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const PrototypeBean_1 = require("./bean/PrototypeBean");
 const SingletonBean_1 = require("./bean/SingletonBean");
@@ -24,7 +24,7 @@ class Container {
         this.clearEntries();
     }
     get(id) {
-        const bean = this._get(id);
+        const bean = this.getStrict(id);
         return bean.getInstance();
     }
     getByType(type) {
@@ -35,7 +35,7 @@ class Container {
         }
         return beansByType;
     }
-    _get(id) {
+    getStrict(id) {
         const bean = this.beans[id];
         if (!bean)
             throw new NotFoundError_1.default(id);
@@ -45,69 +45,69 @@ class Container {
         return this.beans[id] !== undefined;
     }
     registerBean(entry) {
-        const Clazz = this._getClass(entry);
-        const bean = this._createBean(entry, Clazz);
-        this._set(entry.id, bean);
+        const Clazz = this.getClass(entry);
+        const bean = this.createBean(entry, Clazz);
+        this.set(entry.id, bean);
     }
     clearEntries() {
         this.entries = null;
     }
-    _set(id, bean) {
+    set(id, bean) {
         this.beans[id] = bean;
     }
-    _getClass(entry) {
+    getClass(entry) {
         return require(entry.path);
     }
-    _createBean(entry, Clazz) {
+    createBean(entry, Clazz) {
         const BeanForScope = this.beanTypeRegistry.get(entry.scope);
         if (BeanForScope)
-            return this._createBeanForScope(BeanForScope, entry, Clazz);
+            return this.createBeanForScope(BeanForScope, entry, Clazz);
         throw new InvalidScopeError_1.default(entry.scope);
     }
-    _createBeanForScope(BeanForScope, entry, Clazz) {
+    createBeanForScope(BeanForScope, entry, Clazz) {
         const isClazz = this.isClass(Clazz);
-        const dependencies = this._getDependencies(isClazz, entry);
+        const dependencies = this.getDependencies(isClazz, entry);
         return new BeanForScope(Clazz, entry, isClazz, dependencies);
     }
-    _getDependencies(isClass, entry) {
+    getDependencies(isClass, entry) {
         if (isClass) {
             return entry.properties.map((property) => {
-                return this._getDependecySafe(property, entry.id);
+                return this.getDependecySafe(property, entry.id);
             });
         }
         return [];
     }
-    _getDependecySafe(property, parentId) {
+    getDependecySafe(property, parentId) {
         if (property.value)
             return new ValueBean_1.default(property.value);
-        this._ensureDependencyIsPresent(property, parentId);
-        return this._get(property.ref);
+        this.ensureDependencyIsPresent(property, parentId);
+        return this.getStrict(property.ref);
     }
-    _ensureDependencyIsPresent(property, parentId) {
-        if (!this._hasDependency(property.ref))
-            this._registerDependency(property.ref, parentId);
+    ensureDependencyIsPresent(property, parentId) {
+        if (!this.hasDependency(property.ref))
+            this.registerDependency(property.ref, parentId);
     }
-    _hasDependency(id) {
+    hasDependency(id) {
         return this.has(id);
     }
-    _registerDependency(id, parentId) {
+    registerDependency(id, parentId) {
         try {
-            this._findAndRegisterBean(id, parentId);
+            this.findAndRegisterBean(id, parentId);
         }
         catch (err) {
-            this._throwDependencyError(err, id);
+            this.throwDependencyError(err, id);
         }
     }
-    _findAndRegisterBean(id, parentId) {
-        const entry = this._findEntry(id, parentId);
+    findAndRegisterBean(id, parentId) {
+        const entry = this.findEntry(id, parentId);
         this.registerBean(entry);
     }
-    _throwDependencyError(err, id) {
+    throwDependencyError(err, id) {
         if (err instanceof DependencyNotFoundError_1.default)
             throw err;
         throw new DependencyRegisterError_1.default(id);
     }
-    _findEntry(id, parentId) {
+    findEntry(id, parentId) {
         for (const entry of this.entries) {
             if (entry.id === id)
                 return entry;

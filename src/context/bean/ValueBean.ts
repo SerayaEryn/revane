@@ -1,16 +1,14 @@
-'use strict';
+import AbstractBean from './AbstractBean';
 
-import Bean from './Bean';
+export default class ValueBean extends AbstractBean {
+  private value: any;
 
-export default class ValueBean extends Bean {
-  private value;
-
-  constructor(value) {
+  constructor(value: any) {
     super();
     this.value = value;
   }
 
-  public getInstance() {
+  public getInstance(): any {
     return this.value;
   }
 }

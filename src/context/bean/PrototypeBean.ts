@@ -1,9 +1,8 @@
-'use strict';
+import AbstractBean from './AbstractBean';
 
-import Bean from './Bean';
-
-export default class PrototypeBean extends Bean {
+export default class PrototypeBean extends AbstractBean {
   public static scope: string = 'prototype';
+  public isClass: boolean;
   private type: string;
   private clazz: string;
   private entry;
@@ -18,7 +17,7 @@ export default class PrototypeBean extends Bean {
     this.dependencies = dependencies;
   }
 
-  public getInstance() {
+  public getInstance(): any  {
     const dependencies = this.dependencies.map((bean) => bean.getInstance());
     const instance = this.createInstance(this.clazz, dependencies);
     if (instance.postConstruct)

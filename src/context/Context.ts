@@ -1,26 +1,26 @@
-'use strict';
-
 import * as path from 'path';
 import BeanDefinition from '../BeanDefinition';
+import Options from '../Options';
 import Container from './Container';
 import BeanDefinedTwiceError from './errors/BeanDefinedTwiceError';
 import ContextNotInitializedError from './errors/ContextNotInitializedError';
 
 export default class Context {
-  private options: any;
+  private options: Options;
   private beanDefinitions: Map<string, BeanDefinition>;
+  private container: Container;
+  private initialized: boolean = false;
 
-  constructor(options: any) {
+  constructor(options: Options) {
     this.options = options;
     this.beanDefinitions = new Map();
   }
 
   public initialize(): void {
-    const container = new Container([...this.beanDefinitions.values()]);
-    container.initialize();
-    this.get = container.get.bind(container);
-    this.getByType = container.getByType.bind(container);
+    this.container = new Container([...this.beanDefinitions.values()]);
+    this.container.initialize();
     this.beanDefinitions = null;
+    this.initialized = true;
   }
 
   public addBeanDefinition(beanDefinition: BeanDefinition): void {
@@ -28,12 +28,11 @@ export default class Context {
     if (exitingBeanDefininaton && this.options.noRedefinition) {
       throw new BeanDefinedTwiceError(exitingBeanDefininaton.id);
     }
-    const newBeanDefinition = new BeanDefinition(beanDefinition.id);
-    newBeanDefinition.scope = beanDefinition.scope || 'singleton',
-    newBeanDefinition.path = this.getPath(beanDefinition),
-    newBeanDefinition.properties = beanDefinition.properties || [],
-    newBeanDefinition.type = beanDefinition.type;
-    this.beanDefinitions.set(beanDefinition.id, newBeanDefinition);
+    beanDefinition.scope = beanDefinition.scope || 'singleton',
+    beanDefinition.path = this.getPath(beanDefinition),
+    beanDefinition.properties = beanDefinition.properties || [],
+    beanDefinition.type = beanDefinition.type;
+    this.beanDefinitions.set(beanDefinition.id, beanDefinition);
   }
 
   public addBeanDefinitions(beanDefinitions: BeanDefinition[]): void {
@@ -43,15 +42,19 @@ export default class Context {
   }
 
   public get(id: string): any {
-    throw new ContextNotInitializedError();
+    if (!this.initialized)
+      throw new ContextNotInitializedError();
+    return this.container.get(id);
   }
 
   public getMultiple(ids: string[]): any[] {
-    return ids.map(this.get);
+    return ids.map(((id: string) => this.get(id)));
   }
 
-  public getByType(type: string): any {
-    throw new ContextNotInitializedError();
+  public getByType(type: string): any[] {
+    if (!this.initialized)
+      throw new ContextNotInitializedError();
+    return this.container.getByType(type);
   }
 
   private getPath(beanDefinition: BeanDefinition): string {

@@ -1,40 +1,46 @@
-'use strict';
-
 import beanResolver from './BeanResolver';
 import Context from './context/Context';
 import NotInitializedError from './NotInitializedError';
+import Options from './Options';
 
 export * from './decorators/Decorators';
 
 export default class Revane {
-  private options: object;
-  constructor(options: object) {
+  private options: Options;
+  private context: Context;
+  private initialized: boolean = false;
+
+  constructor(options: Options) {
     this.options = options;
   }
 
   public initialize(): Promise<void> {
-    const context = new Context(this.options);
+    this.context = new Context(this.options);
     return beanResolver.getBeanDefinitions(this.options)
       .then((beanDefinitionResult) => {
         for (const beanDefinitions of beanDefinitionResult) {
-          context.addBeanDefinitions(beanDefinitions);
+          this.context.addBeanDefinitions(beanDefinitions);
         }
-        context.initialize();
-        this.get = context.get.bind(context);
-        this.getMultiple = context.getMultiple.bind(context);
-        this.getByType = context.getByType.bind(context);
+        this.context.initialize();
+        this.initialized = true;
       });
   }
 
   public get(id: string): any {
-    throw new NotInitializedError();
+    if (!this.initialized)
+      throw new NotInitializedError();
+    return this.context.get(id);
   }
 
-  public getMultiple(ids: string[]): any {
-    throw new NotInitializedError();
+  public getMultiple(ids: string[]): any[] {
+    if (!this.initialized)
+      throw new NotInitializedError();
+    return this.context.getMultiple(ids);
   }
 
-  public getByType(type: string): any {
-    throw new NotInitializedError();
+  public getByType(type: string): any[] {
+    if (!this.initialized)
+      throw new NotInitializedError();
+    return this.context.getByType(type);
   }
 }

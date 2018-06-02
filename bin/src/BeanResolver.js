@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BeanResolverRegistry_1 = require("./BeanResolverRegistry");
 const ComponentScanResolver_1 = require("./resolvers/ComponentScanResolver");

@@ -1,5 +1,3 @@
-'use strict';
-
 import * as http from 'http';
 import * as path from 'path';
 import * as test from 'tape-catch';

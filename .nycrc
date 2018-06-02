@@ -5,7 +5,10 @@
   "exclude": [
       "testdata/**",
       "bin/test/**",
-      "bin/src/resolvers/Filter.js"
+      "bin/src/resolvers/Filter.js",
+      "bin/src/resolvers/Resolver.js",
+      "bin/src/Options.js",
+      "bin/src/context/bean/Bean.js"
   ],
   "reporter": [
     "lcov",

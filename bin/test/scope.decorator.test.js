@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const test = require("tape-catch");
 const revane_1 = require("../src/revane");

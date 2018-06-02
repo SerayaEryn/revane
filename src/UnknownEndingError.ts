@@ -1,5 +1,3 @@
-'use strict';
-
 export default class UnknownEndingError extends Error {
   public code: string = 'REV_ERR_UNKNOWN_ENDING';
 

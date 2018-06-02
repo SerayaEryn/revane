@@ -1,5 +1,3 @@
-'use strict';
-
 import * as test from 'tape-catch';
 import BeanDefinition from '../src/BeanDefinition';
 import Context from '../src/context/Context';
@@ -332,7 +330,7 @@ test('throw error if get on uninitialized context', (t) => {
   t.plan(2);
 
   const options = {
-    dirname: __dirname
+    basePackage: __dirname
   };
   const context = new Context(options);
 

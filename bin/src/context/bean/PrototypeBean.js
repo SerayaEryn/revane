@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Bean_1 = require("./Bean");
-class PrototypeBean extends Bean_1.default {
+const AbstractBean_1 = require("./AbstractBean");
+class PrototypeBean extends AbstractBean_1.default {
     constructor(clazz, entry, isClass, dependencies) {
         super();
         this.type = entry.type;

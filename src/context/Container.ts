@@ -1,5 +1,3 @@
-'use strict';
-
 import BeanDefinition from '../BeanDefinition';
 import Bean from './bean/Bean';
 import PrototypeBean from './bean/PrototypeBean';
@@ -32,12 +30,12 @@ export default class Container {
     this.clearEntries();
   }
 
-  public get(id: string) {
-    const bean = this._get(id);
+  public get(id: string): any {
+    const bean = this.getStrict(id);
     return bean.getInstance();
   }
 
-  public getByType(type) {
+  public getByType(type): any[] {
     const beansByType = [];
     for (const id of Object.keys(this.beans)) {
       if (this.beans[id].type === type)
@@ -46,7 +44,7 @@ export default class Container {
     return beansByType;
   }
 
-  private _get(id): Bean {
+  private getStrict(id): Bean {
     const bean = this.beans[id];
     if (!bean)
       throw new NotFoundError(id);
@@ -57,82 +55,82 @@ export default class Container {
     return this.beans[id] !== undefined;
   }
 
-  private registerBean(entry): void {
-    const Clazz = this._getClass(entry);
-    const bean = this._createBean(entry, Clazz);
-    this._set(entry.id, bean);
+  private registerBean(entry: BeanDefinition): void {
+    const Clazz = this.getClass(entry);
+    const bean = this.createBean(entry, Clazz);
+    this.set(entry.id, bean);
   }
 
   private clearEntries(): void {
     this.entries = null;
   }
 
-  private _set(id: string, bean: Bean): void {
+  private set(id: string, bean: Bean): void {
     this.beans[id] = bean;
   }
 
-  private _getClass(entry) {
+  private getClass(entry: BeanDefinition) {
     return require(entry.path);
   }
 
-  private _createBean(entry, Clazz) {
+  private createBean(entry: BeanDefinition, Clazz): Bean {
     const BeanForScope = this.beanTypeRegistry.get(entry.scope);
     if (BeanForScope)
-      return this._createBeanForScope(BeanForScope, entry, Clazz);
+      return this.createBeanForScope(BeanForScope, entry, Clazz);
     throw new InvalidScopeError(entry.scope);
   }
 
-  private _createBeanForScope(BeanForScope, entry, Clazz) {
+  private createBeanForScope(BeanForScope, entry, Clazz) {
     const isClazz = this.isClass(Clazz);
-    const dependencies = this._getDependencies(isClazz, entry);
+    const dependencies = this.getDependencies(isClazz, entry);
     return new BeanForScope(Clazz, entry, isClazz, dependencies);
   }
 
-  private _getDependencies(isClass, entry) {
+  private getDependencies(isClass, entry: BeanDefinition): Bean[] {
     if (isClass) {
       return entry.properties.map((property) => {
-        return this._getDependecySafe(property, entry.id);
+        return this.getDependecySafe(property, entry.id);
       });
     }
     return [];
   }
 
-  private _getDependecySafe(property, parentId) {
+  private getDependecySafe(property, parentId): Bean {
     if (property.value)
       return new ValueBean(property.value);
-    this._ensureDependencyIsPresent(property, parentId);
-    return this._get(property.ref);
+    this.ensureDependencyIsPresent(property, parentId);
+    return this.getStrict(property.ref);
   }
 
-  private _ensureDependencyIsPresent(property, parentId) {
-    if (!this._hasDependency(property.ref))
-      this._registerDependency(property.ref, parentId);
+  private ensureDependencyIsPresent(property, parentId): void {
+    if (!this.hasDependency(property.ref))
+      this.registerDependency(property.ref, parentId);
   }
 
-  private _hasDependency(id) {
+  private hasDependency(id: string): boolean {
     return this.has(id);
   }
 
-  private _registerDependency(id, parentId) {
+  private registerDependency(id: string, parentId: string): void {
     try {
-      this._findAndRegisterBean(id, parentId);
+      this.findAndRegisterBean(id, parentId);
     } catch (err) {
-      this._throwDependencyError(err, id);
+      this.throwDependencyError(err, id);
     }
   }
 
-  private _findAndRegisterBean(id, parentId) {
-    const entry = this._findEntry(id, parentId);
+  private findAndRegisterBean(id: string, parentId: string): void {
+    const entry = this.findEntry(id, parentId);
     this.registerBean(entry);
   }
 
-  private _throwDependencyError(err, id) {
+  private throwDependencyError(err: Error, id: string): void {
     if (err instanceof DependencyNotFoundError)
       throw err;
     throw new DependencyRegisterError(id);
   }
 
-  private _findEntry(id, parentId) {
+  private findEntry(id: string, parentId: string): BeanDefinition {
     for (const entry of this.entries) {
       if (entry.id === id)
         return entry;
@@ -140,7 +138,7 @@ export default class Container {
     throw new DependencyNotFoundError(id, parentId);
   }
 
-  private isClass(Clazz) {
+  private isClass(Clazz): boolean {
     try {
       Object.defineProperty(Clazz, 'prototype', {
         writable: true
