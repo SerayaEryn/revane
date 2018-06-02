@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "./bin/",
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "removeComments": true,
+    "target": "ES2016",
+    "importHelpers": true,
+    "alwaysStrict": true
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

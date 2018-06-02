@@ -1,0 +1,5 @@
+<?xml version="1" encoding="utf-8">
+
+<beans>
+  <bean id="test6" class="./xml/test6.js" type="component"/>
+</beans>

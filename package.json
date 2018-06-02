@@ -2,13 +2,15 @@
   "name": "revane",
   "version": "0.0.0",
   "description": "",
-  "main": "revane.js",
+  "main": "bin/src/revane.js",
   "scripts": {
-    "unit": "tap test/*.test.js",
-    "test": "npm run lint && npm run unit",
-    "lint": "./node_modules/eslint/bin/eslint.js index.js lib/*",
-    "coveralls": "npm run unit --  --cov",
-    "coverage": "npm run coveralls && tap --coverage-report=lcov"
+    "unit": "tape bin/test/**/*.test.js | tspec",
+    "test": "npm run lint && npm run compile && npm run unit",
+    "lint": "tslint lib/**/*",
+    "coveralls": "npm run compile && npm run coverage -s && coveralls < coverage/lcov.info",
+    "coverage": "npm run compile && nyc npm run unit",
+    "compile": "tsc",
+    "prepublish": "npm run compile -s"
   },
   "engines": {
     "node": ">= 6.0.0"
@@ -17,14 +19,20 @@
   "license": "MIT",
   "dependencies": {
     "esprima": "^4.0.0",
+    "express": "^4.16.3",
     "fast-xml-parser": "^3.9.10",
-    "recursive-readdir": "^2.2.2",
-    "express": "^4.16.3"
+    "recursive-readdir": "^2.2.2"
   },
   "devDependencies": {
+    "@types/node": "^10.3.0",
     "coveralls": "^3.0.1",
-    "eslint": "^4.19.1",
-    "tap": "~12.0.1"
-  },
-  "types": "revane.d.ts"
+    "nyc": "^12.0.1",
+    "tap-spec": "^4.1.2",
+    "tape": "^4.9.0",
+    "tape-catch": "^1.0.6",
+    "ts-node": "^6.0.5",
+    "tslib": "^1.9.2",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.1"
+  }
 }
