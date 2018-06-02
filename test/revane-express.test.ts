@@ -1,17 +1,18 @@
 'use strict';
 
-import Revane from '../lib/revane';
-const RevaneExpress = require('../express');
+import * as http from 'http';
+import * as path from 'path';
 import * as test from 'tape-catch';
-const http = require('http');
+import RevaneExpress from '../src/express/revaneExpress';
+import Revane from '../src/revane';
 
 test('should use router', (t) => {
   t.plan(2);
 
   const options = {
-    basePackage: __dirname,
+    basePackage: path.join(__dirname, '../../testdata'),
     configurationFiles: [
-      __dirname + '/testclasses/json/config4.json'
+      path.join(__dirname, '../../testdata/json/config4.json')
     ],
     componentScan: false
   };
@@ -35,9 +36,9 @@ test('should reject with error', (t) => {
   t.plan(2);
 
   const options = {
-    basePackage: __dirname,
+    basePackage: path.join(__dirname, '../../testdata'),
     configurationFiles: [
-      __dirname + '/testclasses/json/config4.json'
+      path.join(__dirname, '../../testdata/json/config4.json')
     ],
     componentScan: false
   };

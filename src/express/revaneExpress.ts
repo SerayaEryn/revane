@@ -1,10 +1,17 @@
 'use strict';
 
-const express = require('express');
-const http = require('http');
+import * as express from 'express';
+import { Application } from 'express';
+import * as http from 'http';
+import { AddressInfo } from 'net';
+import Revane from '../revane';
 
-module.exports = class RevaneExpress {
-  constructor(revane, options) {
+export default class RevaneExpress {
+  public server: Application;
+  private options;
+  private revane: Revane;
+
+  constructor(revane, options?) {
     this.revane = revane;
     this.options = options || Object.create(null);
     this.server = express();
@@ -12,7 +19,7 @@ module.exports = class RevaneExpress {
     this.server.disable('etag');
   }
 
-  use(id) {
+  public use(id): RevaneExpress {
     const middleware = this.revane.get(id);
     const middlewareOptions = middleware.options || Object.create(null);
     const { path } = middlewareOptions;
@@ -29,14 +36,14 @@ module.exports = class RevaneExpress {
     return this;
   }
 
-  useControllers(...ids) {
+  public useControllers(...ids): RevaneExpress {
     const controllers = this.revane.getMultiple(ids);
     const router = createRouterFromControllers(controllers);
     this.server.use(router);
     return this;
   }
 
-  listen(callback) {
+  public listen(callback?): Promise<void> {
     const { port, host } = this.options;
     return new Promise((resolve, reject) => {
       try {
@@ -46,7 +53,7 @@ module.exports = class RevaneExpress {
       }
     });
   }
-};
+}
 
 function listen(app, port, host, callback) {
   const options = {
@@ -55,7 +62,8 @@ function listen(app, port, host, callback) {
   };
   const server = http.createServer(app);
   server.listen(options, callback);
-  app.set('port', server.address().port);
+  const address: any = server.address();
+  app.set('port', address.port);
   app.set('server', server);
 }
 

@@ -65,7 +65,7 @@ test('should reject on error', (t) => {
 });
 test('should reject on error', t => {
     t.plan(1);
-    const file = path.join(__dirname, '/testdata/json/configa.json');
+    const file = path.join(__dirname, '../../testdata/json/configa.json');
     const xmlFileResolver = new XmlFileResolver_1.default(file);
     return xmlFileResolver.resolve()
         .catch((err) => {
