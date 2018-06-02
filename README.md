@@ -1,7 +1,7 @@
 # revane
 
 [![Build Status](https://travis-ci.org/SerayaEryn/revane.svg?branch=master)](https://travis-ci.org/SerayaEryn/revane)
-[![Coverage Status](https://coveralls.io/repos/github/SerayaEryn/revane/badge.svg?branch=master)](https://coveralls.io/github/SerayaEryn/revane?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/SerayaEryn/revane/badge.svg?branch=master)](https://coveralls.io/github/SerayaEryn/revane?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/SerayaEryn/revane.svg)](https://greenkeeper.io/)
 
 Revane is a inversion of control framework inspired by spring.
 
