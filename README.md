@@ -37,7 +37,7 @@ npm install revane --save
 
 ```js
 //userRepository.js
-const { Repository } = require('revane/decorators');
+const { Repository } = require('revane');
 
 class UserRepository {
   getUser(id) {
@@ -48,7 +48,7 @@ class UserRepository {
 module.exports = Repository(UserRepository);
 
 //controller.js
-const { Controller } = require('revane/decorators');
+const { Controller } = require('revane');
 
 class UserController {
   constructor(userRepository) {
@@ -295,7 +295,7 @@ An `array` of absolute paths to configuration files, that provide bean definitio
 Used to declare class as components to be considered by the component scan.
 
 ```js
-const { Service } = require('revane/decorators');
+const { Service } = require('revane');
 class Example {}
 Service()(Example)
 ```
@@ -314,7 +314,7 @@ Service({id: 'example', dependencies: ['test']})(Example)
 Adds a scope to a class. Possible values: `singleton`, `prototype`
 
 ```js
-const { Scope } = require('revane/decorators');
+const { Scope } = require('revane');
 class Example {}
 Scope('prototype')(Example)
 ```
