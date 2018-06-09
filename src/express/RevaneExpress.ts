@@ -106,3 +106,5 @@ function createRouterFromControllers(controllers) {
   }
   return router;
 }
+
+export { RevaneExpress };

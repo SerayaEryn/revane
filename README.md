@@ -221,7 +221,7 @@ There are two possible scopes: `singleton` and `prototype`. If no scope is speci
 ```js
 //app.js
 const Revane = require('revane');
-const RevaneExpress = require('revane/express');
+const { RevaneExpress } = require('revane');
 const express = require('express');
 
 const options = {
@@ -233,9 +233,9 @@ await revane.initialize()
 const options = {
   port: 3000
 }
-const app = new RevaneExpress(revane, options);
+const app = new RevaneExpress(options, revane);
 return app.use('middleware1')
-  .useControllers('controller1')
+  .use('controller1')
   .listen();
 ```
 
@@ -292,13 +292,15 @@ An `array` of absolute paths to configuration files, that provide bean definitio
 
 #### Service, Repository, Controller, Component
 
-Used to declare class as components to be considered by the component scan.
+Used to declare classes as components to be considered by the component scan.
 
 ```js
 const { Service } = require('revane');
 class Example {}
 Service()(Example)
 ```
+
+**Note**: These are neighter typescript decorators or the proposed ecmascript decorators. They are just functions for now.
 
 ##### options
 
