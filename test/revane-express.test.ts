@@ -1,8 +1,8 @@
 import * as http from 'http';
 import * as path from 'path';
 import * as test from 'tape-catch';
-import RevaneExpress from '../src/express/revaneExpress';
-import Revane from '../src/revane';
+import RevaneExpress from '../src/express/RevaneExpress';
+import Revane from '../src/Revane';
 
 test('should use router', (t) => {
   t.plan(2);

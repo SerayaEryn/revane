@@ -1,5 +1,5 @@
 import * as test from 'tape-catch';
-import { Scope, Service } from '../src/revane';
+import { Scope, Service } from '../src/Revane';
 
 test('should add scope meta data', t => {
   t.plan(1);

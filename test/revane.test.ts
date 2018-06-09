@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as test from 'tape-catch';
-import Revane from '../src/revane';
+import Revane from '../src/Revane';
 
 test('should read json configuration file and register beans', (t) => {
   t.plan(3);
