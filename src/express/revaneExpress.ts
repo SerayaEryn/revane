@@ -7,43 +7,66 @@ import { AddressInfo } from 'net';
 import Revane from '../revane';
 
 export default class RevaneExpress {
-  public server: Application;
+  private server: Application;
   private options;
   private revane: Revane;
+  private controllers = [];
 
-  constructor(revane, options?) {
-    this.revane = revane;
+  constructor(options?, revane?: Revane) {
+    if (revane) {
+      this.revane = revane;
+    } else {
+      this.revane = null;
+    }
     this.options = options || Object.create(null);
     this.server = express();
     this.server.disable('x-powered-by');
     this.server.disable('etag');
   }
 
-  public use(id): RevaneExpress {
-    const middleware = this.revane.get(id);
-    const middlewareOptions = middleware.options || Object.create(null);
-    const { path } = middlewareOptions;
-    const args = [];
-    if (path) {
-      args.push(path);
-    }
-    if (typeof middleware === 'function') {
-      args.push(middleware);
+  public initialize(): Promise<void> {
+    if (!this.revane) {
+      this.revane = new Revane(this.options.revane);
+      return this.revane.initialize();
     } else {
-      args.push(middleware.middleware);
+      return Promise.resolve();
     }
-    this.server.use(...args);
-    return this;
   }
 
-  public useControllers(...ids): RevaneExpress {
-    const controllers = this.revane.getMultiple(ids);
-    const router = createRouterFromControllers(controllers);
-    this.server.use(router);
+  public use(id): RevaneExpress {
+    const middleware = this.revane.get(id);
+
+    if (middleware.addRoutes) {
+      this.controllers.push(middleware);
+    } else {
+      if (this.controllers.length > 0) {
+        const router = createRouterFromControllers(this.controllers);
+        this.server.use(router);
+        this.controllers = [];
+      }
+
+      const middlewareOptions = middleware.options || Object.create(null);
+      const { path } = middlewareOptions;
+      const args = [];
+      if (path) {
+        args.push(path);
+      }
+      if (typeof middleware === 'function') {
+        args.push(middleware);
+      } else {
+        args.push(middleware.middleware);
+      }
+      this.server.use(...args);
+    }
     return this;
   }
 
   public listen(callback?): Promise<void> {
+    if (this.controllers.length > 0) {
+      const router = createRouterFromControllers(this.controllers);
+      this.server.use(router);
+      this.controllers = null;
+    }
     const { port, host } = this.options;
     return new Promise((resolve, reject) => {
       try {
@@ -52,6 +75,15 @@ export default class RevaneExpress {
         reject(err);
       }
     });
+  }
+
+  public close(): Promise<void> {
+    this.server.get('server').close();
+    return Promise.resolve();
+  }
+
+  public port(): number {
+    return this.server.get('port');
   }
 }
 

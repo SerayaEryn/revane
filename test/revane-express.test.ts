@@ -18,14 +18,41 @@ test('should use router', (t) => {
   return revane.initialize()
     .then(() => {
       t.pass();
-      const app = new RevaneExpress(revane);
+      const app = new RevaneExpress(null, revane);
       return app.use('test12')
         .use('test14')
-        .useControllers('test13')
+        .use('test13')
         .listen()
         .then(() => {
-          t.ok(app.server.get('port'));
-          app.server.get('server').close();
+          t.ok(app.port());
+          app.close();
+        });
+    });
+});
+
+test('should use router', (t) => {
+  t.plan(2);
+
+  const options = {
+    revane: {
+      basePackage: path.join(__dirname, '../../testdata'),
+      configurationFiles: [
+        path.join(__dirname, '../../testdata/json/config4.json')
+      ],
+      componentScan: false
+    }
+  };
+  const app = new RevaneExpress(options);
+  return app.initialize()
+    .then(() => {
+      t.pass();
+      return app.use('test12')
+        .use('test14')
+        .use('test13')
+        .listen()
+        .then(() => {
+          t.ok(app.port());
+          app.close();
         });
     });
 });
@@ -44,9 +71,9 @@ test('should reject with error', (t) => {
   return revane.initialize()
     .then(() => {
       t.pass();
-      const app = new RevaneExpress(revane, {port: -1});
+      const app = new RevaneExpress({port: -1}, revane);
       return app.use('test12')
-        .useControllers('test13')
+        .use('test13')
         .listen()
         .catch((err) => {
           t.ok(err);
