@@ -1,5 +1,6 @@
 'use strict';
 
+import * as flat from 'array.prototype.flat';
 import BeanDefinition from '../BeanDefinition';
 import Filter from './Filter';
 import RegexFilter from './RegexFilter';
@@ -26,7 +27,7 @@ export default class ComponentScanResolver implements Resolver {
   public resolve(): Promise<BeanDefinition[]> {
     return recursiveReaddir(this.basePackage)
       .then((files: string[]) => {
-        const flattenFiles = [].concat.apply([], files);
+        const flattenFiles = flat(files);
         const filteredFiles = filterByJavascriptFiles(flattenFiles);
 
         const result = [];

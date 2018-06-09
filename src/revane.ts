@@ -3,6 +3,7 @@ import Context from './context/Context';
 import NotInitializedError from './NotInitializedError';
 import Options from './Options';
 
+import * as flat from 'array.prototype.flat';
 export * from './decorators/Decorators';
 
 export default class Revane {
@@ -17,10 +18,8 @@ export default class Revane {
   public initialize(): Promise<void> {
     this.context = new Context(this.options);
     return beanResolver.getBeanDefinitions(this.options)
-      .then((beanDefinitionResult) => {
-        for (const beanDefinitions of beanDefinitionResult) {
-          this.context.addBeanDefinitions(beanDefinitions);
-        }
+      .then((beanDefinitions) => {
+        this.context.addBeanDefinitions(flat(beanDefinitions));
         this.context.initialize();
         this.initialized = true;
       });
