@@ -13,7 +13,7 @@
     "prepublish": "npm run compile -s"
   },
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 8.0.0"
   },
   "author": "Denis Fäcke",
   "license": "MIT",
@@ -24,7 +24,6 @@
   "dependencies": {
     "array.prototype.flat": "^1.2.1",
     "esprima": "^4.0.0",
-    "express": "^4.16.3",
     "fast-xml-parser": "^3.9.10",
     "recursive-readdir": "^2.2.2"
   },

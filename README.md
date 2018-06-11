@@ -10,7 +10,6 @@ Revane is a inversion of control framework inspired by spring.
 * Dependency injection for classes
 * Component scanning
 * xml and json file configuration
-* express support
 
 ## Table of Content
 
@@ -24,7 +23,6 @@ Revane is a inversion of control framework inspired by spring.
   * [Dependency Injection](#dependency-injection)
   * [Post Construct](#post-construct)
   * [Scopes](#scopes)
-  * [Express Support](#express-support)
 * [API](#api)
 
 ## Installation
@@ -154,7 +152,7 @@ The id of a bean is based on the class name. The dependencies will be determined
 
 ```js
 //userRepository.js
-const { Repository } = require('revane/decorators');
+const { Repository } = require('revane');
 
 class UserRepository {
   getUser(id) {
@@ -165,7 +163,7 @@ class UserRepository {
 module.exports = Repository()(UserRepository);
 
 //controller.js
-const { Controller } = require('revane/decorators');
+const { Controller } = require('revane');
 
 class UserController {
   constructor(userRepository) {
@@ -179,6 +177,10 @@ class UserController {
   }
 };
 ```
+
+#### Filters
+
+...
 
 ### Dependency Injection
 
@@ -215,33 +217,6 @@ class Example {
 ### Scopes
 
 There are two possible scopes: `singleton` and `prototype`. If no scope is specified `singleton` will be used.
-
-### Express Support
-
-```js
-//app.js
-const Revane = require('revane');
-const { RevaneExpress } = require('revane');
-const express = require('express');
-
-const options = {
-  basePackage: __dirname
-};
-const revane = new Revane(options);
-await revane.initialize()
-
-const options = {
-  port: 3000
-}
-const app = new RevaneExpress(options, revane);
-return app.use('middleware1')
-  .use('controller1')
-  .listen();
-```
-
-#### useInOrder(app, revane, ids)
-
-#### addRouter(app, revane, express)
 
 ## API
 
@@ -287,6 +262,12 @@ Prevents the duplicate defininion of beans. If a duplicate definition is found a
 ##### configurationFiles
 
 An `array` of absolute paths to configuration files, that provide bean definitions.
+
+##### includeFilters
+
+##### excludeFilters
+
+
 
 ### Decorators
 

@@ -6,7 +6,7 @@ import Filter from './Filter';
 import RegexFilter from './RegexFilter';
 import Resolver from './Resolver';
 
-import recursiveReaddir = require('recursive-readdir');
+import * as recursiveReaddir from 'recursive-readdir';
 import Options from '../Options';
 
 const filterByType = {

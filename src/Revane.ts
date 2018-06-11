@@ -5,7 +5,6 @@ import Options from './Options';
 
 import * as flat from 'array.prototype.flat';
 export * from './decorators/Decorators';
-export { RevaneExpress } from './express/RevaneExpress';
 
 export default class Revane {
   private options: Options;
