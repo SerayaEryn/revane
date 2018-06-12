@@ -2,14 +2,9 @@
 
 [![Build Status](https://travis-ci.org/SerayaEryn/revane.svg?branch=master)](https://travis-ci.org/SerayaEryn/revane)
 [![Coverage Status](https://coveralls.io/repos/github/SerayaEryn/revane/badge.svg?branch=master)](https://coveralls.io/github/SerayaEryn/revane?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/SerayaEryn/revane.svg)](https://greenkeeper.io/)
+[![NPM version](https://img.shields.io/npm/v/revane.svg?style=flat)](https://www.npmjs.com/package/revane)
 
 Revane is a inversion of control framework inspired by spring.
-
-## Features
-
-* Dependency injection for classes
-* Component scanning
-* xml and json file configuration
 
 ## Table of Content
 
@@ -45,7 +40,7 @@ class UserRepository {
 
 module.exports = Repository(UserRepository);
 
-//controller.js
+//userController.js
 const { Controller } = require('revane');
 
 class UserController {
@@ -55,7 +50,9 @@ class UserController {
 
   addRoutes(router) {
     router.get('/user/:id', (req, res, next) => {
-      res.json(this.userRepository.getUser(req.params.id));
+      const { id } = req.params;
+      const user = this.userRepository.getUser(id);
+      res.json(user);
     });
   }
 };
@@ -72,6 +69,7 @@ const revane = new Revane(options);
 revane.initialize()
   .then(() => {
     revane.get('userController');
+    // ...
   });
 ```
 
@@ -79,12 +77,14 @@ revane.initialize()
 
 ### Component registration
 
-Components are registered by json file, xml file or by scanning for components.
-The class property accepts three different kind of paths:
+Components may be registered by json file, xml file or by scanning for components.
+The class property in the configuration files accepts three different kind of paths:
 
 * Absolute paths starting with `/`
-* Relative paths starting with `./`
-* Names of modules
+* Paths relative to `basePackage` starting with `./`
+* Names of modules 
+
+Configuration files may be passed with the `configurationFiles` option. The `configurationFiles` requires absolute paths.
 
 #### Json File
 
@@ -142,6 +142,9 @@ revane.initialize()
 
 #### Component Scanning
 
+The component scan scans for decorated classes.
+
+It determines the id, scope and dependencies of the decorated class (if not passed as options to the decorator).
 The id of a bean is based on the class name. The dependencies will be determined by the constructor of the class and passed to the constructor at the creation of a bean.
 
 **Note**: The component scan is enabled by default.
@@ -180,7 +183,20 @@ class UserController {
 
 #### Filters
 
-...
+It is possible to apply filters to the component scan. There are two types of filters: `includeFilters` and `excludeFilters`.
+
+```js
+//app.js
+const options = {
+  basePackage: __dirname,
+  excludeFilters: [{
+    type: 'regex',
+    regex: '.*Mock.js'
+  }]
+};
+const revane = new Revane(options);
+revane.initialize()
+```
 
 ### Dependency Injection
 
@@ -239,7 +255,7 @@ Returns the bean for the `id`. Throws an error if no bean with the `id` is found
 
 #### getMultiple(ids)
 
-Returns multiple beans.
+Returns multiple beans specified by the `ids`.
 
 #### initialize()
 
@@ -266,8 +282,6 @@ An `array` of absolute paths to configuration files, that provide bean definitio
 ##### includeFilters
 
 ##### excludeFilters
-
-
 
 ### Decorators
 
