@@ -240,6 +240,6 @@ test('should get components', (t) => {
     .then(() => {
       const beans = revane.getByType('component');
 
-      t.strictEquals(2, beans.length);
+      t.strictEquals(3, beans.length);
     });
 });

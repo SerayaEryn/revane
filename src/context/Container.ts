@@ -70,7 +70,10 @@ export default class Container {
   }
 
   private getClass(entry: BeanDefinition) {
-    return require(entry.path);
+    const Clazz = require(entry.path);
+    if (Clazz.default)
+      return Clazz.default;
+    return Clazz;
   }
 
   private createBean(entry: BeanDefinition, Clazz): Bean {

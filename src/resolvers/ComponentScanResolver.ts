@@ -32,7 +32,7 @@ export default class ComponentScanResolver implements Resolver {
 
         const result = [];
         for (const file of filteredFiles) {
-          const module1 = require(file);
+          let module1 = getClazz(file);
           const clazz = file.replace(this.basePackage, '.');
           if (module1 && module1.__componentmeta) {
             const beanDefinition = getBeanDefinition(module1, clazz);
@@ -53,6 +53,13 @@ export default class ComponentScanResolver implements Resolver {
     }
     return filtered;
   }
+}
+
+function getClazz(file: string) {
+  let module1 = require(file);
+  if (module1.default)
+    return module1.default;
+  return module1;
 }
 
 function getBeanDefinition(module1, clazz): BeanDefinition {

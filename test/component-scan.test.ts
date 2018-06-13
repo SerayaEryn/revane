@@ -3,7 +3,7 @@ import * as test from 'tape-catch';
 import ComponentScanResolver from '../src/resolvers/ComponentScanResolver';
 
 test('should do component scan without filters', (t) => {
-  t.plan(9);
+  t.plan(10);
 
   const options = {
     basePackage: path.join(__dirname, '../../testdata')
@@ -12,9 +12,11 @@ test('should do component scan without filters', (t) => {
   const componentScanResolver = new ComponentScanResolver(options);
   return componentScanResolver.resolve()
     .then((beanDefinitions) => {
-      t.strictEquals(beanDefinitions.length, 4);
+      t.strictEquals(beanDefinitions.length, 5);
       const scan1 = findDefinition(beanDefinitions, 'scan1');
       t.strictEquals(scan1.scope, 'singleton');
+      const scan2 = findDefinition(beanDefinitions, 'scan2');
+      t.strictEquals(scan2.scope, 'singleton');
       t.deepEquals(scan1.properties, [{ref: 'test6'}]);
       const test7 = findDefinition(beanDefinitions, 'test7');
       t.strictEquals(test7.scope, 'singleton');
@@ -25,7 +27,8 @@ test('should do component scan without filters', (t) => {
       const test9 = findDefinition(beanDefinitions, 'test9');
       t.strictEquals(test9.scope, 'singleton');
       t.deepEquals(test9.properties, []);
-    });
+    })
+    .catch((err) => t.error(err));
 });
 
 test('should do component scan with exclude filter', (t) => {
@@ -60,7 +63,7 @@ test('should do component scan with include filter', (t) => {
   const componentScanResolver = new ComponentScanResolver(options);
   return componentScanResolver.resolve()
     .then((beanDefinitions) => {
-      t.strictEquals(beanDefinitions.length, 4);
+      t.strictEquals(beanDefinitions.length, 5);
     })
     .catch((err) => t.err(err));
 });

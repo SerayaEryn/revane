@@ -12,8 +12,15 @@ export default class Component extends Decorator {
   }
 
   public define(Class) {
-    const opts = this.options || {};
-    let id = opts.id;
+    let opts;
+    let id;
+    if (typeof this.options === 'string') {
+      id = this.options;
+      opts = {};
+    } else {
+      opts = this.options || {};
+      id = opts.id;
+    }
 
     const tree = getSyntaxTree(Class);
 
