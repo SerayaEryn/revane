@@ -1,34 +1,31 @@
+import 'reflect-metadata';
 import * as test from 'tape-catch';
 import { Scope, Service } from '../src/Revane';
 
 test('should add scope and service meta data', t => {
   t.plan(3);
-  class TestClass {
-    public static __componentmeta;
-  }
+  class TestClass {}
 
   Scope('prototype')(
   Service()(
   TestClass
   ));
 
-  t.strictEquals(TestClass.__componentmeta.scope, 'prototype');
-  t.strictEquals(TestClass.__componentmeta.id, 'testClass');
-  t.deepEquals(TestClass.__componentmeta.dependencies, []);
+  t.strictEquals(Reflect.getMetadata('scope', TestClass), 'prototype');
+  t.strictEquals(Reflect.getMetadata('id', TestClass), 'testClass');
+  t.deepEquals(Reflect.getMetadata('dependencies', TestClass), []);
 });
 
 test('should add scope and service meta data', t => {
   t.plan(3);
-  class TestClass {
-    public static __componentmeta;
-  }
+  class TestClass {};
 
   Scope('prototype')(
   Service({id: 'test'})(
   TestClass
   ));
 
-  t.strictEquals(TestClass.__componentmeta.scope, 'prototype');
-  t.strictEquals(TestClass.__componentmeta.id, 'test');
-  t.deepEquals(TestClass.__componentmeta.dependencies, []);
+  t.strictEquals(Reflect.getMetadata('scope', TestClass), 'prototype');
+  t.strictEquals(Reflect.getMetadata('id', TestClass), 'test');
+  t.deepEquals(Reflect.getMetadata('dependencies', TestClass), []);
 });

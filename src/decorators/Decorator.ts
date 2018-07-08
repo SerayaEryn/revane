@@ -9,16 +9,4 @@ export default abstract class Decorator {
   }
 
   public abstract define(Class);
-
-  protected appendMetaData(Class, meta) {
-    const oldMeta = Class.__componentmeta || {};
-    const value = Object.assign(oldMeta, meta);
-    Object.defineProperty(Class, '__componentmeta', {
-      configurable: false,
-      enumerable: false,
-      value,
-      writable: false
-    });
-    return Class;
-  }
 }

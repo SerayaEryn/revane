@@ -1,29 +1,26 @@
+import 'reflect-metadata';
 import * as test from 'tape-catch';
-import { Scope, Service } from '../src/Revane';
+import { Scope } from '../src/Revane';
 
 test('should add scope meta data', t => {
   t.plan(1);
 
-  class TestClass {
-    public static __componentmeta: any;
-  }
+  class TestClass {}
 
   Scope('prototype')(
   TestClass
   );
 
-  t.strictEquals(TestClass.__componentmeta.scope, 'prototype');
+  t.strictEquals(Reflect.getMetadata('scope', TestClass), 'prototype');
 });
 
 test('should add scope meta data', t => {
   t.plan(1);
-  class TestClass {
-    public static __componentmeta;
-  }
+  class TestClass {};
 
   Scope('prototype')(
   TestClass
   );
 
-  t.strictEquals(TestClass.__componentmeta.scope, 'prototype');
+  t.strictEquals(Reflect.getMetadata('scope', TestClass), 'prototype');
 });

@@ -1,6 +1,7 @@
 'use strict';
 
 import * as flat from 'array.prototype.flat';
+import 'reflect-metadata';
 import BeanDefinition from '../BeanDefinition';
 import Filter from './Filter';
 import RegexFilter from './RegexFilter';
@@ -34,7 +35,7 @@ export default class ComponentScanResolver implements Resolver {
         for (const file of filteredFiles) {
           let module1 = getClazz(file);
           const clazz = file.replace(this.basePackage, '.');
-          if (module1 && module1.__componentmeta) {
+          if (module1 && Reflect.getMetadata('id', module1)) {
             const beanDefinition = getBeanDefinition(module1, clazz);
             result.push(beanDefinition);
           }
@@ -55,7 +56,7 @@ export default class ComponentScanResolver implements Resolver {
   }
 }
 
-function getClazz(file: string) {
+function getClazz(file: string): any {
   let module1 = require(file);
   if (module1.default)
     return module1.default;
@@ -63,9 +64,10 @@ function getClazz(file: string) {
 }
 
 function getBeanDefinition(module1, clazz): BeanDefinition {
-  const { id, type } = module1.__componentmeta;
-  const scope = module1.__componentmeta.scope || 'singleton';
-  const dependencies = (module1.__componentmeta.dependencies).map(toReference);
+  const id = Reflect.getMetadata('id', module1);
+  const type = Reflect.getMetadata('type', module1);
+  const scope = Reflect.getMetadata('scope', module1) || 'singleton';
+  const dependencies = (Reflect.getMetadata('dependencies', module1)).map(toReference);
   const beanDefinition = new BeanDefinition(id);
   beanDefinition.class = clazz;
   beanDefinition.properties = dependencies;

@@ -1,6 +1,7 @@
 'use strict';
 
 import * as esprima from 'esprima';
+import 'reflect-metadata';
 import Decorator from './Decorator';
 
 export default class Component extends Decorator {
@@ -28,12 +29,10 @@ export default class Component extends Decorator {
       id = getId(tree);
     }
     const dependencies = getDependencies(tree);
-    const value = {
-      dependencies,
-      id,
-      type: this.type
-    };
-    return this.appendMetaData(Class, value);
+    Reflect.defineMetadata('dependencies', dependencies, Class);
+    Reflect.defineMetadata('id', id, Class);
+    Reflect.defineMetadata('type', this.type, Class);
+    return Class;
   }
 }
 
