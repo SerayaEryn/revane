@@ -67,7 +67,7 @@ function getBeanDefinition(module1, clazz): BeanDefinition {
   const id = Reflect.getMetadata('id', module1);
   const type = Reflect.getMetadata('type', module1);
   const scope = Reflect.getMetadata('scope', module1) || 'singleton';
-  const dependencies = (Reflect.getMetadata('dependencies', module1)).map(toReference);
+  const dependencies = Reflect.getMetadata('dependencies', module1).map(toReference);
   const beanDefinition = new BeanDefinition(id);
   beanDefinition.class = clazz;
   beanDefinition.properties = dependencies;
