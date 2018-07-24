@@ -163,7 +163,7 @@ test('should on get if not initialized', (t) => {
   }
 });
 
-test('should on getMultiple if not initialized', (t) => {
+test('should throw error on getMultiple if not initialized', (t) => {
   t.plan(2);
 
   const options = {
@@ -180,6 +180,25 @@ test('should on getMultiple if not initialized', (t) => {
     t.ok(err);
     t.strictEquals(err.code, 'REV_ERR_NOT_INITIALIZED');
   }
+});
+
+test('should return multiple beans', (t) => {
+  t.plan(2);
+
+  const options = {
+    basePackage: path.join(__dirname, '../../testdata'),
+    configurationFiles: [
+      path.join(__dirname, '../../testdata/json/config.json')
+    ],
+    componentScan: false
+  };
+  const revane = new Revane(options);
+  return revane.initialize()
+    .then(() => {
+      const [ json1, json2 ] = revane.getMultiple(['json1', 'json2']);
+      t.ok(json1);
+      t.ok(json2);
+    });
 });
 
 test('should on getByType if not initialized', (t) => {
