@@ -130,7 +130,7 @@ export default class Container {
   private throwDependencyError(err: Error, id: string): void {
     if (err instanceof DependencyNotFoundError)
       throw err;
-    throw new DependencyRegisterError(id);
+    throw new DependencyRegisterError(id, err);
   }
 
   private findEntry(id: string, parentId: string): BeanDefinition {
