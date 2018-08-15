@@ -375,7 +375,7 @@ test('throw error if getMultiple on uninitialized context', (t) => {
 });
 
 test('should throw error if error on post construct', (t) => {
-  t.plan(2);
+  t.plan(3);
 
   const beanDefinition1 = new BeanDefinition('test11');
   beanDefinition1.class = '../../testdata/test11';
@@ -402,6 +402,7 @@ test('should throw error if error on post construct', (t) => {
   } catch (err) {
     t.ok(err);
     t.strictEqual(err.code, 'REV_ERR_DEPENDENCY_REGISTER');
+    t.ok(err.stack.includes('Caused by'));
   }
 });
 
