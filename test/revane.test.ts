@@ -259,6 +259,6 @@ test('should get components', (t) => {
     .then(() => {
       const beans = revane.getByType('component');
 
-      t.strictEquals(3, beans.length);
+      t.strictEquals(4, beans.length);
     });
 });

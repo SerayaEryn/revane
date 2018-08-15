@@ -1,9 +1,9 @@
-'use strict';
+import Options from './Options';
 
 export default abstract class Decorator {
-  protected options;
+  protected options: Options;
 
-  public create(options) {
+  public create(options: Options) {
     this.options = options;
     return this.define.bind(this);
   }
