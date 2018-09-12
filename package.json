@@ -24,7 +24,7 @@
   "dependencies": {
     "array.prototype.flat": "^1.2.1",
     "esprima": "^4.0.0",
-    "fast-xml-parser": "^3.9.10",
+    "fast-xml-parser": "^3.12.5",
     "recursive-readdir": "^2.2.2",
     "reflect-metadata": "^0.1.12"
   },
