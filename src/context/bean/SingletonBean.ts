@@ -12,11 +12,17 @@ export default class SingletonBean extends AbstractBean {
     this.isClass = isClass;
     const dependencies = dependencyBeans.map((bean) => bean.getInstance());
     this.instance = this.createInstance(Clazz, dependencies);
-    if (this.instance.postConstruct)
-      this.instance.postConstruct();
   }
 
   public getInstance(): any {
     return this.instance;
+  }
+
+  public async postConstruct() {
+    if (this.instance.postConstruct) {
+      await this.instance.postConstruct();
+    } else {
+      return Promise.resolve();
+    }
   }
 }

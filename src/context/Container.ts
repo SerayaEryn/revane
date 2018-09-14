@@ -13,6 +13,7 @@ export default class Container {
   private entries: BeanDefinition[];
   private beans: Map<string, Bean>;
   private beanTypeRegistry: BeanTypeRegistry;
+  private promises: Array<Promise<any>>;
 
   constructor(entries: BeanDefinition[]) {
     this.entries = entries;
@@ -20,14 +21,16 @@ export default class Container {
     this.beanTypeRegistry = new BeanTypeRegistry();
     this.beanTypeRegistry.register(SingletonBean);
     this.beanTypeRegistry.register(PrototypeBean);
+    this.promises = [];
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     for (const entry of this.entries) {
       if (!this.has(entry.id))
         this.registerBean(entry);
     }
     this.clearEntries();
+    await Promise.all(this.promises);
   }
 
   public get(id: string): any {
@@ -45,7 +48,7 @@ export default class Container {
   }
 
   private getStrict(id): Bean {
-    const bean = this.beans[id];
+    const bean: Bean = this.beans[id];
     if (!bean)
       throw new NotFoundError(id);
     return bean;
@@ -57,8 +60,13 @@ export default class Container {
 
   private registerBean(entry: BeanDefinition): void {
     const Clazz = this.getClass(entry);
-    const bean = this.createBean(entry, Clazz);
+    const bean: Bean = this.createBean(entry, Clazz);
     this.set(entry.id, bean);
+    const promise: Promise<void> = bean.postConstruct()
+      .catch((error) => {
+        throw new DependencyRegisterError(entry.id, error);
+      });
+    this.promises.push(promise);
   }
 
   private clearEntries(): void {

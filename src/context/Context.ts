@@ -16,9 +16,9 @@ export default class Context {
     this.beanDefinitions = new Map();
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     this.container = new Container([...this.beanDefinitions.values()]);
-    this.container.initialize();
+    await this.container.initialize();
     this.beanDefinitions = null;
     this.initialized = true;
   }

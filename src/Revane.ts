@@ -20,8 +20,10 @@ export default class Revane {
     return beanResolver.getBeanDefinitions(this.options)
       .then((beanDefinitions) => {
         this.context.addBeanDefinitions(flat(beanDefinitions));
-        this.context.initialize();
-        this.initialized = true;
+        return this.context.initialize()
+          .then(() => {
+            this.initialized = true;
+          });
       });
   }
 

@@ -12,4 +12,8 @@ export default abstract class AbstractBean implements Bean {
       return Clazz;
     }
   }
+
+  public postConstruct() {
+    return Promise.resolve();
+  }
 }

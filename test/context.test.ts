@@ -2,7 +2,7 @@ import * as test from 'tape-catch';
 import BeanDefinition from '../src/BeanDefinition';
 import Context from '../src/context/Context';
 
-test('should register bean (class)', (t) => {
+test('should register bean (class)', async (t) => {
   t.plan(1);
 
   const beanDefinition1 = new BeanDefinition('test1');
@@ -17,14 +17,14 @@ test('should register bean (class)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test1');
 
   t.ok(bean);
 });
 
-test('should register bean and call postConstruct (class)', (t) => {
+test('should register bean and call postConstruct (class)', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test6');
@@ -39,7 +39,7 @@ test('should register bean and call postConstruct (class)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test6');
 
@@ -47,7 +47,7 @@ test('should register bean and call postConstruct (class)', (t) => {
   t.ok(bean.postConstructed);
 });
 
-test('should register bean and call postConstruct (class) (prototype)', (t) => {
+test('should register bean and call postConstruct (class) (prototype)', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test6');
@@ -62,7 +62,7 @@ test('should register bean and call postConstruct (class) (prototype)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test6');
 
@@ -70,7 +70,7 @@ test('should register bean and call postConstruct (class) (prototype)', (t) => {
   t.ok(bean.postConstructed);
 });
 
-test('should register bean (object) (prototype)', (t) => {
+test('should register bean (object) (prototype)', async (t) => {
   t.plan(1);
 
   const beanDefinition1 = new BeanDefinition('test3');
@@ -85,14 +85,14 @@ test('should register bean (object) (prototype)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test3');
 
   t.ok(bean);
 });
 
-test('should register bean and call postConstruct (class) (prototype)', (t) => {
+test('should register bean and call postConstruct (class) (prototype)', async (t) => {
   t.plan(3);
 
   const beanDefinition1 = new BeanDefinition('test6');
@@ -107,7 +107,7 @@ test('should register bean and call postConstruct (class) (prototype)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test6');
   const bean2 = context.get('test6');
@@ -117,7 +117,7 @@ test('should register bean and call postConstruct (class) (prototype)', (t) => {
   t.ok(bean !== bean2);
 });
 
-test('should register bean (class + prototype)', (t) => {
+test('should register bean (class + prototype)', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test4');
@@ -132,7 +132,7 @@ test('should register bean (class + prototype)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
   context.get('test4');
 
   const bean = context.get('test4');
@@ -141,7 +141,7 @@ test('should register bean (class + prototype)', (t) => {
   t.strictEqual(2, bean.count);
 });
 
-test('should register bean (object)', (t) => {
+test('should register bean (object)', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test3');
@@ -155,7 +155,7 @@ test('should register bean (object)', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test3');
 
@@ -163,7 +163,7 @@ test('should register bean (object)', (t) => {
   t.strictEqual(bean.test, 'test3');
 });
 
-test('Should inject dependencies', (t) => {
+test('Should inject dependencies', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test1');
@@ -182,7 +182,7 @@ test('Should inject dependencies', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test2');
 
@@ -190,7 +190,7 @@ test('Should inject dependencies', (t) => {
   t.ok(bean.test1);
 });
 
-test('Should inject dependencies - ignore order', (t) => {
+test('Should inject dependencies - ignore order', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test1');
@@ -209,7 +209,7 @@ test('Should inject dependencies - ignore order', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test2');
 
@@ -217,7 +217,7 @@ test('Should inject dependencies - ignore order', (t) => {
   t.strictEqual(bean.test1, 'test1');
 });
 
-test('', (t) => {
+test('Should provide dependency to class', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test2');
@@ -236,7 +236,7 @@ test('', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   const bean = context.get('test2');
 
@@ -271,7 +271,7 @@ test('disallow duplicate definition', (t) => {
   }
 });
 
-test('disallow unknown scope', (t) => {
+test('disallow unknown scope', async (t) => {
   t.plan(2);
 
   const beanDefinition1 = new BeanDefinition('test1');
@@ -288,14 +288,14 @@ test('disallow unknown scope', (t) => {
   context.addBeanDefinitions(beanDefinitions);
 
   try {
-    context.initialize();
+    await context.initialize();
   } catch (err) {
     t.ok(err);
     t.strictEqual(err.code, 'REV_ERR_INVALID_SCOPE');
   }
 });
 
-test('initialize should fail on error', (t) => {
+test('initialize should fail on error', async (t) => {
   t.plan(1);
 
   const beanDefinition1 = new BeanDefinition('test5');
@@ -317,7 +317,7 @@ test('initialize should fail on error', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   try {
     context.get('test2');
@@ -374,7 +374,7 @@ test('throw error if getMultiple on uninitialized context', (t) => {
   }
 });
 
-test('should throw error if error on post construct', (t) => {
+test('should throw error if error on post construct', async (t) => {
   t.plan(3);
 
   const beanDefinition1 = new BeanDefinition('test11');
@@ -398,7 +398,7 @@ test('should throw error if error on post construct', (t) => {
   context.addBeanDefinitions(beanDefinitions);
 
   try {
-    context.initialize();
+    await context.initialize();
   } catch (err) {
     t.ok(err);
     t.strictEqual(err.code, 'REV_ERR_DEPENDENCY_REGISTER');
@@ -406,7 +406,7 @@ test('should throw error if error on post construct', (t) => {
   }
 });
 
-test('should throw error if not found', (t) => {
+test('should throw error if not found', async (t) => {
   t.plan(2);
 
   const beanDefinitions = [];
@@ -416,7 +416,7 @@ test('should throw error if not found', (t) => {
   };
   const context = new Context(options);
   context.addBeanDefinitions(beanDefinitions);
-  context.initialize();
+  await context.initialize();
 
   try {
     context.get('test');

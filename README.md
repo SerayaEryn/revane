@@ -259,7 +259,7 @@ Returns multiple beans specified by the `ids`.
 
 #### initialize()
 
-Initializes the container by reading all configured configuration files and performes the component scan. Returns a Promise.
+Initializes the container by reading all configured configuration files and performes the component scan. Returns a Promise that resolves when all `postConstruct` calls are finished.
 
 #### options
 

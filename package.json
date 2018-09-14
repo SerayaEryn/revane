@@ -1,7 +1,7 @@
 {
   "name": "revane",
   "version": "0.2.1",
-  "description": "",
+  "description": "inversion of control framework",
   "main": "index.js",
   "scripts": {
     "unit": "tape bin/test/**/*.test.js | tspec",
@@ -39,6 +39,7 @@
     "tape-catch": "^1.0.6",
     "ts-node": "^7.0.0",
     "tslint": "^5.10.0",
+    "tslint-config-standard": "^8.0.1",
     "typescript": "^2.9.1"
   }
 }
