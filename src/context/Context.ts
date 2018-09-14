@@ -48,6 +48,13 @@ export default class Context {
     return this.container.get(id)
   }
 
+  public has (id: string): boolean {
+    if (!this.initialized) {
+      throw new ContextNotInitializedError()
+    }
+    return this.container.has(id)
+  }
+
   public getMultiple (ids: string[]): any[] {
     return ids.map(((id: string) => this.get(id)))
   }

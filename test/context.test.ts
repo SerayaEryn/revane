@@ -342,6 +342,22 @@ test('throw error if get on uninitialized context', (t) => {
   }
 })
 
+test('throw error if has on uninitialized context', (t) => {
+  t.plan(2)
+
+  const options = {
+    basePackage: __dirname
+  }
+  const context = new Context(options)
+
+  try {
+    context.has('test2')
+  } catch (err) {
+    t.ok(err)
+    t.strictEqual(err.code, 'REV_ERR_CONTEXT_NOT_INITIALIZED')
+  }
+})
+
 test('throw error if getByType on uninitialized context', (t) => {
   t.plan(2)
 
@@ -424,4 +440,33 @@ test('should throw error if not found', async (t) => {
     t.ok(err)
     t.strictEqual(err.code, 'REV_ERR_NOT_FOUND')
   }
+})
+
+test('should handle on has()', async (t) => {
+  t.plan(3)
+
+  const beanDefinition1 = new BeanDefinition('test5')
+  beanDefinition1.class = '../../testdata/test5'
+  beanDefinition1.scope = 'prototype'
+  const beanDefinition2 = new BeanDefinition('test2')
+  beanDefinition2.class = '../../testdata/test2'
+  beanDefinition2.scope = 'prototype'
+  beanDefinition2.properties = [{
+    ref: 'test5'
+  }]
+  const beanDefinitions = [
+    beanDefinition1,
+    beanDefinition2
+  ]
+
+  const options = {
+    basePackage: __dirname
+  }
+  const context = new Context(options)
+  context.addBeanDefinitions(beanDefinitions)
+  await context.initialize()
+
+  t.ok(context.has('test2'))
+  t.ok(context.has('test5'))
+  t.notOk(context.has('unknown'))
 })

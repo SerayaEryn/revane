@@ -49,16 +49,16 @@ export default class Container {
     return beansByType
   }
 
+  public has (id: string): boolean {
+    return this.beans[id] !== undefined
+  }
+
   private getStrict (id): Bean {
     const bean: Bean = this.beans[id]
     if (!bean) {
       throw new NotFoundError(id)
     }
     return bean
-  }
-
-  private has (id: string): boolean {
-    return this.beans[id] !== undefined
   }
 
   private registerBean (entry: BeanDefinition): void {

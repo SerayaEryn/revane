@@ -48,6 +48,25 @@ test('should read json configuration file and register beans', (t) => {
     })
 })
 
+test('should handle has()', async (t) => {
+  t.plan(4)
+
+  const options = {
+    basePackage: path.join(__dirname, '../../testdata'),
+    configurationFiles: [
+      path.join(__dirname, '../../testdata/json/config3.json')
+    ],
+    componentScan: false
+  }
+  const revane = new Revane(options)
+  await revane.initialize()
+
+  t.ok(revane.has('json1'))
+  t.ok(revane.has('json2'))
+  t.ok(revane.has('json3'))
+  t.ok(!revane.has('test'))
+})
+
 test('should read json and xml configuration file and register beans', (t) => {
   t.plan(6)
 
@@ -144,7 +163,7 @@ test('should reject error on unknown configuration file ending', (t) => {
     })
 })
 
-test('should on get if not initialized', (t) => {
+test('should throw error on get() if not initialized', (t) => {
   t.plan(2)
 
   const options = {
@@ -157,6 +176,25 @@ test('should on get if not initialized', (t) => {
   const revane = new Revane(options)
   try {
     revane.get('test')
+  } catch (err) {
+    t.ok(err)
+    t.strictEquals(err.code, 'REV_ERR_NOT_INITIALIZED')
+  }
+})
+
+test('should throw error on has() if not initialized', (t) => {
+  t.plan(2)
+
+  const options = {
+    basePackage: path.join(__dirname, '../../testdata'),
+    configurationFiles: [
+      path.join(__dirname, '../../testdata/json/config.json')
+    ],
+    componentScan: false
+  }
+  const revane = new Revane(options)
+  try {
+    revane.has('test')
   } catch (err) {
     t.ok(err)
     t.strictEquals(err.code, 'REV_ERR_NOT_INITIALIZED')

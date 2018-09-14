@@ -253,6 +253,10 @@ revane.initialize()
 
 Returns the bean for the `id`. Throws an error if no bean with the `id` is found.
 
+#### has(id)
+
+Allows to check if a bean for `id` exists.
+
 #### getMultiple(ids)
 
 Returns multiple beans specified by the `ids`.

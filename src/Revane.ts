@@ -15,16 +15,12 @@ export default class Revane {
     this.options = options
   }
 
-  public initialize (): Promise<void> {
+  public async initialize (): Promise<void> {
     this.context = new Context(this.options)
-    return beanResolver.getBeanDefinitions(this.options)
-      .then((beanDefinitions) => {
-        this.context.addBeanDefinitions(flat(beanDefinitions))
-        return this.context.initialize()
-          .then(() => {
-            this.initialized = true
-          })
-      })
+    const beanDefinitions = await beanResolver.getBeanDefinitions(this.options)
+    this.context.addBeanDefinitions(flat(beanDefinitions))
+    await this.context.initialize()
+    this.initialized = true
   }
 
   public get (id: string): any {
@@ -32,6 +28,13 @@ export default class Revane {
       throw new NotInitializedError()
     }
     return this.context.get(id)
+  }
+
+  public has (id: string): boolean {
+    if (!this.initialized) {
+      throw new NotInitializedError()
+    }
+    return this.context.has(id)
   }
 
   public getMultiple (ids: string[]): any[] {
