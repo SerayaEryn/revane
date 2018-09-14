@@ -239,7 +239,7 @@ test('should return multiple beans', (t) => {
     })
 })
 
-test('should on getByType if not initialized', (t) => {
+test('should throw error on getByType if not initialized', (t) => {
   t.plan(2)
 
   const options = {

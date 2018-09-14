@@ -24,30 +24,28 @@ export default class Revane {
   }
 
   public get (id: string): any {
-    if (!this.initialized) {
-      throw new NotInitializedError()
-    }
+    this.checkIfInitialized()
     return this.context.get(id)
   }
 
   public has (id: string): boolean {
-    if (!this.initialized) {
-      throw new NotInitializedError()
-    }
+    this.checkIfInitialized()
     return this.context.has(id)
   }
 
   public getMultiple (ids: string[]): any[] {
-    if (!this.initialized) {
-      throw new NotInitializedError()
-    }
+    this.checkIfInitialized()
     return this.context.getMultiple(ids)
   }
 
   public getByType (type: string): any[] {
+    this.checkIfInitialized()
+    return this.context.getByType(type)
+  }
+
+  private checkIfInitialized (): void {
     if (!this.initialized) {
       throw new NotInitializedError()
     }
-    return this.context.getByType(type)
   }
 }
