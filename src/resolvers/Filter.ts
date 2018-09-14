@@ -1,3 +1,3 @@
 export default interface Filter {
-  applies(entry): boolean;
+  applies (entry): boolean
 }

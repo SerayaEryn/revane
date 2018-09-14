@@ -1,19 +1,19 @@
-import Bean from './Bean';
+import Bean from './Bean'
 
 export default abstract class AbstractBean implements Bean {
-  protected isClass: boolean;
+  protected isClass: boolean
 
-  public abstract getInstance(): any;
+  public abstract getInstance (): any
 
-  public createInstance(Clazz, dependencies) {
+  public createInstance (Clazz, dependencies) {
     if (this.isClass) {
-      return new Clazz(...dependencies);
+      return new Clazz(...dependencies)
     } else {
-      return Clazz;
+      return Clazz
     }
   }
 
-  public postConstruct() {
-    return Promise.resolve();
+  public postConstruct () {
+    return Promise.resolve()
   }
 }

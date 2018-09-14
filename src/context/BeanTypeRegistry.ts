@@ -1,17 +1,17 @@
-import Bean from './bean/Bean';
+import Bean from './bean/Bean'
 
 export default class BeanTypeRegistry {
-  private typesByScope: Map<string, any>;
+  private typesByScope: Map<string, any>
 
-  constructor() {
-    this.typesByScope = new Map();
+  constructor () {
+    this.typesByScope = new Map()
   }
 
-  public register(beanType: any): void {
-    this.typesByScope[beanType.scope] = beanType;
+  public register (beanType: any): void {
+    this.typesByScope[beanType.scope] = beanType
   }
 
-  public get(scope) {
-    return this.typesByScope[scope];
+  public get (scope) {
+    return this.typesByScope[scope]
   }
 }

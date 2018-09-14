@@ -1,14 +1,14 @@
-import AbstractBean from './AbstractBean';
+import AbstractBean from './AbstractBean'
 
 export default class ValueBean extends AbstractBean {
-  private value: any;
+  private value: any
 
-  constructor(value: any) {
-    super();
-    this.value = value;
+  constructor (value: any) {
+    super()
+    this.value = value
   }
 
-  public getInstance(): any {
-    return this.value;
+  public getInstance (): any {
+    return this.value
   }
 }

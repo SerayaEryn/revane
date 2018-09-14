@@ -1,5 +1,5 @@
-import BeanDefinition from '../BeanDefinition';
+import BeanDefinition from '../BeanDefinition'
 
 export default interface Resolver {
-  resolve(): Promise<BeanDefinition[]>;
+  resolve (): Promise<BeanDefinition[]>
 }
