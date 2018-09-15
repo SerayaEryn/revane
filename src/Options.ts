@@ -5,7 +5,7 @@ export default class Options {
   public componentScan?: boolean
   public includeFilters?
   public excludeFilters?
-  public resolverPlugins?: Array<any>
-  public resolverOptions?: Array<any>
+  public loaderPlugins?: Array<any>
+  public loaderOptions?: Array<any>
   public defaultScope?: string
 }

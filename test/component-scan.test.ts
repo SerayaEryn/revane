@@ -1,6 +1,6 @@
 import * as path from 'path'
 import * as test from 'tape-catch'
-import ComponentScanResolver from '../src/resolvers/ComponentScanResolver'
+import ComponentScanLoader from '../src/resolvers/ComponentScanLoader'
 
 test('should do component scan without filters', (t) => {
   t.plan(12)
@@ -9,8 +9,8 @@ test('should do component scan without filters', (t) => {
     basePackage: path.join(__dirname, '../../testdata')
   }
 
-  const componentScanResolver = new ComponentScanResolver(options)
-  return componentScanResolver.resolve()
+  const componentScanResolver = new ComponentScanLoader(options)
+  return componentScanResolver.load()
     .then((beanDefinitions) => {
       t.strictEquals(beanDefinitions.length, 6)
       const scan1 = findDefinition(beanDefinitions, 'scan1')
@@ -45,8 +45,8 @@ test('should do component scan with exclude filter', (t) => {
     }]
   }
 
-  const componentScanResolver = new ComponentScanResolver(options)
-  return componentScanResolver.resolve()
+  const componentScanResolver = new ComponentScanLoader(options)
+  return componentScanResolver.load()
     .then((beanDefinitions) => {
       t.strictEquals(beanDefinitions.length, 0)
     })
@@ -63,8 +63,8 @@ test('should do component scan with include filter', (t) => {
     }]
   }
 
-  const componentScanResolver = new ComponentScanResolver(options)
-  return componentScanResolver.resolve()
+  const componentScanResolver = new ComponentScanLoader(options)
+  return componentScanResolver.load()
     .then((beanDefinitions) => {
       t.strictEquals(beanDefinitions.length, 6)
     })

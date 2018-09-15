@@ -1,7 +1,7 @@
-import BeanResolverRegistry from './BeanResolverRegistry'
+import BeanResolverRegistry from './BeanLoaderRegistry'
 import Options from './Options'
 
-export default class BeanResolver {
+export default class BeanLoader {
   private beanResolverRegistry: BeanResolverRegistry
 
   constructor () {
@@ -18,8 +18,8 @@ export default class BeanResolver {
   }
 
   private prepareBeanResolverRegistry (options: Options): void {
-    for (const optionsForResolver of options.resolverOptions) {
-      for (const ResolverClass of options.resolverPlugins) {
+    for (const optionsForResolver of options.loaderOptions) {
+      for (const ResolverClass of options.loaderPlugins) {
         if (ResolverClass.isRelevant(optionsForResolver)) {
           this.beanResolverRegistry.register(new ResolverClass(optionsForResolver))
         }

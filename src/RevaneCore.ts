@@ -1,4 +1,4 @@
-import BeanResolver from './BeanResolver'
+import BeanLoader from './BeanLoader'
 import Context from './context/Context'
 import NotInitializedError from './NotInitializedError'
 import Options from './Options'
@@ -16,8 +16,8 @@ export default class Revane {
 
   public async initialize (): Promise<void> {
     this.context = new Context(this.options)
-    const beanResolver = new BeanResolver()
-    const beanDefinitions = await beanResolver.getBeanDefinitions(this.options)
+    const beanLoader = new BeanLoader()
+    const beanDefinitions = await beanLoader.getBeanDefinitions(this.options)
     this.context.addBeanDefinitions(flat(beanDefinitions))
     await this.context.initialize()
     this.initialized = true

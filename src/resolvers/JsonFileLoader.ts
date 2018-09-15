@@ -2,15 +2,15 @@
 
 import * as fileSystem from 'fs'
 import BeanDefinition from '../BeanDefinition'
-import Resolver from './Resolver'
+import Loader from './Loader'
 
-export default class JsonFileResolver implements Resolver {
+export default class JsonFileLoader implements Loader {
   private path: string
   constructor (options: any) {
     this.path = options.file
   }
 
-  public resolve (): Promise<BeanDefinition[]> {
+  public load (): Promise<BeanDefinition[]> {
     return new Promise((resolve, reject) => {
       fileSystem.readFile(this.path, (error, data) => {
         if (error) {

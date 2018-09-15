@@ -5,16 +5,15 @@ import 'reflect-metadata'
 import BeanDefinition from '../BeanDefinition'
 import Filter from './Filter'
 import RegexFilter from './RegexFilter'
-import Resolver from './Resolver'
+import Loader from './Loader'
 
 import * as recursiveReaddir from 'recursive-readdir'
-import Options from '../Options'
 
 const filterByType = {
   regex: RegexFilter
 }
 
-export default class ComponentScanResolver implements Resolver {
+export default class ComponentScanLoader implements Loader {
   private basePackage: string
   private includeFilters: any[]
   private excludeFilters: any[]
@@ -25,7 +24,7 @@ export default class ComponentScanResolver implements Resolver {
     this.excludeFilters = convert(options.excludeFilters || [])
   }
 
-  public resolve (): Promise<BeanDefinition[]> {
+  public load (): Promise<BeanDefinition[]> {
     return recursiveReaddir(this.basePackage)
       .then((files: string[]) => {
         const flattenFiles = flat(files)

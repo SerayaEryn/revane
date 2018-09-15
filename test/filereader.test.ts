@@ -1,16 +1,16 @@
 import * as path from 'path'
 import * as test from 'tape-catch'
-import JsonFileResolver from '../src/resolvers/JsonFileResolver'
-import XmlFileResolver from '../src/resolvers/XmlFileResolver'
+import JsonFileLoader from '../src/resolvers/JsonFileLoader'
+import XmlFileLoader from '../src/resolvers/XmlFileLoader'
 
 test('should read xml configuration file and register beans', (t) => {
   t.plan(1)
 
   const file = path.join(__dirname, '../../testdata/xml/config.xml')
 
-  const xmlFileResolver = new XmlFileResolver({ file })
+  const xmlFileResolver = new XmlFileLoader({ file })
 
-  return xmlFileResolver.resolve()
+  return xmlFileResolver.load()
     .then((beanDefinitions) => {
       t.deepEqual(beanDefinitions, [
         {
@@ -41,9 +41,9 @@ test('should read json configuration file and register beans', (t) => {
 
   const file = path.join(__dirname, '../../testdata/json/config.json')
 
-  const jsonFileResolver = new JsonFileResolver({ file })
+  const jsonFileResolver = new JsonFileLoader({ file })
 
-  return jsonFileResolver.resolve()
+  return jsonFileResolver.load()
     .then((beanDefinitions) => {
       t.deepEqual(beanDefinitions, [
         {
@@ -66,9 +66,9 @@ test('should reject on error', (t) => {
 
   const file = path.join(__dirname, '../../testdata/json/configa.json')
 
-  const jsonFileResolver = new JsonFileResolver({ file })
+  const jsonFileResolver = new JsonFileLoader({ file })
 
-  return jsonFileResolver.resolve()
+  return jsonFileResolver.load()
     .catch((err) => {
       t.ok(err)
     })
@@ -79,9 +79,9 @@ test('should reject on error', t => {
 
   const file = path.join(__dirname, '../../testdata/json/configa.json')
 
-  const xmlFileResolver = new XmlFileResolver({ file })
+  const xmlFileResolver = new XmlFileLoader({ file })
 
-  return xmlFileResolver.resolve()
+  return xmlFileResolver.load()
     .catch((err) => {
       t.ok(err)
     })
@@ -90,8 +90,8 @@ test('should reject on error', t => {
 test('isRelevant', t => {
   t.plan(4)
 
-  t.ok(XmlFileResolver.isRelevant({ file: '.xml' }))
-  t.notOk(XmlFileResolver.isRelevant({ file: '.json' }))
-  t.ok(JsonFileResolver.isRelevant({ file: '.json' }))
-  t.notOk(JsonFileResolver.isRelevant({ file: '.xml' }))
+  t.ok(XmlFileLoader.isRelevant({ file: '.xml' }))
+  t.notOk(XmlFileLoader.isRelevant({ file: '.json' }))
+  t.ok(JsonFileLoader.isRelevant({ file: '.json' }))
+  t.notOk(JsonFileLoader.isRelevant({ file: '.xml' }))
 })

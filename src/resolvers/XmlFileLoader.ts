@@ -3,7 +3,7 @@
 import * as fastXmlParser from 'fast-xml-parser'
 import * as fileSystem from 'fs'
 import BeanDefinition from '../BeanDefinition'
-import Resolver from './Resolver'
+import Loader from './Loader'
 
 const options = {
   allowBooleanAttributes: false,
@@ -15,14 +15,14 @@ const options = {
   parseNodeValue: true
 }
 
-export default class XmlFileResolver implements Resolver {
+export default class XmlFileLoader implements Loader {
   private path: string
 
   constructor (options: any) {
     this.path = options.file
   }
 
-  public resolve (): Promise<BeanDefinition[]> {
+  public load (): Promise<BeanDefinition[]> {
     return new Promise((resolve, reject) => {
       fileSystem.readFile(this.path, (error, data) => {
         if (error) {
