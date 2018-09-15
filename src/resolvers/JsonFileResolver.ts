@@ -6,8 +6,8 @@ import Resolver from './Resolver'
 
 export default class JsonFileResolver implements Resolver {
   private path: string
-  constructor (path: string) {
-    this.path = path
+  constructor (options: any) {
+    this.path = options.file
   }
 
   public resolve (): Promise<BeanDefinition[]> {
@@ -20,5 +20,9 @@ export default class JsonFileResolver implements Resolver {
         }
       })
     })
+  }
+
+  public static isRelevant (options) {
+    return options.file && options.file.endsWith('.json')
   }
 }

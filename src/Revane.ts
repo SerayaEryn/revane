@@ -1,52 +1,52 @@
-import BeanResolver from './BeanResolver'
-import Context from './context/Context'
-import NotInitializedError from './NotInitializedError'
 import Options from './Options'
 
-import * as flat from 'array.prototype.flat'
+import JsonFileResolver from './resolvers/JsonFileResolver'
+import XmlFileResolver from './resolvers/XmlFileResolver'
+import ComponentScanResolver from './resolvers/ComponentScanResolver'
+import UnknownEndingError from './UnknownEndingError'
+import Revane from './RevaneCore'
+
 export * from './decorators/Decorators'
 
-export default class Revane {
-  private options: Options
-  private context: Context
-  private initialized: boolean = false
-
-  constructor (options: Options) {
-    this.options = options
-  }
-
+export default class RevaneWithResolvers extends Revane {
   public async initialize (): Promise<void> {
-    this.context = new Context(this.options)
-    const beanResolver = new BeanResolver()
-    const beanDefinitions = await beanResolver.getBeanDefinitions(this.options)
-    this.context.addBeanDefinitions(flat(beanDefinitions))
-    await this.context.initialize()
-    this.initialized = true
+    this.prepareOptions(this.options)
+    await super.initialize()
   }
 
-  public get (id: string): any {
-    this.checkIfInitialized()
-    return this.context.get(id)
+  private prepareOptions (options: Options) {
+    const files = options.configurationFiles || []
+
+    options.resolverOptions = (options.resolverOptions || []).concat(files.map((file) => {
+      return { file: file }
+    }))
+    this.options = options
+    this.options.resolverPlugins = (options.resolverPlugins || []).concat([
+      JsonFileResolver,
+      XmlFileResolver,
+      ComponentScanResolver
+    ])
+    this.checkForUnknownEndings(this.options.resolverOptions, this.options.resolverPlugins)
+    if (options.componentScan !== false) {
+      this.options.resolverOptions.push({
+        componentScan: true,
+        basePackage: options.basePackage,
+        includeFilters: options.includeFilters,
+        excludeFilters: options.excludeFilters
+      })
+    }
+    this.options.defaultScope = 'singleton'
   }
 
-  public has (id: string): boolean {
-    this.checkIfInitialized()
-    return this.context.has(id)
-  }
-
-  public getMultiple (ids: string[]): any[] {
-    this.checkIfInitialized()
-    return this.context.getMultiple(ids)
-  }
-
-  public getByType (type: string): any[] {
-    this.checkIfInitialized()
-    return this.context.getByType(type)
-  }
-
-  private checkIfInitialized (): void {
-    if (!this.initialized) {
-      throw new NotInitializedError()
+  private checkForUnknownEndings (files, resolvers): any {
+    for (const file of files) {
+      const relevant: Array<boolean> = []
+      for (const ResolverClass of resolvers) {
+        relevant.push(ResolverClass.isRelevant(file))
+      }
+      if (!relevant.includes(true)) {
+        throw new UnknownEndingError()
+      }
     }
   }
 }

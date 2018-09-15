@@ -18,8 +18,8 @@ const options = {
 export default class XmlFileResolver implements Resolver {
   private path: string
 
-  constructor (path) {
-    this.path = path
+  constructor (options: any) {
+    this.path = options.file
   }
 
   public resolve (): Promise<BeanDefinition[]> {
@@ -39,6 +39,10 @@ export default class XmlFileResolver implements Resolver {
         }
       })
     })
+  }
+
+  public static isRelevant (options) {
+    return options.file && options.file.endsWith('.xml')
   }
 }
 

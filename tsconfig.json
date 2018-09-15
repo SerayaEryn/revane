@@ -7,7 +7,11 @@
     "removeComments": true,
     "target": "ES2015",
     "importHelpers": true,
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "lib": [
+      "es2016",
+      "es2017"
+    ]
   },
   "include": [
     "src/**/*",

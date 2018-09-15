@@ -1,7 +1,5 @@
 import BeanDefinition from '../BeanDefinition'
 import Bean from './bean/Bean'
-import PrototypeBean from './bean/PrototypeBean'
-import SingletonBean from './bean/SingletonBean'
 import ValueBean from './bean/ValueBean'
 import BeanTypeRegistry from './BeanTypeRegistry'
 import DependencyNotFoundError from './errors/DependencyNotFoundError'
@@ -15,12 +13,10 @@ export default class Container {
   private beanTypeRegistry: BeanTypeRegistry
   private promises: Array<Promise<any>>
 
-  constructor (entries: BeanDefinition[]) {
+  constructor (entries: BeanDefinition[], beanTypeRegistry: BeanTypeRegistry) {
     this.entries = entries
     this.beans = new Map()
-    this.beanTypeRegistry = new BeanTypeRegistry()
-    this.beanTypeRegistry.register(SingletonBean)
-    this.beanTypeRegistry.register(PrototypeBean)
+    this.beanTypeRegistry = beanTypeRegistry
     this.promises = []
   }
 

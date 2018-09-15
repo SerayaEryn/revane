@@ -6,9 +6,9 @@ import XmlFileResolver from '../src/resolvers/XmlFileResolver'
 test('should read xml configuration file and register beans', (t) => {
   t.plan(1)
 
-  const file = path.join(__dirname, '../..//testdata/xml/config.xml')
+  const file = path.join(__dirname, '../../testdata/xml/config.xml')
 
-  const xmlFileResolver = new XmlFileResolver(file)
+  const xmlFileResolver = new XmlFileResolver({ file })
 
   return xmlFileResolver.resolve()
     .then((beanDefinitions) => {
@@ -41,7 +41,7 @@ test('should read json configuration file and register beans', (t) => {
 
   const file = path.join(__dirname, '../../testdata/json/config.json')
 
-  const jsonFileResolver = new JsonFileResolver(file)
+  const jsonFileResolver = new JsonFileResolver({ file })
 
   return jsonFileResolver.resolve()
     .then((beanDefinitions) => {
@@ -66,7 +66,7 @@ test('should reject on error', (t) => {
 
   const file = path.join(__dirname, '../../testdata/json/configa.json')
 
-  const jsonFileResolver = new JsonFileResolver(file)
+  const jsonFileResolver = new JsonFileResolver({ file })
 
   return jsonFileResolver.resolve()
     .catch((err) => {
@@ -79,10 +79,19 @@ test('should reject on error', t => {
 
   const file = path.join(__dirname, '../../testdata/json/configa.json')
 
-  const xmlFileResolver = new XmlFileResolver(file)
+  const xmlFileResolver = new XmlFileResolver({ file })
 
   return xmlFileResolver.resolve()
     .catch((err) => {
       t.ok(err)
     })
+})
+
+test('isRelevant', t => {
+  t.plan(4)
+
+  t.ok(XmlFileResolver.isRelevant({ file: '.xml' }))
+  t.notOk(XmlFileResolver.isRelevant({ file: '.json' }))
+  t.ok(JsonFileResolver.isRelevant({ file: '.json' }))
+  t.notOk(JsonFileResolver.isRelevant({ file: '.xml' }))
 })

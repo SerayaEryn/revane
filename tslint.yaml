@@ -1,5 +1,5 @@
 env:
   node: true
-  es6: true
+  es7: true
 
 extends: 'tslint-config-standard'

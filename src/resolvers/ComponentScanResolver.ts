@@ -19,7 +19,7 @@ export default class ComponentScanResolver implements Resolver {
   private includeFilters: any[]
   private excludeFilters: any[]
 
-  constructor (options: Options) {
+  constructor (options: any) {
     this.basePackage = options.basePackage
     this.includeFilters = convert(options.includeFilters || [])
     this.excludeFilters = convert(options.excludeFilters || [])
@@ -42,6 +42,10 @@ export default class ComponentScanResolver implements Resolver {
         }
         return this.applyFilters(result)
       })
+  }
+
+  public static isRelevant (options) {
+    return options.componentScan
   }
 
   private applyFilters (beanDefinitions: BeanDefinition[]): BeanDefinition[] {

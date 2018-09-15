@@ -4,6 +4,9 @@ import Options from '../Options'
 import Container from './Container'
 import BeanDefinedTwiceError from './errors/BeanDefinedTwiceError'
 import ContextNotInitializedError from './errors/ContextNotInitializedError'
+import PrototypeBean from './bean/PrototypeBean'
+import SingletonBean from './bean/SingletonBean'
+import BeanTypeRegistry from './BeanTypeRegistry'
 
 export default class Context {
   private options: Options
@@ -17,7 +20,11 @@ export default class Context {
   }
 
   public async initialize (): Promise<void> {
-    this.container = new Container([...this.beanDefinitions.values()])
+    const beanTypeRegistry = new BeanTypeRegistry()
+    beanTypeRegistry.register(SingletonBean)
+    beanTypeRegistry.register(PrototypeBean)
+    const entries = [...this.beanDefinitions.values()]
+    this.container = new Container(entries, beanTypeRegistry)
     await this.container.initialize()
     this.beanDefinitions = null
     this.initialized = true
@@ -28,7 +35,7 @@ export default class Context {
     if (exitingBeanDefininaton && this.options.noRedefinition) {
       throw new BeanDefinedTwiceError(exitingBeanDefininaton.id)
     }
-    beanDefinition.scope = beanDefinition.scope || 'singleton',
+    beanDefinition.scope = beanDefinition.scope || this.options.defaultScope,
     beanDefinition.path = this.getPath(beanDefinition),
     beanDefinition.properties = beanDefinition.properties || [],
     beanDefinition.type = beanDefinition.type
