@@ -41,5 +41,10 @@
     "tslint": "^5.10.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^2.9.1"
-  }
+  },
+  "keywords": [
+    "inversion of control",
+    "ioc",
+    "dependency injection"
+  ]
 }
