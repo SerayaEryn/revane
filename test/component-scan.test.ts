@@ -1,6 +1,6 @@
 import * as path from 'path'
 import * as test from 'tape-catch'
-import ComponentScanLoader from '../src/resolvers/ComponentScanLoader'
+import ComponentScanLoader from '../src/revane/loaders/ComponentScanLoader'
 
 test('should do component scan without filters', (t) => {
   t.plan(12)

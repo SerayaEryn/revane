@@ -5,7 +5,4 @@ export default class Options {
   public componentScan?: boolean
   public includeFilters?
   public excludeFilters?
-  public loaderPlugins?: Array<any>
-  public loaderOptions?: Array<any>
-  public defaultScope?: string
 }

@@ -4,8 +4,6 @@ import Options from '../Options'
 import Container from './Container'
 import BeanDefinedTwiceError from './errors/BeanDefinedTwiceError'
 import ContextNotInitializedError from './errors/ContextNotInitializedError'
-import PrototypeBean from './bean/PrototypeBean'
-import SingletonBean from './bean/SingletonBean'
 import BeanTypeRegistry from './BeanTypeRegistry'
 
 export default class Context {
@@ -13,18 +11,17 @@ export default class Context {
   private beanDefinitions: Map<string, BeanDefinition>
   private container: Container
   private initialized: boolean = false
+  private beanTypeRegistry: BeanTypeRegistry
 
-  constructor (options: Options) {
+  constructor (options: Options, beanTypeRegistry: BeanTypeRegistry) {
     this.options = options
     this.beanDefinitions = new Map()
+    this.beanTypeRegistry = beanTypeRegistry
   }
 
   public async initialize (): Promise<void> {
-    const beanTypeRegistry = new BeanTypeRegistry()
-    beanTypeRegistry.register(SingletonBean)
-    beanTypeRegistry.register(PrototypeBean)
     const entries = [...this.beanDefinitions.values()]
-    this.container = new Container(entries, beanTypeRegistry)
+    this.container = new Container(entries, this.beanTypeRegistry)
     await this.container.initialize()
     this.beanDefinitions = null
     this.initialized = true

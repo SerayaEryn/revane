@@ -1,4 +1,4 @@
-import Bean from './Bean'
+import Bean from '../../revane-core/context/bean/Bean'
 
 export default abstract class AbstractBean implements Bean {
   protected isClass: boolean

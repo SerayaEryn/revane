@@ -1,6 +1,6 @@
-import Bean from './bean/Bean'
+import BeanTypeRegistry from './BeanTypeRegistry'
 
-export default class BeanTypeRegistry {
+export default class DefaultBeanTypeRegistry implements BeanTypeRegistry {
   private typesByScope: Map<string, any>
 
   constructor () {

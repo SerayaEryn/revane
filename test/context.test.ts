@@ -1,6 +1,13 @@
 import * as test from 'tape-catch'
-import BeanDefinition from '../src/BeanDefinition'
-import Context from '../src/context/Context'
+import BeanDefinition from '../src/revane-core/BeanDefinition'
+import Context from '../src/revane-core/context/Context'
+import DefaultBeanTypeRegistry from '../src/revane-core/context/DefaultBeanTypeRegistry'
+import SingletonBean from '../src/revane/bean/SingletonBean'
+import PrototypeBean from '../src/revane/bean/PrototypeBean'
+
+const beanTypeRegistry = new DefaultBeanTypeRegistry()
+beanTypeRegistry.register(SingletonBean)
+beanTypeRegistry.register(PrototypeBean)
 
 test('should register bean (class)', async (t) => {
   t.plan(1)
@@ -15,7 +22,7 @@ test('should register bean (class)', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -37,7 +44,7 @@ test('should register bean and call postConstruct (class)', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -60,7 +67,7 @@ test('should register bean and call postConstruct (class) (prototype)', async (t
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -83,7 +90,7 @@ test('should register bean (object) (prototype)', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -105,7 +112,7 @@ test('should register bean and call postConstruct (class) (prototype)', async (t
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -130,7 +137,7 @@ test('should register bean (class + prototype)', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
   context.get('test4')
@@ -153,7 +160,7 @@ test('should register bean (object)', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -180,7 +187,7 @@ test('Should inject dependencies', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -207,7 +214,7 @@ test('Should inject dependencies - ignore order', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -234,7 +241,7 @@ test('Should provide dependency to class', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -261,7 +268,7 @@ test('disallow duplicate definition', (t) => {
     basePackage: __dirname,
     noRedefinition: true
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
 
   try {
     context.addBeanDefinitions(beanDefinitions)
@@ -284,7 +291,7 @@ test('disallow unknown scope', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
 
   try {
@@ -315,7 +322,7 @@ test('initialize should fail on error', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -332,7 +339,7 @@ test('throw error if get on uninitialized context', (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
 
   try {
     context.get('test2')
@@ -348,7 +355,7 @@ test('throw error if has on uninitialized context', (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
 
   try {
     context.has('test2')
@@ -364,7 +371,7 @@ test('throw error if getByType on uninitialized context', (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
 
   try {
     context.getByType('test')
@@ -380,7 +387,7 @@ test('throw error if getMultiple on uninitialized context', (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
 
   try {
     context.getMultiple(['test2'])
@@ -410,7 +417,7 @@ test('should throw error if error on post construct', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
 
   try {
@@ -430,7 +437,7 @@ test('should throw error if not found', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 
@@ -462,7 +469,7 @@ test('should handle on has()', async (t) => {
   const options = {
     basePackage: __dirname
   }
-  const context = new Context(options)
+  const context = new Context(options, beanTypeRegistry)
   context.addBeanDefinitions(beanDefinitions)
   await context.initialize()
 

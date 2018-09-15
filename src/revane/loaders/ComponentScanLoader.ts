@@ -2,10 +2,10 @@
 
 import * as flat from 'array.prototype.flat'
 import 'reflect-metadata'
-import BeanDefinition from '../BeanDefinition'
+import BeanDefinition from '../../revane-core/BeanDefinition'
 import Filter from './Filter'
 import RegexFilter from './RegexFilter'
-import Loader from './Loader'
+import Loader from '../../revane-core/Loader'
 
 import * as recursiveReaddir from 'recursive-readdir'
 

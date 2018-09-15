@@ -1,11 +1,11 @@
-import BeanResolverRegistry from './BeanLoaderRegistry'
+import DefaultBeanLoaderRegistry from './DefaultBeanLoaderRegistry'
 import Options from './Options'
 
 export default class BeanLoader {
-  private beanResolverRegistry: BeanResolverRegistry
+  private beanResolverRegistry: DefaultBeanLoaderRegistry
 
   constructor () {
-    this.beanResolverRegistry = new BeanResolverRegistry()
+    this.beanResolverRegistry = new DefaultBeanLoaderRegistry()
   }
 
   public getBeanDefinitions (options: Options) {
@@ -19,9 +19,9 @@ export default class BeanLoader {
 
   private prepareBeanResolverRegistry (options: Options): void {
     for (const optionsForResolver of options.loaderOptions) {
-      for (const ResolverClass of options.loaderPlugins) {
-        if (ResolverClass.isRelevant(optionsForResolver)) {
-          this.beanResolverRegistry.register(new ResolverClass(optionsForResolver))
+      for (const Loader of options.loaderPlugins) {
+        if (Loader.isRelevant(optionsForResolver)) {
+          this.beanResolverRegistry.register(new Loader(optionsForResolver))
         }
       }
     }

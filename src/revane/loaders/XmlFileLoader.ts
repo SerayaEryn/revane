@@ -2,8 +2,8 @@
 
 import * as fastXmlParser from 'fast-xml-parser'
 import * as fileSystem from 'fs'
-import BeanDefinition from '../BeanDefinition'
-import Loader from './Loader'
+import BeanDefinition from '../../revane-core/BeanDefinition'
+import Loader from '../../revane-core/Loader'
 
 const options = {
   allowBooleanAttributes: false,

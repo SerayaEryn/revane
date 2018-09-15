@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import * as test from 'tape-catch'
-import { Scope, Service } from '../src/Revane'
+import { Scope, Service } from '../src/revane/Revane'
 
 test('should add scope and service meta data', t => {
   t.plan(3)

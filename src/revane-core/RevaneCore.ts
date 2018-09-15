@@ -1,51 +1,41 @@
 import BeanLoader from './BeanLoader'
 import Context from './context/Context'
-import NotInitializedError from './NotInitializedError'
 import Options from './Options'
 
 import * as flat from 'array.prototype.flat'
+import BeanTypeRegistry from './context/BeanTypeRegistry'
 
-export default class Revane {
+export default class RevaneCore {
   protected options: Options
   private context: Context
-  private initialized: boolean = false
+  private beanTypeRegistry: BeanTypeRegistry
 
-  constructor (options: Options) {
+  constructor (options: Options, beanTypeRegistry: BeanTypeRegistry) {
     this.options = options
+    this.beanTypeRegistry = beanTypeRegistry
   }
 
   public async initialize (): Promise<void> {
-    this.context = new Context(this.options)
+    this.context = new Context(this.options, this.beanTypeRegistry)
     const beanLoader = new BeanLoader()
     const beanDefinitions = await beanLoader.getBeanDefinitions(this.options)
     this.context.addBeanDefinitions(flat(beanDefinitions))
     await this.context.initialize()
-    this.initialized = true
   }
 
   public get (id: string): any {
-    this.checkIfInitialized()
     return this.context.get(id)
   }
 
   public has (id: string): boolean {
-    this.checkIfInitialized()
     return this.context.has(id)
   }
 
   public getMultiple (ids: string[]): any[] {
-    this.checkIfInitialized()
     return this.context.getMultiple(ids)
   }
 
   public getByType (type: string): any[] {
-    this.checkIfInitialized()
     return this.context.getByType(type)
-  }
-
-  private checkIfInitialized (): void {
-    if (!this.initialized) {
-      throw new NotInitializedError()
-    }
   }
 }

@@ -1,7 +1,7 @@
 import * as path from 'path'
 import * as test from 'tape-catch'
-import JsonFileLoader from '../src/resolvers/JsonFileLoader'
-import XmlFileLoader from '../src/resolvers/XmlFileLoader'
+import JsonFileLoader from '../src/revane/loaders/JsonFileLoader'
+import XmlFileLoader from '../src/revane/loaders/XmlFileLoader'
 
 test('should read xml configuration file and register beans', (t) => {
   t.plan(1)

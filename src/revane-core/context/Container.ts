@@ -1,11 +1,11 @@
 import BeanDefinition from '../BeanDefinition'
 import Bean from './bean/Bean'
 import ValueBean from './bean/ValueBean'
-import BeanTypeRegistry from './BeanTypeRegistry'
 import DependencyNotFoundError from './errors/DependencyNotFoundError'
 import DependencyRegisterError from './errors/DependencyRegisterError'
 import InvalidScopeError from './errors/InvalidScopeError'
 import NotFoundError from './errors/NotFoundError'
+import BeanTypeRegistry from './BeanTypeRegistry'
 
 export default class Container {
   private entries: BeanDefinition[]
