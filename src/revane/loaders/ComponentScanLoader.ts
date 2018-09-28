@@ -28,8 +28,8 @@ export default class ComponentScanLoader implements Loader {
     return recursiveReaddir(this.basePackage)
       .then((files: string[]) => {
         const flattenFiles = flat(files)
-        const filteredFiles = filterByJavascriptFiles(flattenFiles)
-
+        let filteredFiles = filterByJavascriptFiles(flattenFiles)
+        filteredFiles = this.applyFilters(filteredFiles)
         const result = []
         for (const file of filteredFiles) {
           let module1 = getClazz(file)
@@ -39,7 +39,7 @@ export default class ComponentScanLoader implements Loader {
             result.push(beanDefinition)
           }
         }
-        return this.applyFilters(result)
+        return result
       })
   }
 
@@ -47,8 +47,8 @@ export default class ComponentScanLoader implements Loader {
     return options.componentScan
   }
 
-  private applyFilters (beanDefinitions: BeanDefinition[]): BeanDefinition[] {
-    let filtered = beanDefinitions
+  private applyFilters (files: string[]): string[] {
+    let filtered = files
     for (const filter of this.includeFilters) {
       filtered = filtered.filter((def) => filter.applies(def))
     }

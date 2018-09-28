@@ -7,10 +7,10 @@ export default class RegexFilter implements Filter {
 
   constructor (options: any) {
     this.regex = new RegExp(options.regex)
-    this.applies.bind(this)
+    this.applies = this.applies.bind(this)
   }
 
-  public applies (entry): boolean {
-    return this.regex.test(entry.class)
+  public applies (clazz): boolean {
+    return this.regex.test(clazz)
   }
 }
