@@ -1,6 +1,6 @@
 {
   "name": "revane",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "inversion of control framework",
   "main": "index.js",
   "scripts": {
