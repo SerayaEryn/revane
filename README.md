@@ -261,7 +261,7 @@ Allows to check if a bean for `id` exists.
 
 Returns multiple beans specified by the `ids`.
 
-#### initialize()
+#### initialize(): Promise\<void>
 
 Initializes the container by reading all configured configuration files and performes the component scan. Returns a Promise that resolves when all `postConstruct` calls are finished.
 
@@ -289,9 +289,10 @@ An `array` of absolute paths to configuration files, that provide bean definitio
 
 ### Decorators
 
-#### Service, Repository, Controller, Component
+#### Component(options: string | Options): Function
 
-Used to declare classes as components to be considered by the component scan.
+Used to declare classes as components to be considered by the component scan.<br>
+In Javascript it is necessary to call the decorator on the class:
 
 ```js
 const { Service } = require('revane');
@@ -299,9 +300,19 @@ class Example {}
 Service()(Example)
 ```
 
-**Note**: These are neighter typescript decorators or the proposed ecmascript decorators. They are just functions for now.
+In Typescript it is possible to use them as decorators if the
+`experimentalDecorators` option is activated.
+
+```ts
+import { Service } from 'revane';
+
+@Service()
+class Example {}
+```
 
 ##### options
+
+It is possible to pass the following options to the `Component` decorator:
 
 * **id** - the id of the bean
 * **dependencies** - the dependencies of the class
@@ -310,7 +321,19 @@ Service()(Example)
 Service({id: 'example', dependencies: ['test']})(Example)
 ```
 
-#### Scope
+#### Service(options: string | Options): Function
+
+Alias for `Component`.
+
+#### Repository(options: string | Options): Function
+
+Alias for `Component`.
+
+#### Controller(options: string | Options): Function
+
+Alias for `Component`.
+
+#### Scope(scope: string): Function
 
 Adds a scope to a class. Possible values: `singleton`, `prototype`
 
