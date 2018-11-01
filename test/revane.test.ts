@@ -113,6 +113,25 @@ test('should create bean for module', (t) => {
     })
 })
 
+test('should create bean for module with value', (t) => {
+  t.plan(2)
+
+  const options = {
+    basePackage: path.join(__dirname, '../../testdata'),
+    configurationFiles: [
+      path.join(__dirname, '../../testdata/xml/config4.xml')
+    ],
+    componentScan: false
+  }
+  const revane = new Revane(options)
+  return revane.initialize()
+    .then(() => {
+      const bean = revane.get('xml2')
+      t.ok(bean)
+      t.equals(bean.xml1, 'xml1')
+    })
+})
+
 test('should read not reject on missing paths', (t) => {
   t.plan(1)
 

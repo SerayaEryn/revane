@@ -66,12 +66,16 @@ function getProperties (ref) {
     if (Array.isArray(ref)) {
       properties = ref.map(toReference)
     } else {
-      properties = [{ ref: ref.attr.bean }]
+      properties = [toReference(ref)]
     }
   }
   return properties
 }
 
 function toReference (ref) {
-  return { ref: ref.attr.bean }
+  if (ref.attr.bean) {
+    return { ref: ref.attr.bean }
+  } else {
+    return { value: ref.attr.value }
+  }
 }
