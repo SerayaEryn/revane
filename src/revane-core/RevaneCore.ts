@@ -9,15 +9,30 @@ export default class RevaneCore {
   protected options: Options
   private context: Context
   private beanTypeRegistry: BeanTypeRegistry
+  private plugins: Map<string, Function[]> = new Map()
 
   constructor (options: Options, beanTypeRegistry: BeanTypeRegistry) {
     this.options = options
     this.beanTypeRegistry = beanTypeRegistry
   }
 
+  public addPlugin (name: string, plugin) {
+    let pluginsByName = this.plugins.get(name)
+    if (!pluginsByName) {
+      pluginsByName = []
+    }
+    pluginsByName.push(plugin)
+    this.plugins.set(name, pluginsByName)
+  }
+
   public async initialize (): Promise<void> {
-    this.context = new Context(this.options, this.beanTypeRegistry)
-    const beanLoader = new BeanLoader()
+    this.context = new Context(
+      this.options,
+      this.beanTypeRegistry,
+      this.plugins
+    )
+    const loaders = this.plugins.get('loader')
+    const beanLoader = new BeanLoader(loaders)
     const beanDefinitions = await beanLoader.getBeanDefinitions(this.options)
     this.context.addBeanDefinitions(flat(beanDefinitions))
     await this.context.initialize()

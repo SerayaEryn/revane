@@ -28,6 +28,9 @@ export default class Revane {
     beanTypeRegistry.register(SingletonBean)
     beanTypeRegistry.register(PrototypeBean)
     this.revaneCore = new RevaneCore(coreOptions, beanTypeRegistry)
+    this.revaneCore.addPlugin('loader', JsonFileLoader)
+    this.revaneCore.addPlugin('loader', XmlFileLoader)
+    this.revaneCore.addPlugin('loader', ComponentScanLoader)
     await this.revaneCore.initialize()
     this.initialized = true
   }
@@ -59,12 +62,7 @@ export default class Revane {
     coreOptions.loaderOptions = files.map((file) => {
       return { file: file }
     })
-    coreOptions.loaderPlugins = [
-      JsonFileLoader,
-      XmlFileLoader,
-      ComponentScanLoader
-    ]
-    this.checkForUnknownEndings(coreOptions.loaderOptions, coreOptions.loaderPlugins)
+    this.checkForUnknownEndings(coreOptions.loaderOptions)
     if (options.componentScan !== false) {
       coreOptions.loaderOptions.push({
         componentScan: true,
@@ -78,11 +76,12 @@ export default class Revane {
     return coreOptions
   }
 
-  private checkForUnknownEndings (files, loaders): void {
+  private checkForUnknownEndings (files): void {
+    const loaderClasses = [XmlFileLoader, JsonFileLoader, ComponentScanLoader]
     for (const file of files) {
       const relevant: Array<boolean> = []
-      for (const LoaderClass of loaders) {
-        relevant.push(LoaderClass.isRelevant(file))
+      for (const loaderClass of loaderClasses) {
+        relevant.push(loaderClass.isRelevant(file))
       }
       if (!relevant.includes(true)) {
         throw new UnknownEndingError()

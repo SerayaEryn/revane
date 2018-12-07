@@ -3,8 +3,10 @@ import Options from './Options'
 
 export default class BeanLoader {
   private beanResolverRegistry: DefaultBeanLoaderRegistry
+  private loaders: any[]
 
-  constructor () {
+  constructor (loaders: any[]) {
+    this.loaders = loaders
     this.beanResolverRegistry = new DefaultBeanLoaderRegistry()
   }
 
@@ -19,7 +21,7 @@ export default class BeanLoader {
 
   private prepareBeanResolverRegistry (options: Options): void {
     for (const optionsForResolver of options.loaderOptions) {
-      for (const Loader of options.loaderPlugins) {
+      for (const Loader of this.loaders) {
         if (Loader.isRelevant(optionsForResolver)) {
           this.beanResolverRegistry.register(new Loader(optionsForResolver))
         }

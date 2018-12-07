@@ -12,19 +12,31 @@ export default class Context {
   private container: Container
   private initialized: boolean = false
   private beanTypeRegistry: BeanTypeRegistry
+  private plugins: Map<string, Function[]>
 
-  constructor (options: Options, beanTypeRegistry: BeanTypeRegistry) {
+  constructor (options: Options, beanTypeRegistry: BeanTypeRegistry, plugins: Map<string, Function[]>) {
     this.options = options
     this.beanDefinitions = new Map()
     this.beanTypeRegistry = beanTypeRegistry
+    this.plugins = plugins
   }
 
   public async initialize (): Promise<void> {
+    const preInitializePlugins = this.plugins.get('preInitialize')
+    if (preInitializePlugins) {
+      for (const plugin of preInitializePlugins) {
+        await plugin(this)
+      }
+    }
     const entries = [...this.beanDefinitions.values()]
     this.container = new Container(entries, this.beanTypeRegistry)
     await this.container.initialize()
     this.beanDefinitions = null
     this.initialized = true
+  }
+
+  public hasBeanDefinintion (key: string) {
+    return this.beanDefinitions.get(key) != null
   }
 
   public addBeanDefinition (beanDefinition: BeanDefinition): void {
