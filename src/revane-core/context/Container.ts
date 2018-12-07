@@ -11,23 +11,20 @@ export default class Container {
   private entries: BeanDefinition[]
   private beans: Map<string, Bean>
   private beanTypeRegistry: BeanTypeRegistry
-  private promises: Array<Promise<any>>
 
   constructor (entries: BeanDefinition[], beanTypeRegistry: BeanTypeRegistry) {
     this.entries = entries
     this.beans = new Map()
     this.beanTypeRegistry = beanTypeRegistry
-    this.promises = []
   }
 
   public async initialize (): Promise<void> {
     for (const entry of this.entries) {
       if (!this.has(entry.id)) {
-        this.registerBean(entry)
+        await this.registerBean(entry)
       }
     }
     this.clearEntries()
-    await Promise.all(this.promises)
   }
 
   public get (id: string): any {
@@ -57,15 +54,14 @@ export default class Container {
     return bean
   }
 
-  private registerBean (entry: BeanDefinition): void {
+  private async registerBean (entry: BeanDefinition): Promise<void> {
     const Clazz = this.getClass(entry)
-    const bean: Bean = this.createBean(entry, Clazz)
+    const bean: Bean = await this.createBean(entry, Clazz)
     this.set(entry.id, bean)
-    const promise: Promise<void> = bean.postConstruct()
+    await bean.postConstruct()
       .catch((error) => {
         throw new DependencyRegisterError(entry.id, error)
       })
-    this.promises.push(promise)
   }
 
   private clearEntries (): void {
@@ -84,7 +80,7 @@ export default class Container {
     return Clazz
   }
 
-  private createBean (entry: BeanDefinition, Clazz): Bean {
+  private createBean (entry: BeanDefinition, Clazz): Promise<Bean> {
     const BeanForScope = this.beanTypeRegistry.get(entry.scope)
     if (BeanForScope) {
       return this.createBeanForScope(BeanForScope, entry, Clazz)
@@ -92,32 +88,32 @@ export default class Container {
     throw new InvalidScopeError(entry.scope)
   }
 
-  private createBeanForScope (BeanForScope, entry, Clazz) {
+  private async createBeanForScope (BeanForScope, entry, Clazz): Promise<any> {
     const isClazz = this.isClass(Clazz)
-    const dependencies = this.getDependencies(isClazz, entry)
+    const dependencies = await this.getDependencies(isClazz, entry)
     return new BeanForScope(Clazz, entry, isClazz, dependencies)
   }
 
-  private getDependencies (isClass, entry: BeanDefinition): Bean[] {
+  private async getDependencies (isClass, entry: BeanDefinition): Promise<Bean[]> {
     if (isClass) {
-      return entry.properties.map((property) => {
+      return Promise.all(entry.properties.map(async (property) => {
         return this.getDependecySafe(property, entry.id)
-      })
+      }))
     }
-    return []
+    return Promise.resolve([])
   }
 
-  private getDependecySafe (property, parentId): Bean {
+  private async getDependecySafe (property, parentId): Promise<Bean> {
     if (property.value) {
       return new ValueBean(property.value)
     }
-    this.ensureDependencyIsPresent(property, parentId)
+    await this.ensureDependencyIsPresent(property, parentId)
     return this.getStrict(property.ref)
   }
 
-  private ensureDependencyIsPresent (property, parentId): void {
+  private async ensureDependencyIsPresent (property, parentId): Promise<void> {
     if (!this.hasDependency(property.ref)) {
-      this.registerDependency(property.ref, parentId)
+      await this.registerDependency(property.ref, parentId)
     }
   }
 
@@ -125,17 +121,17 @@ export default class Container {
     return this.has(id)
   }
 
-  private registerDependency (id: string, parentId: string): void {
+  private async registerDependency (id: string, parentId: string): Promise<void> {
     try {
-      this.findAndRegisterBean(id, parentId)
+      await this.findAndRegisterBean(id, parentId)
     } catch (err) {
       this.throwDependencyError(err, id)
     }
   }
 
-  private findAndRegisterBean (id: string, parentId: string): void {
+  private async findAndRegisterBean (id: string, parentId: string): Promise<void> {
     const entry = this.findEntry(id, parentId)
-    this.registerBean(entry)
+    await this.registerBean(entry)
   }
 
   private throwDependencyError (err: Error, id: string): void {
