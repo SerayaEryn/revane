@@ -1,97 +1,118 @@
-import CoreOptions from '../revane-core/Options'
-import RevaneCore from '../revane-core/RevaneCore'
-import DefaultBeanTypeRegistry from '../revane-core/context/DefaultBeanTypeRegistry'
+import RevaneIOC, { RegexFilter } from 'revane-ioc'
+import { ServerBuilder } from './ServerBuilder'
+import { revaneBuilder } from './RevaneBuilder'
+import { ContainerBuilder } from './ContainerBuilder'
+import RevaneFastify from 'revane-fastify'
 
-import JsonFileLoader from './loaders/JsonFileLoader'
-import XmlFileLoader from './loaders/XmlFileLoader'
-import ComponentScanLoader from './loaders/ComponentScanLoader'
-import UnknownEndingError from './UnknownEndingError'
-import PrototypeBean from './bean/PrototypeBean'
-import SingletonBean from './bean/SingletonBean'
-import Options from './Options'
-import NotInitializedError from './NotInitializedError'
+export class Revane {
+  private serverCommands = []
+  private serverOptionCommands = []
+  private containerCommands = []
+  public server: RevaneFastify
+  public container: RevaneIOC
 
-export * from './decorators/Decorators'
-
-export default class Revane {
-  private revaneCore: RevaneCore
-  private options: Options
-  private initialized: boolean = false
-
-  constructor (options: Options) {
-    this.options = options
+  register (id: string | any, options?: any): Revane {
+    this.serverCommands.push({ type: 'register', args: [ id, options ] })
+    return this
   }
 
-  public async initialize (): Promise<void> {
-    const coreOptions: CoreOptions = this.prepareOptions(this.options)
-    const beanTypeRegistry = new DefaultBeanTypeRegistry()
-    beanTypeRegistry.register(SingletonBean)
-    beanTypeRegistry.register(PrototypeBean)
-    this.revaneCore = new RevaneCore(coreOptions, beanTypeRegistry)
-    this.revaneCore.addPlugin('loader', JsonFileLoader)
-    this.revaneCore.addPlugin('loader', XmlFileLoader)
-    this.revaneCore.addPlugin('loader', ComponentScanLoader)
-    await this.revaneCore.initialize()
-    this.initialized = true
+  registerControllers (): Revane {
+    this.serverCommands.push({ type: 'registerControllers', args: [] })
+    return this
   }
 
-  public get (id: string): any {
-    this.checkIfInitialized()
-    return this.revaneCore.get(id)
+  setErrorHandler (id: string): Revane {
+    this.serverCommands.push({ type: 'setErrorHandler', args: [ id ] })
+    return this
   }
 
-  public has (id: string): boolean {
-    this.checkIfInitialized()
-    return this.revaneCore.has(id)
+  setNotFoundHandler (id: string): Revane {
+    this.serverCommands.push({ type: 'setNotFoundHandler', args: [ id ] })
+    return this
   }
 
-  public getMultiple (ids: string[]): any[] {
-    this.checkIfInitialized()
-    return this.revaneCore.getMultiple(ids)
+  basePackage (path: string): Revane {
+    this.containerCommands.push({ type: 'basePackage', args: [ path ] })
+    return this
   }
 
-  public getByType (type: string): any[] {
-    this.checkIfInitialized()
-    return this.revaneCore.getByType(type)
-  }
-
-  private prepareOptions (options: Options): CoreOptions {
-    const coreOptions: CoreOptions = new CoreOptions()
-    const files: string[] = options.configurationFiles || []
-
-    coreOptions.loaderOptions = files.map((file) => {
-      return { file: file }
+  componentScan (
+    path: string,
+    excludeFilters?: RegexFilter[],
+    includeFilters?: RegexFilter[]
+  ): Revane {
+    this.containerCommands.push({
+      type: 'componentScan',
+      args: [ path, excludeFilters, includeFilters ]
     })
-    this.checkForUnknownEndings(coreOptions.loaderOptions)
-    if (options.componentScan !== false) {
-      coreOptions.loaderOptions.push({
-        componentScan: true,
-        basePackage: options.basePackage,
-        includeFilters: options.includeFilters,
-        excludeFilters: options.excludeFilters
-      })
-    }
-    coreOptions.defaultScope = 'singleton'
-    coreOptions.basePackage = options.basePackage
-    return coreOptions
+    return this
   }
 
-  private checkForUnknownEndings (files): void {
-    const loaderClasses = [XmlFileLoader, JsonFileLoader, ComponentScanLoader]
-    for (const file of files) {
-      const relevant: Array<boolean> = []
-      for (const loaderClass of loaderClasses) {
-        relevant.push(loaderClass.isRelevant(file))
-      }
-      if (!relevant.includes(true)) {
-        throw new UnknownEndingError()
-      }
-    }
+  xmlFile (file: string): Revane {
+    this.containerCommands.push({ type: 'xmlFile', args: [ file ] })
+    return this
   }
 
-  private checkIfInitialized (): void {
-    if (!this.initialized) {
-      throw new NotInitializedError()
+  jsonFile (file: string): Revane {
+    this.containerCommands.push({ type: 'jsonFile', args: [ file ] })
+    return this
+  }
+
+  noRedefinition (noRedefinition?: boolean): Revane {
+    this.containerCommands.push({ type: 'noRedefinition', args: [ noRedefinition ] })
+    return this
+  }
+
+  silent (isSilent: boolean): Revane {
+    this.serverOptionCommands.push({ type: 'silent', args: [ isSilent ] })
+    return this
+  }
+
+  public async initialize (): Promise<Revane> {
+    const serverBuilder = new ServerBuilder(this.serverOptionCommands, this.serverCommands)
+    const containerBuilder = new ContainerBuilder(this.containerCommands)
+    const { container, server } = await revaneBuilder()
+      .container(containerBuilder)
+      .server(serverBuilder)
+      .build()
+    this.container = container
+    this.server = server
+    return this
+  }
+
+  public getBean (id: string): any {
+    return this.container.get(id)
+  }
+
+  public port (): string {
+    if (this.server) {
+      return this.server.port()
     }
+    return null
+  }
+
+  public async tearDown (): Promise<void> {
+    if (this.server) {
+      await this.server.close()
+    }
+    await this.container.tearDown()
   }
 }
+
+export function revane (): Revane {
+  return new Revane()
+}
+
+export {
+  Scope,
+  Component,
+  Repository,
+  Controller,
+  Service,
+  Inject,
+  RegexFilter,
+  FileLoaderOptions,
+  ComponentScanLoaderOptions
+} from 'revane-ioc'
+
+export default Revane

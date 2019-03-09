@@ -3,8 +3,8 @@
 const Component = require('..').Component;
 
 class Scan1 {
-  constructor(test6) {
-    this.test6 = test6;
+  constructor(scan1) {
+    this.scan1 = scan1;
   }
 }
 

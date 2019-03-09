@@ -1,12 +1,6 @@
 <?xml version="1" encoding="utf-8">
 
 <beans>
-  <bean id="xml1" class="./xml/xml1.js"/>
-  <bean id="xml2" class="./xml/xml2">
-    <ref bean="xml1"/>
-  </bean>
-  <bean id="xml3" class="./xml/xml3">
-    <ref bean="xml1"/>
-    <ref bean="xml2"/>
-  </bean>
+  <bean id="test" class="./xml/xml1.js"/>
+  <bean id="configuration" class="./config.js">
 </beans>

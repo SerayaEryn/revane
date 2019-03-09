@@ -8,4 +8,4 @@ class Scan3 {
   }
 }
 
-exports.default = Component({dependencies: ['test6'], id: 'scan3'})(Scan3);
+exports.default = Component({dependencies: ['scan1'], id: 'scan3'})(Scan3);
