@@ -2,5 +2,9 @@
   {
     "id": "test",
     "class": "./json/json1.js"
+  },
+  {
+    "id": "configuration",
+    "class": "./config.js"
   }
 ]

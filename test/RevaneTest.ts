@@ -47,10 +47,7 @@ test('should run component scan with include filter', async (t) => {
     .componentScan(
       '.',
       null,
-      [
-        { type: 'regex', regex: '.*' },
-        { type: 'regex', regex: '.*' }
-      ]
+      [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' }]
     )
     .initialize()
   t.ok(revane.getBean('scan1'))
@@ -70,10 +67,7 @@ test('should run component scan with exclude filter', async (t) => {
     .basePackage(join(__dirname, '../../testdata'))
     .componentScan(
       '.',
-      [
-        { type: 'regex', regex: '.*' },
-        { type: 'regex', regex: '.*' }
-      ]
+      [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' } ]
     )
     .initialize()
   try {
@@ -141,7 +135,7 @@ test('should start server with error handlers #1', async (t) => {
     .register('test')
     .setErrorHandler('test')
     .setNotFoundHandler('test')
-    .redefinition(false)
+    .noRedefinition(false)
     .initialize()
   const url = 'http://localhost:' + revane.port()
   request(url, (error, response, body) => {
