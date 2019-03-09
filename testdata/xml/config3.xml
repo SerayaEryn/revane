@@ -1,5 +1,0 @@
-<?xml version="1" encoding="utf-8">
-
-<beans>
-  <bean id="http" class="http"/>
-</beans>

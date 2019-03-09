@@ -1,7 +1,0 @@
-<?xml version="1" encoding="utf-8">
-
-<beans>
-  <bean id="xml2" class="./xml/xml2">
-    <ref value="xml1"/>
-  </bean>
-</beans>
