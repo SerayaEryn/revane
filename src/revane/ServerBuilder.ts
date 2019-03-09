@@ -36,6 +36,10 @@ export class ServerBuilder {
     this.server.setNotFoundHandler(id)
   }
 
+  ready (handler: (error: Error) => void) {
+    this.server.ready(handler)
+  }
+
   silent (isSilent?: boolean): void {
     this.options.silent = isSilent
   }

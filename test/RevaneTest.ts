@@ -125,6 +125,26 @@ test('should start server', async (t) => {
   })
 })
 
+test('should call ready handler', async (t) => {
+  t.plan(4)
+
+  const revane = new Revane()
+  await revane
+    .basePackage(join(__dirname, '../../testdata'))
+    .xmlFile('./xml/config.xml')
+    .register('test')
+    .ready(() => t.pass())
+    .initialize()
+  const url = 'http://localhost:' + revane.port()
+  request(url, (error, response, body) => {
+    t.error(error)
+    t.equals(response.statusCode, 200)
+    revane.tearDown()
+      .then(() => t.pass('tearDown() successful'))
+      .catch((error) => t.error(error))
+  })
+})
+
 test('should start server with error handlers #1', async (t) => {
   t.plan(3)
 

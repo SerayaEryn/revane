@@ -31,6 +31,11 @@ export class Revane {
     return this
   }
 
+  ready (handler: (err: Error) => void): Revane {
+    this.serverCommands.push({ type: 'ready', args: [ handler ] })
+    return this
+  }
+
   basePackage (path: string): Revane {
     this.containerCommands.push({ type: 'basePackage', args: [ path ] })
     return this

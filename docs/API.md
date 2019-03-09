@@ -22,6 +22,10 @@ Sets a not found handler with the given `id` at the fastify server.
 
 Sets an error handler with the given `id` at the fastify server.
 
+### Revane#ready(handler: (err?: Error) => void): Revane
+
+Calls the `handler` once when all plugins have been loaded.
+
 ### Revane#basePackage(path: string): Revane
 
 Defines the base package of your application.
