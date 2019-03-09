@@ -8,17 +8,31 @@ Returns a new instance of `Revane`.
 
 ### Revane#register(id: string): Revane
 
+Registers a fastify plugin with the given `id` at the fastify server.
+
 ### Revane#registerControllers(): Revane
+
+Registers all fastify plugins decorated with `@Conroller()` at the fastify server.
 
 ### Revane#setErrorHandler(id: string): Revane
 
+Sets a not found handler with the given `id` at the fastify server.
+
 ### Revane#setNotFoundHandler(id: string): Revane
+
+Sets an error handler with the given `id` at the fastify server.
 
 ### Revane#basePackage(path: string): Revane
 
+Defines the base package of your application.
+
 ### Revane#componentScan(path: string): Revane
 
+Configures a json file that contains bean definintions ([Details](https://github.com/SerayaEryn/revane-ioc#json-file)). 
+
 ### Revane#xmlFile(file: string): Revane
+
+Configures a xml file that contains bean definintions ([Details](https://github.com/SerayaEryn/revane-ioc#xml-file)).
 
 ### Revane#noRedefinition(noRedefinition?: boolean): Revane
 
