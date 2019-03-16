@@ -21,7 +21,7 @@ revane()
 ## Documentation
 
 * [API](./docs/API.md)
-* [Inversion of Control](https://github.com/SerayaEryn/revane-ioc#table-of-content)
+* [Inversion of Control](./docs/InversionOfControl.md)
 * [Fastify Integration](./docs/FastifyIntegration.md)
 
 ## License
