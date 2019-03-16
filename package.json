@@ -1,7 +1,7 @@
 {
   "name": "revane",
   "version": "1.0.2",
-  "description": "inversion of control framework",
+  "description": "Framework for building web applications without boilerplate code.",
   "main": "bin/src/revane/Revane.js",
   "scripts": {
     "unit": "tape bin/test/**/*Test.js | tspec",
