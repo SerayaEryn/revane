@@ -18,6 +18,8 @@ test('should run component scan', async (t) => {
   t.ok(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should run component scan and read file', async (t) => {
@@ -36,6 +38,8 @@ test('should run component scan and read file', async (t) => {
   t.ok(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should run component scan with include filter', async (t) => {
@@ -57,6 +61,8 @@ test('should run component scan with include filter', async (t) => {
   t.ok(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should run component scan with exclude filter', async (t) => {
@@ -87,6 +93,8 @@ test('should run component scan with exclude filter', async (t) => {
   }
   await revane.tearDown()
   t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should run component scan absolute path', async (t) => {
@@ -104,6 +112,8 @@ test('should run component scan absolute path', async (t) => {
   t.ok(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should start server', async (t) => {
@@ -128,6 +138,8 @@ test('should start server', async (t) => {
         .catch(reject)
     })
   })
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should call ready handler', async (t) => {
@@ -153,6 +165,8 @@ test('should call ready handler', async (t) => {
         .catch(reject)
     })
   })
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should start server with error handlers #1', async (t) => {
@@ -180,6 +194,8 @@ test('should start server with error handlers #1', async (t) => {
         .catch(reject)
     })
   })
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('should start server with error handlers #2', async (t) => {
@@ -208,6 +224,8 @@ test('should start server with error handlers #2', async (t) => {
         .catch(reject)
     })
   })
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })
 
 test('port() should return null if no server was started', async (t) => {
@@ -220,4 +238,6 @@ test('port() should return null if no server was started', async (t) => {
   t.equals(app.port(), null)
   await app.tearDown()
   t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
 })

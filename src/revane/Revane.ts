@@ -79,6 +79,8 @@ export class Revane {
       .build()
     this.container = container
     this.server = server
+    process.on('SIGINT', () => this.shutdownGracefully('SIGINT'))
+    process.on('SIGTERM', () => this.shutdownGracefully('SIGTERM'))
     return this
   }
 
@@ -98,6 +100,21 @@ export class Revane {
       await this.server.close()
     }
     await this.container.tearDown()
+  }
+
+  private shutdownGracefully (event: string) {
+    if (this.container.has('logger')) {
+      const logger = this.container.get('logger')
+      logger.info(`Received ${event} event. Shutdown in progress...`)
+    } else {
+      console.log(`Received ${event} event. Shutdown in progress...`)
+    }
+    this.tearDown()
+      .then(() => process.exit(0))
+      .catch((error: Error) => {
+        console.log('Shutdown failed', error)
+        process.exit(1)
+      })
   }
 }
 
