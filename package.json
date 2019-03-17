@@ -38,7 +38,8 @@
   "keywords": [
     "inversion of control",
     "ioc",
-    "dependency injection"
+    "dependency injection",
+    "web application"
   ],
   "types": "./bin/src/Revane.d.ts"
 }
