@@ -4,11 +4,11 @@
   "description": "Framework for building web applications without boilerplate code.",
   "main": "bin/src/revane/Revane.js",
   "scripts": {
-    "unit": "tape bin/test/**/*Test.js | tspec",
+    "unit": "tap bin/test/**/*Test.js",
     "test": "npm run lint && npm run compile && npm run unit",
     "lint": "tslint --project tsconfig.json --config tslint.yaml",
-    "coveralls": "npm run compile && npm run coverage -s && coveralls < coverage/lcov.info",
-    "coverage": "npm run compile && nyc npm run unit",
+    "coveralls": "npm run compile && npm run unit --  --cov",
+    "coverage": "npm run coveralls && tap --coverage-report=lcov",
     "compile": "tsc -d",
     "prepublishOnly": "npm run compile -s"
   },
@@ -27,14 +27,10 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/express": "^4.11.1",
     "@types/node": "^11.11.0",
     "coveralls": "^3.0.1",
-    "nyc": "^13.2.0",
     "request": "^2.88.0",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.9.1",
-    "tape-catch": "^1.0.6",
+    "tap": "^12.6.0",
     "ts-node": "^8.0.3",
     "tslint": "^5.10.0",
     "tslint-config-standard": "^8.0.1",

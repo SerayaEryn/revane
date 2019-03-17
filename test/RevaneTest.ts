@@ -1,4 +1,4 @@
-import * as test from 'tape-catch'
+import { test } from 'tap'
 import Revane, { revane } from '../src/revane/Revane'
 import { join } from 'path'
 import * as request from 'request'
@@ -116,12 +116,17 @@ test('should start server', async (t) => {
     .register('test')
     .initialize()
   const url = 'http://localhost:' + revane.port()
-  request(url, (error, response, body) => {
-    t.error(error)
-    t.equals(response.statusCode, 200)
-    revane.tearDown()
-      .then(() => t.pass('tearDown() successful'))
-      .catch((error) => t.error(error))
+  await new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      t.error(error)
+      t.equals(response.statusCode, 200)
+      revane.tearDown()
+        .then(() => {
+          t.pass('tearDown() successful')
+          resolve()
+        })
+        .catch(reject)
+    })
   })
 })
 
@@ -136,12 +141,17 @@ test('should call ready handler', async (t) => {
     .ready(() => t.pass())
     .initialize()
   const url = 'http://localhost:' + revane.port()
-  request(url, (error, response, body) => {
-    t.error(error)
-    t.equals(response.statusCode, 200)
-    revane.tearDown()
-      .then(() => t.pass('tearDown() successful'))
-      .catch((error) => t.error(error))
+  await new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      t.error(error)
+      t.equals(response.statusCode, 200)
+      revane.tearDown()
+        .then(() => {
+          t.pass('tearDown() successful')
+          resolve()
+        })
+        .catch(reject)
+    })
   })
 })
 
@@ -158,12 +168,17 @@ test('should start server with error handlers #1', async (t) => {
     .noRedefinition(false)
     .initialize()
   const url = 'http://localhost:' + revane.port()
-  request(url, (error, response, body) => {
-    t.error(error)
-    t.equals(response.statusCode, 500)
-    revane.tearDown()
-      .then(() => t.pass('tearDown() successful'))
-      .catch((error) => t.error(error))
+  await new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      t.error(error)
+      t.equals(response.statusCode, 500)
+      revane.tearDown()
+        .then(() => {
+          t.pass('tearDown() successful')
+          resolve()
+        })
+        .catch(reject)
+    })
   })
 })
 
@@ -181,12 +196,17 @@ test('should start server with error handlers #2', async (t) => {
     .silent(true)
     .initialize()
   const url = 'http://localhost:' + revane.port() + '/test'
-  request(url, (error, response, body) => {
-    t.error(error)
-    t.equals(response.statusCode, 404)
-    revane.tearDown()
-      .then(() => t.pass('tearDown() successful'))
-      .catch((error) => t.error(error))
+  await new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      t.error(error)
+      t.equals(response.statusCode, 404)
+      revane.tearDown()
+        .then(() => {
+          t.pass('tearDown() successful')
+          resolve()
+        })
+        .catch(reject)
+    })
   })
 })
 
