@@ -1,47 +1,46 @@
 import RevaneIOC, { RegexFilter } from 'revane-ioc'
-import { ServerBuilder } from './ServerBuilder'
 import { revaneBuilder } from './RevaneBuilder'
-import { ContainerBuilder } from './ContainerBuilder'
 import RevaneFastify from 'revane-fastify'
+import { Command } from './Command'
 
 export class Revane {
-  private serverCommands = []
-  private serverOptionCommands = []
-  private containerCommands = []
-  public server: RevaneFastify
-  public container: RevaneIOC
+  private serverCommands: Command[] = []
+  private serverOptionCommands: Command[] = []
+  private containerCommands: Command[] = []
+  private server: RevaneFastify
+  private container: RevaneIOC
 
-  register (id: string | any, options?: any): Revane {
+  public register (id: string | any, options?: any): Revane {
     this.serverCommands.push({ type: 'register', args: [ id, options ] })
     return this
   }
 
-  registerControllers (): Revane {
+  public registerControllers (): Revane {
     this.serverCommands.push({ type: 'registerControllers', args: [] })
     return this
   }
 
-  setErrorHandler (id: string): Revane {
+  public setErrorHandler (id: string): Revane {
     this.serverCommands.push({ type: 'setErrorHandler', args: [ id ] })
     return this
   }
 
-  setNotFoundHandler (id: string): Revane {
+  public setNotFoundHandler (id: string): Revane {
     this.serverCommands.push({ type: 'setNotFoundHandler', args: [ id ] })
     return this
   }
 
-  ready (handler: (err: Error) => void): Revane {
+  public ready (handler: (err: Error) => void): Revane {
     this.serverCommands.push({ type: 'ready', args: [ handler ] })
     return this
   }
 
-  basePackage (path: string): Revane {
+  public basePackage (path: string): Revane {
     this.containerCommands.push({ type: 'basePackage', args: [ path ] })
     return this
   }
 
-  componentScan (
+  public componentScan (
     path: string,
     excludeFilters?: RegexFilter[],
     includeFilters?: RegexFilter[]
@@ -53,32 +52,30 @@ export class Revane {
     return this
   }
 
-  xmlFile (file: string): Revane {
+  public xmlFile (file: string): Revane {
     this.containerCommands.push({ type: 'xmlFile', args: [ file ] })
     return this
   }
 
-  jsonFile (file: string): Revane {
+  public jsonFile (file: string): Revane {
     this.containerCommands.push({ type: 'jsonFile', args: [ file ] })
     return this
   }
 
-  noRedefinition (noRedefinition?: boolean): Revane {
+  public noRedefinition (noRedefinition?: boolean): Revane {
     this.containerCommands.push({ type: 'noRedefinition', args: [ noRedefinition ] })
     return this
   }
 
-  silent (isSilent: boolean): Revane {
+  public silent (isSilent: boolean): Revane {
     this.serverOptionCommands.push({ type: 'silent', args: [ isSilent ] })
     return this
   }
 
   public async initialize (): Promise<Revane> {
-    const serverBuilder = new ServerBuilder(this.serverOptionCommands, this.serverCommands)
-    const containerBuilder = new ContainerBuilder(this.containerCommands)
     const { container, server } = await revaneBuilder()
-      .container(containerBuilder)
-      .server(serverBuilder)
+      .container(this.containerCommands)
+      .server(this.serverOptionCommands, this.serverCommands)
       .build()
     this.container = container
     this.server = server
@@ -89,7 +86,7 @@ export class Revane {
     return this.container.get(id)
   }
 
-  public port (): string {
+  public port (): number {
     if (this.server) {
       return this.server.port()
     }
@@ -119,5 +116,9 @@ export {
   FileLoaderOptions,
   ComponentScanLoaderOptions
 } from 'revane-ioc'
+
+export {
+  FastifyInstance
+} from 'revane-fastify'
 
 export default Revane

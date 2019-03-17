@@ -1,13 +1,13 @@
 import RevaneIOC from 'revane-ioc'
 import RevaneIOCBeanProvicer from './RevaneIOCBeanProvider'
 import RevaneFastify from 'revane-fastify'
+import { Command } from './Command'
 
 export class ServerBuilder {
-  private commands
-  private optionCommands
+  private commands: Command[]
+  private optionCommands: Command[]
   private revaneIOC: RevaneIOC
   private options: any = {}
-  private addressProviderId: string
   private server: RevaneFastify
 
   constructor (optionCommands, commands) {
@@ -49,17 +49,22 @@ export class ServerBuilder {
       return Promise.resolve(null)
     }
 
-    for (const command of this.optionCommands) {
-      this[command.type](...command.args)
-    }
+    this.processComamands(this.optionCommands)
+    this.createServer()
+    this.processComamands(this.commands)
 
-    const beanProvider = new RevaneIOCBeanProvicer(this.revaneIOC)
-    this.server = new RevaneFastify(this.options, beanProvider)
-
-    for (const command of this.commands) {
-      this[command.type](...command.args)
-    }
     await this.server.listen('configuration')
     return this.server
+  }
+
+  private processComamands (commands: Command[]) {
+    for (const command of commands) {
+      this[command.type](...command.args)
+    }
+  }
+
+  private createServer () {
+    const beanProvider = new RevaneIOCBeanProvicer(this.revaneIOC)
+    this.server = new RevaneFastify(this.options, beanProvider)
   }
 }

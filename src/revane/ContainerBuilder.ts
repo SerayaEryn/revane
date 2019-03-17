@@ -54,13 +54,13 @@ export class ContainerBuilder {
     return container
   }
 
-  private ensureLoaderOptions () {
+  private ensureLoaderOptions (): void {
     if (!this.options.loaderOptions) {
       this.options.loaderOptions = []
     }
   }
 
-  private absolutePath (path: string) {
+  private absolutePath (path: string): string {
     if (path.startsWith('.')) {
       return join(this.basePackagePath, path)
     }

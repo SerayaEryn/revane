@@ -1,5 +1,6 @@
 import { ServerBuilder } from './ServerBuilder'
 import { ContainerBuilder } from './ContainerBuilder'
+import { Command } from './Command'
 
 export function revaneBuilder (): RevaneBuilder {
   return new RevaneBuilder()
@@ -9,13 +10,13 @@ export class RevaneBuilder {
   private serverBuilder: ServerBuilder
   private containerBuilder: ContainerBuilder
 
-  server (serverBuilder: ServerBuilder): RevaneBuilder {
-    this.serverBuilder = serverBuilder
+  server (serverOptionCommands: Command[], serverCommands: Command[]): RevaneBuilder {
+    this.serverBuilder = new ServerBuilder(serverOptionCommands, serverCommands)
     return this
   }
 
-  container (containerBuilder: ContainerBuilder): RevaneBuilder {
-    this.containerBuilder = containerBuilder
+  container (containerCommands: Command[]): RevaneBuilder {
+    this.containerBuilder = new ContainerBuilder(containerCommands)
     return this
   }
 
