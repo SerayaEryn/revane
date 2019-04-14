@@ -81,6 +81,7 @@ export class Revane {
     this.server = server
     process.on('SIGINT', () => this.shutdownGracefully('SIGINT'))
     process.on('SIGTERM', () => this.shutdownGracefully('SIGTERM'))
+    this.disposeCommands()
     return this
   }
 
@@ -115,6 +116,12 @@ export class Revane {
         console.log('Shutdown failed', error)
         process.exit(1)
       })
+  }
+
+  private disposeCommands (): void {
+    this.serverCommands = null
+    this.serverOptionCommands = null
+    this.containerCommands = null
   }
 }
 
