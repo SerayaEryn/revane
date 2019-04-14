@@ -113,7 +113,7 @@ export class Revane {
     this.tearDown()
       .then(() => process.exit(0))
       .catch((error: Error) => {
-        console.log('Shutdown failed', error)
+        console.error('Shutdown failed', error)
         process.exit(1)
       })
   }
