@@ -27,7 +27,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/node": "^11.11.0",
+    "@types/node": "^12.0.0",
     "coveralls": "^3.0.1",
     "request": "^2.88.0",
     "tap": "^12.6.0",
