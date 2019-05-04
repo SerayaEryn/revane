@@ -1,4 +1,4 @@
-import { test } from 'tap'
+import test from 'ava'
 import Revane, { revane } from '../src/revane/Revane'
 import { join } from 'path'
 import * as request from 'request'
@@ -11,11 +11,11 @@ test('should run component scan', async (t) => {
     .basePackage(join(__dirname, '../../testdata'))
     .componentScan('.')
     .initialize()
-  t.ok(revane.getBean('scan1'))
+  t.truthy(revane.getBean('scan1'))
   const scan2 = revane.getBean('scan2')
-  t.ok(scan2)
-  t.ok(scan2.scan1)
-  t.ok(revane.getBean('scan3'))
+  t.truthy(scan2)
+  t.truthy(scan2.scan1)
+  t.truthy(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -31,11 +31,11 @@ test('should run component scan and read file', async (t) => {
     .componentScan('.')
     .xmlFile('./xml/config.xml')
     .initialize()
-  t.ok(revane.getBean('scan1'))
+  t.truthy(revane.getBean('scan1'))
   const scan2 = revane.getBean('scan2')
-  t.ok(scan2)
-  t.ok(scan2.scan1)
-  t.ok(revane.getBean('scan3'))
+  t.truthy(scan2)
+  t.truthy(scan2.scan1)
+  t.truthy(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -54,11 +54,11 @@ test('should run component scan with include filter', async (t) => {
       [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' }]
     )
     .initialize()
-  t.ok(revane.getBean('scan1'))
+  t.truthy(revane.getBean('scan1'))
   const scan2 = revane.getBean('scan2')
-  t.ok(scan2)
-  t.ok(scan2.scan1)
-  t.ok(revane.getBean('scan3'))
+  t.truthy(scan2)
+  t.truthy(scan2.scan1)
+  t.truthy(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -105,11 +105,11 @@ test('should run component scan absolute path', async (t) => {
     .basePackage(join(__dirname, '../../testdata'))
     .componentScan(join(__dirname, '../../testdata'))
     .initialize()
-  t.ok(revane.getBean('scan1'))
+  t.truthy(revane.getBean('scan1'))
   const scan2 = revane.getBean('scan2')
-  t.ok(scan2)
-  t.ok(scan2.scan1)
-  t.ok(revane.getBean('scan3'))
+  t.truthy(scan2)
+  t.truthy(scan2.scan1)
+  t.truthy(revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -128,8 +128,8 @@ test('should start server', async (t) => {
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
-      t.error(error)
-      t.equals(response.statusCode, 200)
+      t.falsy(error)
+      t.is(response.statusCode, 200)
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
@@ -155,8 +155,8 @@ test('should call ready handler', async (t) => {
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
-      t.error(error)
-      t.equals(response.statusCode, 200)
+      t.falsy(error)
+      t.is(response.statusCode, 200)
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
@@ -184,8 +184,8 @@ test('should start server with error handlers #1', async (t) => {
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
-      t.error(error)
-      t.equals(response.statusCode, 500)
+      t.falsy(error)
+      t.is(response.statusCode, 500)
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
@@ -214,8 +214,8 @@ test('should start server with error handlers #2', async (t) => {
   const url = 'http://localhost:' + revane.port() + '/test'
   await new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
-      t.error(error)
-      t.equals(response.statusCode, 404)
+      t.falsy(error)
+      t.is(response.statusCode, 404)
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
@@ -235,7 +235,7 @@ test('port() should return null if no server was started', async (t) => {
     .basePackage(join(__dirname, '../../testdata'))
     .componentScan('.')
     .initialize()
-  t.equals(app.port(), null)
+  t.is(app.port(), null)
   await app.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')

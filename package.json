@@ -4,11 +4,11 @@
   "description": "Framework for building web applications without boilerplate code.",
   "main": "bin/src/revane/Revane.js",
   "scripts": {
-    "unit": "tap bin/test/**/*Test.js",
+    "unit": "ava bin/test/**/*Test.js",
     "test": "npm run lint && npm run compile && npm run unit",
     "lint": "tslint --project tsconfig.json --config tslint.yaml",
-    "coveralls": "npm run compile && npm run unit --  --cov",
-    "coverage": "npm run coveralls && tap --coverage-report=lcov",
+    "coveralls": "npm run compile && nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc npm test && nyc report --reporter=html",
     "compile": "tsc -d",
     "prepublishOnly": "npm run compile -s"
   },
@@ -28,12 +28,13 @@
   },
   "devDependencies": {
     "@types/node": "^11.11.0",
+    "ava": "^1.4.1",
     "coveralls": "^3.0.1",
+    "nyc": "^14.1.0",
     "request": "^2.88.0",
-    "tap": "^13.1.2",
     "tslint": "^5.10.0",
     "tslint-config-standard": "^8.0.1",
-    "typescript": "^2.9.1"
+    "typescript": "^3.4.5"
   },
   "keywords": [
     "inversion of control",
