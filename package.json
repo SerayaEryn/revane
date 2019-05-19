@@ -22,8 +22,8 @@
     "url": "git+https://github.com/SerayaEryn/revane.git"
   },
   "dependencies": {
-    "revane-fastify": "^3.1.1",
-    "revane-ioc": "^1.0.4",
+    "revane-fastify": "^3.4.0",
+    "revane-ioc": "^1.2.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {

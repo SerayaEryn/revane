@@ -8,6 +8,7 @@
 * [Dependency Injection](#dependency-injection)
 * [Post Construct](#post-construct)
 * [Scopes](#scopes)
+* [Bean Factory](#bean-factory)
 
 ## Example
 
@@ -219,4 +220,20 @@ const { Scope } = require('revane')
 class Example {}
 
 module.exports = Scope('prototype')(Example)
+```
+
+### Bean Factory
+
+Beans may be defined by decorating a method, that returns a bean, on a class 
+with the `@Bean` decorator.
+
+```ts
+import { Bean } from 'revane'
+
+class BeanFactory {
+  @Bean
+  bean () {
+    return aBean
+  }
+}
 ```

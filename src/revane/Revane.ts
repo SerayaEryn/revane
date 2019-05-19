@@ -129,20 +129,8 @@ export function revane (): Revane {
   return new Revane()
 }
 
-export {
-  Scope,
-  Component,
-  Repository,
-  Controller,
-  Service,
-  Inject,
-  RegexFilter,
-  FileLoaderOptions,
-  ComponentScanLoaderOptions
-} from 'revane-ioc'
+export * from 'revane-ioc'
 
-export {
-  FastifyInstance
-} from 'revane-fastify'
+export * from 'revane-fastify'
 
 export default Revane
