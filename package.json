@@ -4,7 +4,7 @@
   "description": "Framework for building web applications without boilerplate code.",
   "main": "bin/src/revane/Revane.js",
   "scripts": {
-    "unit": "ava bin/test/**/*Test.js",
+    "unit": "ava",
     "test": "npm run lint && npm run compile && npm run unit",
     "lint": "tslint --project tsconfig.json --config tslint.yaml",
     "coveralls": "npm run compile && nyc npm test && nyc report --reporter=text-lcov | coveralls",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.0.0",
-    "ava": "^1.4.1",
+    "ava": "^2.0.0",
     "coveralls": "^3.0.1",
     "nyc": "^14.1.0",
     "request": "^2.88.0",
@@ -42,5 +42,10 @@
     "dependency injection",
     "web application"
   ],
-  "types": "./bin/src/Revane.d.ts"
+  "types": "./bin/src/Revane.d.ts",
+  "ava": {
+    "files": [
+      "bin/test/**/*Test.js"
+    ]
+  }
 }
