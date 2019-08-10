@@ -241,3 +241,21 @@ test('port() should return null if no server was started', async (t) => {
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
+
+test('should component scan if configured in xml file', async (t) => {
+  t.plan(4)
+
+  const revane = new Revane()
+  await revane
+    .basePackage(join(__dirname, '../../testdata'))
+    .xmlFile('./xml/config2.xml')
+    .initialize()
+
+  t.truthy(revane.getBean('scan1'))
+  const scan2 = revane.getBean('scan2')
+  t.truthy(scan2)
+  t.truthy(scan2.scan1)
+  t.truthy(revane.getBean('scan3'))
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
+})

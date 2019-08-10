@@ -184,6 +184,16 @@ class UserController {
 module.exports = Controller()(UserRepository);
 ```
 
+It is possible to configure the component scan in xml files:
+
+```xml
+<?xml version="1" encoding="utf-8">
+
+<beans>
+  <context:component-scan base-package="."/>
+</beans>
+```
+
 ## Post Construct
 
 If a class has a `postConstruct()` function it will be executed after the creation of the bean.
