@@ -1,6 +1,6 @@
 {
   "name": "revane",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Framework for building web applications without boilerplate code.",
   "main": "bin/src/revane/Revane.js",
   "scripts": {
