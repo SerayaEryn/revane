@@ -1,4 +1,4 @@
-import RevaneIOC, { RegexFilter, Options } from 'revane-ioc'
+import RevaneIOC, { RegexFilter } from 'revane-ioc'
 import { join } from 'path'
 
 export class ContainerBuilder {

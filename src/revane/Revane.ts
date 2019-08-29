@@ -1,6 +1,42 @@
-import RevaneIOC, { RegexFilter } from 'revane-ioc'
+import RevaneIOC, {
+  BeanDefinition,
+  Loader,
+  XmlFileLoader,
+  ComponentScanLoader,
+  JsonFileLoader,
+  RegexFilter,
+  Repository,
+  Service,
+  Component,
+  Controller,
+  Scope,
+  Inject,
+  Bean,
+  BeanProvider,
+  LoaderOptions
+} from 'revane-ioc'
 import { revaneBuilder } from './RevaneBuilder'
-import RevaneFastify from 'revane-fastify'
+import RevaneFastify, {
+  All,
+  Get,
+  Post,
+  Param,
+  Params,
+  Patch,
+  Delete,
+  Options,
+  Head,
+  Put,
+  Cookie,
+  Cookies,
+  Query,
+  QueryParameters,
+  RequestBody,
+  Reply,
+  Header,
+  Headers,
+  Log
+} from 'revane-fastify'
 import { Command } from './Command'
 
 export class Revane {
@@ -129,8 +165,41 @@ export function revane (): Revane {
   return new Revane()
 }
 
-export * from 'revane-ioc'
-
-export * from 'revane-fastify'
+export {
+  BeanDefinition,
+  Loader,
+  XmlFileLoader,
+  ComponentScanLoader,
+  JsonFileLoader,
+  RegexFilter,
+  BeanProvider,
+  LoaderOptions,
+  Repository,
+  Service,
+  Component,
+  Controller,
+  Scope,
+  Inject,
+  Bean,
+  All,
+  Get,
+  Post,
+  Param,
+  Params,
+  Patch,
+  Delete,
+  Options,
+  Head,
+  Put,
+  Cookie,
+  Cookies,
+  Query,
+  QueryParameters,
+  RequestBody,
+  Reply,
+  Header,
+  Headers,
+  Log
+}
 
 export default Revane

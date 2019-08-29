@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "revane-fastify": "^3.4.0",
-    "revane-ioc": "^1.5.0",
+    "revane-ioc": "^1.7.6",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "dependency injection",
     "web application"
   ],
-  "types": "./bin/src/Revane.d.ts",
+  "types": "./bin/src/revane/Revane.d.ts",
   "ava": {
     "files": [
       "bin/test/**/*Test.js"
