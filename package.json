@@ -47,5 +47,8 @@
     "files": [
       "bin/test/**/*Test.js"
     ]
-  }
+  },
+  "files": [
+    "bin/src"
+  ]
 }

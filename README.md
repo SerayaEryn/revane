@@ -20,9 +20,9 @@ revane()
 
 ## Documentation
 
-* [API](./docs/API.md)
-* [Inversion of Control](./docs/InversionOfControl.md)
-* [Fastify Integration](./docs/FastifyIntegration.md)
+* [API](https://github.com/SerayaEryn/revane/blob/master/docs/API.md)
+* [Inversion of Control](https://github.com/SerayaEryn/revane/blob/master/docs/InversionOfControl.md)
+* [Fastify Integration](https://github.com/SerayaEryn/revane/blob/master/docs/FastifyIntegration.md)
 
 ## License
 
