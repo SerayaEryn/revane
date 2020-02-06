@@ -13,7 +13,7 @@
     "prepublishOnly": "npm run compile -s"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">=10.13.0"
   },
   "author": "Denis Fäcke",
   "license": "MIT",
