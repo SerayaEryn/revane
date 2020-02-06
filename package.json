@@ -13,7 +13,7 @@
     "prepublishOnly": "npm run compile -s"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">=10.13.0"
   },
   "author": "Denis Fäcke",
   "license": "MIT",
@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "@types/node": "^13.1.0",
-    "ava": "^2.0.0",
-    "nyc": "^14.1.0",
+    "ava": "^3.0.0",
+    "nyc": "^15.0.0",
     "request": "^2.88.0",
     "tslint": "^5.10.0",
     "tslint-config-standard": "^9.0.0",
