@@ -27,13 +27,14 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@types/node": "^14.0.0",
-    "ava": "^3.0.0",
+    "@types/node": "^14.0.13",
+    "ava": "^3.9.0",
     "nyc": "^15.0.0",
     "request": "^2.88.0",
+    "ts-node": "^8.10.2",
     "tslint": "^5.10.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.9.5"
   },
   "keywords": [
     "inversion of control",
@@ -42,11 +43,6 @@
     "web application"
   ],
   "types": "./bin/src/revane/Revane.d.ts",
-  "ava": {
-    "files": [
-      "bin/test/**/*Test.js"
-    ]
-  },
   "files": [
     "bin/src"
   ]
