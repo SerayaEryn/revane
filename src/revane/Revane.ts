@@ -118,6 +118,9 @@ export class Revane {
   }
 
   public async initialize (): Promise<Revane> {
+    if (this.serverCommands.filter((command) => command.type === 'registerControllers').length === 0) {
+      this.registerControllers()
+    }
     const { container, server } = await revaneBuilder()
       .container(this.containerCommands)
       .server(this.serverOptionCommands, this.serverCommands)

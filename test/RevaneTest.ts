@@ -9,8 +9,8 @@ test('should run component scan', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
-    .disableAutoConfiguration()
     .componentScan('.')
+    .disableAutoConfiguration()
     .initialize()
   t.truthy(await revane.getBean('scan1'))
   const scan2 = await revane.getBean('scan2')
@@ -237,17 +237,31 @@ test('should start server with error handlers #2', async (t) => {
   process.removeAllListeners('SIGINT')
 })
 
-test('port() should return null if no server was started', async (t) => {
-  t.plan(2)
+test('should start server with error handlers #3', async (t) => {
+  t.plan(3)
 
-  const app = await revane()
+  const revane = new Revane()
+  await revane
     .basePackage(join(__dirname, '../../testdata'))
-    .componentScan('.')
+    .jsonFile('./json/config.json')
+    .setErrorHandler('test')
+    .setNotFoundHandler('test')
+    .silent(true)
     .disableAutoConfiguration()
     .initialize()
-  t.is(app.port(), null)
-  await app.tearDown()
-  t.pass('tearDown() successful')
+  const url = 'http://localhost:' + revane.port() + '/test'
+  await new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      t.falsy(error)
+      t.is(response.statusCode, 404)
+      revane.tearDown()
+        .then(() => {
+          t.pass('tearDown() successful')
+          resolve()
+        })
+        .catch(reject)
+    })
+  })
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
