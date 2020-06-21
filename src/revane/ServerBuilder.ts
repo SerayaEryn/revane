@@ -1,5 +1,4 @@
 import RevaneIOC from 'revane-ioc'
-import RevaneIOCBeanProvicer from './RevaneIOCBeanProvider'
 import RevaneFastify from 'revane-fastify'
 import { Command } from './Command'
 
@@ -64,7 +63,6 @@ export class ServerBuilder {
   }
 
   private createServer () {
-    const beanProvider = new RevaneIOCBeanProvicer(this.revaneIOC)
-    this.server = new RevaneFastify(this.options, beanProvider)
+    this.server = new RevaneFastify(this.options, this.revaneIOC.getContext())
   }
 }

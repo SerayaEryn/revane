@@ -1,0 +1,4 @@
+revane:
+  server:
+    port: 0
+    host: 'localhost'

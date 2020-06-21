@@ -1,4 +1,3 @@
 <beans>
   <bean id="test" class="./xml/xml1.js"/>
-  <bean id="configuration" class="./config.js"/>
 </beans>

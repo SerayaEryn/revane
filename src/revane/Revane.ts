@@ -10,10 +10,14 @@ import RevaneIOC, {
   Component,
   Controller,
   Scope,
-  Inject,
   Bean,
-  BeanProvider,
-  LoaderOptions
+  LoaderOptions,
+  Configuration,
+  ConfigurationProperties,
+  ApplicationContext,
+  ConditionalOnMissingBean,
+  Scheduled,
+  Scheduler
 } from 'revane-ioc'
 import { revaneBuilder } from './RevaneBuilder'
 import RevaneFastify, {
@@ -103,6 +107,11 @@ export class Revane {
     return this
   }
 
+  public disableAutoConfiguration (): Revane {
+    this.containerCommands.push({ type: 'disableAutoConfiguration', args: [] })
+    return this
+  }
+
   public silent (isSilent: boolean): Revane {
     this.serverOptionCommands.push({ type: 'silent', args: [ isSilent ] })
     return this
@@ -121,7 +130,7 @@ export class Revane {
     return this
   }
 
-  public getBean (id: string): any {
+  public async getBean (id: string): Promise<any> {
     return this.container.get(id)
   }
 
@@ -136,12 +145,12 @@ export class Revane {
     if (this.server) {
       await this.server.close()
     }
-    await this.container.tearDown()
+    await this.container.close()
   }
 
-  private shutdownGracefully (event: string) {
-    if (this.container.has('logger')) {
-      const logger = this.container.get('logger')
+  private async shutdownGracefully (event: string) {
+    if (await this.container.has('logger')) {
+      const logger = await this.container.get('logger')
       logger.info(`Received ${event} event. Shutdown in progress...`)
     } else {
       console.log(`Received ${event} event. Shutdown in progress...`)
@@ -172,14 +181,12 @@ export {
   ComponentScanLoader,
   JsonFileLoader,
   RegexFilter,
-  BeanProvider,
   LoaderOptions,
   Repository,
   Service,
   Component,
   Controller,
   Scope,
-  Inject,
   Bean,
   All,
   Get,
@@ -199,7 +206,13 @@ export {
   Reply,
   Header,
   Headers,
-  Log
+  Log,
+  Configuration,
+  ConfigurationProperties,
+  ApplicationContext,
+  ConditionalOnMissingBean,
+  Scheduled,
+  Scheduler
 }
 
 export default Revane

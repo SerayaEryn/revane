@@ -4,11 +4,13 @@ import { join } from 'path'
 export class ContainerBuilder {
   private commands
   private options: any = {
-    componentScan: false
+    configuration: {}
   }
   private basePackagePath: string
 
   constructor (commands) {
+    this.basePackagePath = process.cwd()
+    this.options.basePackage = process.cwd()
     this.commands = commands
   }
 
@@ -20,6 +22,10 @@ export class ContainerBuilder {
       excludeFilters,
       includeFilters
     })
+  }
+
+  private disableAutoConfiguration (): void {
+    this.options.autoConfiguration = false
   }
 
   private basePackage (path: string): void {
@@ -48,6 +54,9 @@ export class ContainerBuilder {
   async build (): Promise<RevaneIOC> {
     for (const command of this.commands) {
       this[command.type](...command.args)
+    }
+    if (this.options.autoConfiguration == null) {
+      this.options.autoConfiguration = true
     }
     const container = new RevaneIOC(this.options)
     await container.initialize()

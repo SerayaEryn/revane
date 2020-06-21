@@ -8,13 +8,10 @@ Framework for building web applications with dependency injection without boiler
 
 ## Example
 
-```js
-const { revane } = require('revane')
+```ts
+import { revane } from 'revane'
 
 revane()
-  .basePackage(__dirname)
-  .componentScan('./app')
-  .register('userController')
   .initialize()
 ```
 

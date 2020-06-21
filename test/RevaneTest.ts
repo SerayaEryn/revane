@@ -9,13 +9,14 @@ test('should run component scan', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .componentScan('.')
     .initialize()
-  t.truthy(revane.getBean('scan1'))
-  const scan2 = revane.getBean('scan2')
+  t.truthy(await revane.getBean('scan1'))
+  const scan2 = await revane.getBean('scan2')
   t.truthy(scan2)
   t.truthy(scan2.scan1)
-  t.truthy(revane.getBean('scan3'))
+  t.truthy(await revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -28,14 +29,15 @@ test('should run component scan and read file', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .componentScan('.')
     .xmlFile('./xml/config.xml')
     .initialize()
-  t.truthy(revane.getBean('scan1'))
-  const scan2 = revane.getBean('scan2')
+  t.truthy(await revane.getBean('scan1'))
+  const scan2 = await revane.getBean('scan2')
   t.truthy(scan2)
   t.truthy(scan2.scan1)
-  t.truthy(revane.getBean('scan3'))
+  t.truthy(await revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -48,17 +50,18 @@ test('should run component scan with include filter', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .componentScan(
       '.',
       null,
       [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' }]
     )
     .initialize()
-  t.truthy(revane.getBean('scan1'))
-  const scan2 = revane.getBean('scan2')
+  t.truthy(await revane.getBean('scan1'))
+  const scan2 = await revane.getBean('scan2')
   t.truthy(scan2)
   t.truthy(scan2.scan1)
-  t.truthy(revane.getBean('scan3'))
+  t.truthy(await revane.getBean('scan3'))
   await revane.tearDown()
   t.pass('tearDown() successful')
   process.removeAllListeners('SIGTERM')
@@ -71,23 +74,24 @@ test('should run component scan with exclude filter', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .componentScan(
       '.',
       [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' } ]
     )
     .initialize()
   try {
-    revane.getBean('scan1')
+    await revane.getBean('scan1')
   } catch (ignore) {
     t.pass()
   }
   try {
-    revane.getBean('scan2')
+    await revane.getBean('scan2')
   } catch (ignore) {
     t.pass()
   }
   try {
-    revane.getBean('scan3')
+    await revane.getBean('scan3')
   } catch (ignore) {
     t.pass()
   }
@@ -104,9 +108,10 @@ test('should run component scan absolute path', async (t) => {
   await revane
     .basePackage(join(__dirname, '../../testdata'))
     .componentScan(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .initialize()
-  t.truthy(revane.getBean('scan1'))
-  const scan2 = revane.getBean('scan2')
+  t.truthy(await revane.getBean('scan1'))
+  const scan2 = await revane.getBean('scan2')
   t.truthy(scan2)
   t.truthy(scan2.scan1)
   t.truthy(revane.getBean('scan3'))
@@ -122,6 +127,7 @@ test('should start server', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .xmlFile('./xml/config.xml')
     .register('test')
     .initialize()
@@ -148,6 +154,7 @@ test('should call ready handler', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .xmlFile('./xml/config.xml')
     .register('test')
     .ready(() => t.pass())
@@ -180,6 +187,7 @@ test('should start server with error handlers #1', async (t) => {
     .setErrorHandler('test')
     .setNotFoundHandler('test')
     .noRedefinition(false)
+    .disableAutoConfiguration()
     .initialize()
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
@@ -210,6 +218,7 @@ test('should start server with error handlers #2', async (t) => {
     .setErrorHandler('test')
     .setNotFoundHandler('test')
     .silent(true)
+    .disableAutoConfiguration()
     .initialize()
   const url = 'http://localhost:' + revane.port() + '/test'
   await new Promise((resolve, reject) => {
@@ -234,6 +243,7 @@ test('port() should return null if no server was started', async (t) => {
   const app = await revane()
     .basePackage(join(__dirname, '../../testdata'))
     .componentScan('.')
+    .disableAutoConfiguration()
     .initialize()
   t.is(app.port(), null)
   await app.tearDown()
@@ -248,14 +258,15 @@ test('should component scan if configured in xml file', async (t) => {
   const revane = new Revane()
   await revane
     .basePackage(join(__dirname, '../../testdata'))
+    .disableAutoConfiguration()
     .xmlFile('./xml/config2.xml')
     .initialize()
 
-  t.truthy(revane.getBean('scan1'))
-  const scan2 = revane.getBean('scan2')
+  t.truthy(await revane.getBean('scan1'))
+  const scan2 = await revane.getBean('scan2')
   t.truthy(scan2)
   t.truthy(scan2.scan1)
-  t.truthy(revane.getBean('scan3'))
+  t.truthy(await revane.getBean('scan3'))
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
