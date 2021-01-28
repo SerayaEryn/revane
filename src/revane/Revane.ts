@@ -129,6 +129,9 @@ export class Revane {
     this.server = server
     process.on('SIGINT', () => this.shutdownGracefully('SIGINT'))
     process.on('SIGTERM', () => this.shutdownGracefully('SIGTERM'))
+    process.on('multipleResolves', (type, promise, reason: Error) => this.logUncaughtError('multipleResolves', reason))
+    process.on('rejectionHandled', (reason: Error) => this.logUncaughtError('rejectionHandled', reason))
+    process.on('uncaughtException', (reason: Error) => this.logUncaughtError('uncaughtException', reason))
     this.disposeCommands()
     return this
   }
@@ -157,6 +160,21 @@ export class Revane {
       logger.info(`Received ${event} event. Shutdown in progress...`)
     } else {
       console.log(`Received ${event} event. Shutdown in progress...`)
+    }
+    this.tearDown()
+      .then(() => process.exit(0))
+      .catch((error: Error) => {
+        console.error('Shutdown failed', error)
+        process.exit(1)
+      })
+  }
+
+  private async logUncaughtError (event: string, reason: Error) {
+    if (await this.container.has('logger')) {
+      const logger = await this.container.get('logger')
+      logger.error(`Caught ${event} event:`, reason)
+    } else {
+      console.error(`Caught ${event} event:`, reason)
     }
     this.tearDown()
       .then(() => process.exit(0))
