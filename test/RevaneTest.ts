@@ -139,7 +139,7 @@ test('should start server', async (t) => {
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
-          resolve()
+          resolve(null)
         })
         .catch(reject)
     })
@@ -167,7 +167,7 @@ test('should call ready handler', async (t) => {
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
-          resolve()
+          resolve(null)
         })
         .catch(reject)
     })
@@ -197,7 +197,7 @@ test('should start server with error handlers #1', async (t) => {
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
-          resolve()
+          resolve(null)
         })
         .catch(reject)
     })
@@ -228,7 +228,7 @@ test('should start server with error handlers #2', async (t) => {
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
-          resolve()
+          resolve(null)
         })
         .catch(reject)
     })
@@ -257,7 +257,7 @@ test('should start server with error handlers #3', async (t) => {
       revane.tearDown()
         .then(() => {
           t.pass('tearDown() successful')
-          resolve()
+          resolve(null)
         })
         .catch(reject)
     })
