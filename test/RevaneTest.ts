@@ -23,6 +23,24 @@ test('should run component scan', async (t) => {
   process.removeAllListeners('SIGINT')
 })
 
+test('should run component scan with configuration enabled', async (t) => {
+  const instance = revane()
+  await instance
+    .basePackage(join(__dirname, '../../testdata'))
+    .initialize()
+  t.truthy(await instance.getBean('scan1'))
+  const scan2 = await instance.getBean('scan2')
+  const configuration = await instance.getBean('configuration')
+  t.truthy(scan2)
+  t.truthy(configuration)
+  t.truthy(scan2.scan1)
+  t.truthy(await instance.getBean('scan3'))
+  await instance.tearDown()
+  t.pass('tearDown() successful')
+  process.removeAllListeners('SIGTERM')
+  process.removeAllListeners('SIGINT')
+})
+
 test('should run component scan and read file', async (t) => {
   t.plan(5)
 

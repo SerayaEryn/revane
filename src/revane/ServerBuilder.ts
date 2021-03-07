@@ -1,5 +1,5 @@
 import RevaneIOC from 'revane-ioc'
-import { RevaneFastify } from 'revane-fastify'
+import { RevaneFastify, revaneFastify } from 'revane-fastify'
 import { Command } from './Command'
 
 export class ServerBuilder {
@@ -63,6 +63,6 @@ export class ServerBuilder {
   }
 
   private createServer () {
-    this.server = new RevaneFastify(this.options, this.revaneIOC.getContext())
+    this.server = revaneFastify(this.options, this.revaneIOC.getContext())
   }
 }

@@ -18,7 +18,8 @@ import RevaneIOC, {
   ConditionalOnMissingBean,
   Scheduled,
   Scheduler,
-  ControllerAdvice
+  ControllerAdvice,
+  Logger
 } from 'revane-ioc'
 import { revaneBuilder } from './RevaneBuilder'
 import {
@@ -244,7 +245,8 @@ export {
   Scheduled,
   Scheduler,
   ErrorHandler,
-  ResponseStatus
+  ResponseStatus,
+  Logger
 }
 
 export default Revane
