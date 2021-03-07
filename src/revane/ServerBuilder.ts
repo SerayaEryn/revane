@@ -1,5 +1,5 @@
 import RevaneIOC from 'revane-ioc'
-import RevaneFastify from 'revane-fastify'
+import { RevaneFastify } from 'revane-fastify'
 import { Command } from './Command'
 
 export class ServerBuilder {
