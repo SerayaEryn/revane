@@ -17,10 +17,11 @@ import RevaneIOC, {
   ApplicationContext,
   ConditionalOnMissingBean,
   Scheduled,
-  Scheduler
+  Scheduler,
+  ControllerAdvice
 } from 'revane-ioc'
 import { revaneBuilder } from './RevaneBuilder'
-import RevaneFastify, {
+import {
   All,
   Get,
   Post,
@@ -38,9 +39,13 @@ import RevaneFastify, {
   RequestBody,
   Response,
   RevaneResponse,
+  RevaneRequest,
   Header,
   Headers,
-  Log
+  Log,
+  RevaneFastify,
+  ErrorHandler,
+  ResponseStatus
 } from 'revane-fastify'
 import { Command } from './Command'
 
@@ -208,6 +213,7 @@ export {
   Service,
   Component,
   Controller,
+  ControllerAdvice,
   Scope,
   Bean,
   All,
@@ -227,6 +233,7 @@ export {
   RequestBody,
   Response,
   RevaneResponse,
+  RevaneRequest,
   Header,
   Headers,
   Log,
@@ -235,7 +242,9 @@ export {
   ApplicationContext,
   ConditionalOnMissingBean,
   Scheduled,
-  Scheduler
+  Scheduler,
+  ErrorHandler,
+  ResponseStatus
 }
 
 export default Revane
