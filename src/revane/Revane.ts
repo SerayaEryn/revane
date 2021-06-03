@@ -2,7 +2,6 @@ import RevaneIOC, {
   BeanDefinition,
   Loader,
   XmlFileLoader,
-  ComponentScanLoader,
   JsonFileLoader,
   RegexFilter,
   Repository,
@@ -116,6 +115,11 @@ export class Revane {
     return this
   }
 
+  public configurationDir (path: string): Revane {
+    this.containerCommands.push({ type: 'configurationDir', args: [ path ] })
+    return this
+  }
+
   public disableAutoConfiguration (): Revane {
     this.containerCommands.push({ type: 'disableAutoConfiguration', args: [] })
     return this
@@ -208,7 +212,6 @@ export {
   BeanDefinition,
   Loader,
   XmlFileLoader,
-  ComponentScanLoader,
   JsonFileLoader,
   RegexFilter,
   LoaderOptions,

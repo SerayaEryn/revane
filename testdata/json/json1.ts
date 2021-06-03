@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = class Test {
-  plugin(fastify, opts, next) {
+  plugin (fastify, opts, next) {
     fastify.get('/', (request, reply) => {
       reply.send(new Error('booom'))
     })

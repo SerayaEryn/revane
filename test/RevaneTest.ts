@@ -8,7 +8,8 @@ test('should run component scan', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .componentScan('.')
     .disableAutoConfiguration()
     .initialize()
@@ -26,7 +27,8 @@ test('should run component scan', async (t) => {
 test('should run component scan with configuration enabled', async (t) => {
   const instance = revane()
   await instance
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .initialize()
   t.truthy(await instance.getBean('scan1'))
   const scan2 = await instance.getBean('scan2')
@@ -46,10 +48,11 @@ test('should run component scan and read file', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .disableAutoConfiguration()
     .componentScan('.')
-    .xmlFile('./xml/config.xml')
+    .xmlFile('../../testdata/xml/config.xml')
     .initialize()
   t.truthy(await revane.getBean('scan1'))
   const scan2 = await revane.getBean('scan2')
@@ -67,11 +70,11 @@ test('should run component scan with include filter', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
     .disableAutoConfiguration()
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .componentScan(
       '.',
-      null,
       [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' }]
     )
     .initialize()
@@ -91,10 +94,12 @@ test('should run component scan with exclude filter', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
     .disableAutoConfiguration()
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .componentScan(
       '.',
+      null,
       [ { type: 'regex', regex: '.*' }, { type: 'regex', regex: '.*' } ]
     )
     .initialize()
@@ -124,8 +129,9 @@ test('should run component scan absolute path', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
-    .componentScan(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
+    .componentScan(join(__dirname, '../testdata'))
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .disableAutoConfiguration()
     .initialize()
   t.truthy(await revane.getBean('scan1'))
@@ -144,9 +150,10 @@ test('should start server', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
     .disableAutoConfiguration()
-    .xmlFile('./xml/config.xml')
+    .configurationDir(join(__dirname, '../../testdata/config'))
+    .xmlFile('../../testdata/xml/config.xml')
     .register('test')
     .initialize()
   const url = 'http://localhost:' + revane.port()
@@ -171,9 +178,10 @@ test('should call ready handler', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
+    .basePackage(join(__dirname, '../testdata'))
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .disableAutoConfiguration()
-    .xmlFile('./xml/config.xml')
+    .xmlFile('../../testdata/xml/config.xml')
     .register('test')
     .ready(() => t.pass())
     .initialize()
@@ -199,8 +207,9 @@ test('should start server with error handlers #1', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
-    .jsonFile('./json/config.json')
+    .basePackage(join(__dirname, '../testdata'))
+    .jsonFile('../../testdata/json/config.json')
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .register('test')
     .setErrorHandler('test')
     .setNotFoundHandler('test')
@@ -229,8 +238,9 @@ test('should start server with error handlers #2', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
-    .jsonFile('./json/config.json')
+    .basePackage(join(__dirname, '../testdata'))
+    .jsonFile('../../testdata/json/config.json')
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .register('test')
     .registerControllers()
     .setErrorHandler('test')
@@ -260,8 +270,9 @@ test('should start server with error handlers #3', async (t) => {
 
   const revane = new Revane()
   await revane
-    .basePackage(join(__dirname, '../../testdata'))
-    .jsonFile('./json/config.json')
+    .basePackage(join(__dirname, '../testdata'))
+    .jsonFile('../../testdata/json/config.json')
+    .configurationDir(join(__dirname, '../../testdata/config'))
     .setErrorHandler('test')
     .setNotFoundHandler('test')
     .silent(true)
@@ -280,25 +291,6 @@ test('should start server with error handlers #3', async (t) => {
         .catch(reject)
     })
   })
-  process.removeAllListeners('SIGTERM')
-  process.removeAllListeners('SIGINT')
-})
-
-test('should component scan if configured in xml file', async (t) => {
-  t.plan(4)
-
-  const revane = new Revane()
-  await revane
-    .basePackage(join(__dirname, '../../testdata'))
-    .disableAutoConfiguration()
-    .xmlFile('./xml/config2.xml')
-    .initialize()
-
-  t.truthy(await revane.getBean('scan1'))
-  const scan2 = await revane.getBean('scan2')
-  t.truthy(scan2)
-  t.truthy(scan2.scan1)
-  t.truthy(await revane.getBean('scan3'))
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })

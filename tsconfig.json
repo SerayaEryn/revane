@@ -11,11 +11,15 @@
     "lib": [
       "es2016",
       "es2017"
-    ]
+    ],
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/*",
-    "test/**/*"
+    "test/**/*",
+    "testdata/**/*",
+    "testdata/**/*.json",
+    "testdata/config/application.yml"
   ],
   "exclude": [
     "node_modules",
