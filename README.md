@@ -6,21 +6,16 @@
 
 Framework for building web applications with dependency injection without boilerplate code.
 
-## Example
-
-```ts
-import { revane } from 'revane'
-
-revane()
-  .initialize()
-  .catch(console.error)
-```
-
 ## Documentation
 
-* [API](https://github.com/SerayaEryn/revane/blob/master/docs/API.md)
-* [Inversion of Control](https://github.com/SerayaEryn/revane/blob/master/docs/InversionOfControl.md)
-* [Fastify Integration](https://github.com/SerayaEryn/revane/blob/master/docs/FastifyIntegration.md)
+* [First Steps](https://github.com/SerayaEryn/revane/blob/master/docs/First_Steps.md)
+* [Controllers](https://github.com/SerayaEryn/revane/blob/master/docs/Controllers.md)
+* [Components](https://github.com/SerayaEryn/revane/blob/master/docs/Components.md)
+* [Lifecycle events](https://github.com/SerayaEryn/revane/blob/master/docs/Lifecycle_Events.md)
+* [Database](https://github.com/SerayaEryn/revane/blob/master/docs/Database.md)
+* [Configuration](https://github.com/SerayaEryn/revane/blob/master/docs/Configuration.md)
+* [Task scheduling](https://github.com/SerayaEryn/revane/blob/master/docs/Task_Scheduling.md)
+* [Logging](https://github.com/SerayaEryn/revane/blob/master/docs/Logging.md)
 
 ## License
 

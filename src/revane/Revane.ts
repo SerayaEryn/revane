@@ -19,7 +19,9 @@ import RevaneIOC, {
   Scheduled,
   Scheduler,
   ControllerAdvice,
-  Logger
+  Logger,
+  PostConstruct,
+  PreDestroy
 } from 'revane-ioc'
 import { revaneBuilder } from './RevaneBuilder'
 import {
@@ -37,7 +39,7 @@ import {
   Cookies,
   Query,
   QueryParameters,
-  RequestBody,
+  Body,
   Response,
   RevaneResponse,
   RevaneRequest,
@@ -231,7 +233,7 @@ export {
   Cookies,
   Query,
   QueryParameters,
-  RequestBody,
+  Body,
   Response,
   RevaneResponse,
   RevaneRequest,
@@ -246,7 +248,9 @@ export {
   Scheduler,
   ErrorHandler,
   ResponseStatus,
-  Logger
+  Logger,
+  PostConstruct,
+  PreDestroy
 }
 
 export default Revane
