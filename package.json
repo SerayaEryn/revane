@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "revane-fastify": "^5.0.0-rc.8",
-    "revane-ioc": "^2.0.0-rc.11",
+    "revane-ioc": "^2.0.0-rc.12",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
