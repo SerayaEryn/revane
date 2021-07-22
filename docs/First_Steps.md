@@ -64,7 +64,7 @@ It is recommended to add scripts, that compile and start the application:
   // ...
   "scripts": {
     "compile": "tsc",
-    "start": "node ./src/Application.js"
+    "start": "node ./bin/Application.js"
   }
 }
 ```
