@@ -20,7 +20,8 @@ import RevaneIOC, {
   ControllerAdvice,
   Logger,
   PostConstruct,
-  PreDestroy
+  PreDestroy,
+  RevaneConfiguration
 } from 'revane-ioc'
 import { revaneBuilder } from './RevaneBuilder'
 import {
@@ -253,7 +254,8 @@ export {
   ResponseStatus,
   Logger,
   PostConstruct,
-  PreDestroy
+  PreDestroy,
+  RevaneConfiguration
 }
 
 export default Revane
