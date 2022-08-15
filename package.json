@@ -27,7 +27,7 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@types/node": "^16.4.0",
+    "@types/node": "^18.7.3",
     "ava": "^3.9.0",
     "nyc": "^15.0.0",
     "request": "^2.88.0",
