@@ -12,3 +12,4 @@
 | revane.logging.path                          |                                   |             |
 | revane.logging.format                        | The log forrmat: `JSON`, `SIMPLE` | `SIMPLE`    |
 | revane.main.allow-bean-definition-overriding |                                   |             |
+| revane.access-logging.enabled                | Enables basic access logging.     | `true`      |
