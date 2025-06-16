@@ -1,7 +1,7 @@
 import test from 'ava'
 import Revane, { revane } from '../src/revane/Revane'
 import { join } from 'path'
-import * as request from 'request'
+import request from 'request'
 
 test('should run component scan', async (t) => {
   t.plan(5)
@@ -105,17 +105,17 @@ test('should run component scan with exclude filter', async (t) => {
     .initialize()
   try {
     await revane.getBean('scan1')
-  } catch (ignore) {
+  } catch (_) {
     t.pass()
   }
   try {
     await revane.getBean('scan2')
-  } catch (ignore) {
+  } catch (_) {
     t.pass()
   }
   try {
     await revane.getBean('scan3')
-  } catch (ignore) {
+  } catch (_) {
     t.pass()
   }
   await revane.tearDown()
@@ -158,7 +158,7 @@ test('should start server', async (t) => {
     .initialize()
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
+    request(url, (error, response, _) => {
       t.falsy(error)
       t.is(response.statusCode, 200)
       revane.tearDown()
@@ -187,7 +187,7 @@ test('should call ready handler', async (t) => {
     .initialize()
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
+    request(url, (error, response, _) => {
       t.falsy(error)
       t.is(response.statusCode, 200)
       revane.tearDown()
@@ -218,7 +218,7 @@ test('should start server with error handlers #1', async (t) => {
     .initialize()
   const url = 'http://localhost:' + revane.port()
   await new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
+    request(url, (error, response, _) => {
       t.falsy(error)
       t.is(response.statusCode, 500)
       revane.tearDown()
@@ -250,7 +250,7 @@ test('should start server with error handlers #2', async (t) => {
     .initialize()
   const url = 'http://localhost:' + revane.port() + '/test'
   await new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
+    request(url, (error, response, _) => {
       t.falsy(error)
       t.is(response.statusCode, 404)
       revane.tearDown()
@@ -280,7 +280,7 @@ test('should start server with error handlers #3', async (t) => {
     .initialize()
   const url = 'http://localhost:' + revane.port() + '/test'
   await new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
+    request(url, (error, response, _) => {
       t.falsy(error)
       t.is(response.statusCode, 404)
       revane.tearDown()

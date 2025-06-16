@@ -1,5 +1,5 @@
-import RevaneIOC from 'revane-ioc'
-import { RevaneFastify, revaneFastify } from 'revane-fastify'
+import RevaneIOC, { ApplicationContext } from 'revane-ioc'
+import { RevaneFastify, revaneFastify, RevaneFastifyContext } from 'revane-fastify'
 import { Command } from './Command'
 
 export class ServerBuilder {
@@ -63,6 +63,22 @@ export class ServerBuilder {
   }
 
   private createServer () {
-    this.server = revaneFastify(this.options, this.revaneIOC.getContext())
+    this.server = revaneFastify(this.options, new Context(this.revaneIOC.getContext()))
+  }
+}
+
+class Context implements RevaneFastifyContext {
+  constructor(private applicationContext: ApplicationContext) {}
+
+  public hasById(id: string): Promise<boolean> {
+    return this.applicationContext.hasById(id)
+  }
+
+  public getByComponentType(type: string): Promise<any[]> {
+    return this.applicationContext.getByType(type)
+  }
+
+  public getById(id: string): Promise<any> {
+    return this.applicationContext.getById(id)
   }
 }

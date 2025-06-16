@@ -2,16 +2,12 @@
   "compilerOptions": {
     "outDir": "./bin/",
     "sourceMap": false,
-    "noImplicitAny": false,
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "removeComments": true,
-    "target": "ES2017",
+    "target": "ES2023",
     "importHelpers": true,
     "alwaysStrict": true,
-    "lib": [
-      "es2016",
-      "es2017"
-    ],
     "experimentalDecorators": true
   },
   "include": [
