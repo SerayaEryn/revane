@@ -43,26 +43,30 @@ export class ServerBuilder {
     this.options.silent = isSilent
   }
 
+  name (aName?: string): void {
+    this.options.name = aName
+  }
+
   async build (): Promise<RevaneFastify> {
     if (this.commands.length === 0) {
       return Promise.resolve(null)
     }
 
-    this.processComamands(this.optionCommands)
-    this.createServer()
-    this.processComamands(this.commands)
+    this.#processComamands(this.optionCommands)
+    this.#createServer()
+    this.#processComamands(this.commands)
 
     await this.server.listen('configuration')
     return this.server
   }
 
-  private processComamands (commands: Command[]) {
+  #processComamands (commands: Command[]) {
     for (const command of commands) {
       this[command.type](...command.args)
     }
   }
 
-  private createServer () {
+  #createServer () {
     this.server = revaneFastify(this.options, new Context(this.revaneIOC.getContext()))
   }
 }

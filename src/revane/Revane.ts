@@ -58,6 +58,7 @@ export class Revane {
   private containerCommands: Command[] = []
   private server: RevaneFastify
   private container: RevaneIOC
+  #name: string = applicationName()
 
   public register (id: string | any, options?: any): Revane {
     this.serverCommands.push({ type: 'register', args: [ id, options ] })
@@ -135,6 +136,7 @@ export class Revane {
     if (this.serverCommands.filter((command) => command.type === 'registerControllers').length === 0) {
       this.registerControllers()
     }
+    this.serverCommands.push({ type: 'name', args: [ this.#name ]})
     const { container, server } = await revaneBuilder()
       .container(this.containerCommands)
       .server(this.serverOptionCommands, this.serverCommands)
@@ -259,3 +261,29 @@ export {
 }
 
 export default Revane
+
+function applicationName(): string {
+  const oldPrepareStackTrace = Error.prepareStackTrace;
+  Error.prepareStackTrace = (_, stack) => stack;
+  const stack = new Error().stack as any;
+  Error.prepareStackTrace = oldPrepareStackTrace;
+
+  if (stack != null && typeof stack === 'object' && stack.length >= 5) {
+    const i3 = stack![3]
+    if (i3.getFileName().endsWith('Revane.js')) {
+      return stack![4] ? extractName((stack![4] as any).getFileName()) : 'Application';
+    }
+  }
+  if (stack != null && typeof stack === 'object' && stack.length >= 4) {
+    const i2 = stack![2]
+    if (i2.getFileName().endsWith('Revane.js')) {
+      return stack![3] ? extractName((stack![3] as any).getFileName()) : 'Application';
+    }
+  }
+  return 'Application'
+};
+
+function extractName(file: string) {
+  const index = file.lastIndexOf('/')
+  return file.substring(index + 1).replace('.js', '').replace('.mjs', '')
+}

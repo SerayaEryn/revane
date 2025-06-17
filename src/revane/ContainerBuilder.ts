@@ -21,8 +21,7 @@ export class ContainerBuilder {
   }
 
   private componentScan (path: string, excludeFilters?: RegexFilter[], includeFilters?: RegexFilter[]): void {
-    this.ensureLoaderOptions()
-    console.log(this.absolutePath(path))
+    this.#ensureLoaderOptions()
     this.options.loaderOptions.push(new ComponentScanLoaderOptions(
       this.absolutePath(path),
       excludeFilters,
@@ -40,14 +39,14 @@ export class ContainerBuilder {
   }
 
   private xmlFile (file: string): void {
-    this.ensureLoaderOptions()
+    this.#ensureLoaderOptions()
     this.options.loaderOptions.push(new XmlFileLoaderOptions(
       this.absolutePath(file)
     ))
   }
 
   private jsonFile (file: string): void {
-    this.ensureLoaderOptions()
+    this.#ensureLoaderOptions()
     this.options.loaderOptions.push(new JsonFileLoaderOptions(
       this.absolutePath(file)
     ))
@@ -77,7 +76,7 @@ export class ContainerBuilder {
     return container
   }
 
-  private ensureLoaderOptions (): void {
+  #ensureLoaderOptions (): void {
     if (!this.options.loaderOptions) {
       this.options.loaderOptions = []
     }
