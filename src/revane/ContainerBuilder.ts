@@ -8,7 +8,6 @@ export class ContainerBuilder {
 
   constructor (commands) {
     this.basePackagePath = process.cwd()
-    console.log(this.basePackagePath)
     this.options = new Options(
       process.cwd(),
       [

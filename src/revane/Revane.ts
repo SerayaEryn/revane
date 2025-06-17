@@ -170,7 +170,7 @@ export class Revane {
 
   private async shutdownGracefully (event: string) {
     if (await this.container.has('logger')) {
-      const logger = await this.container.get('logger')
+      const logger = await this.container.get('rootLogger')
       logger.info(`Received ${event} event. Shutdown in progress...`)
     } else {
       console.log(`Received ${event} event. Shutdown in progress...`)
@@ -185,7 +185,7 @@ export class Revane {
 
   private async logUncaughtError (event: string, reason: Error) {
     if (await this.container.has('logger')) {
-      const logger = await this.container.get('logger')
+      const logger = await this.container.get('rootLogger')
       logger.error(`Caught ${event} event:`, reason)
     } else {
       console.error(`Caught ${event} event:`, reason)
