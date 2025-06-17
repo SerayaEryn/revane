@@ -1,6 +1,6 @@
 {
   "name": "revane",
-  "version": "3.0.0-rc.10",
+  "version": "3.0.0-rc.11",
   "description": "Framework for building web applications without boilerplate code.",
   "main": "bin/src/revane/Revane.js",
   "scripts": {
