@@ -1,7 +1,6 @@
 import test from 'ava'
 import Revane, { revane } from '../src/revane/Revane.js'
 import { join } from 'node:path'
-import request from 'request'
 
 test('should run component scan', async (t) => {
   t.plan(5)
@@ -146,7 +145,7 @@ test('should run component scan absolute path', async (t) => {
 })
 
 test('should start server', async (t) => {
-  t.plan(3)
+  t.plan(1)
 
   const revane = new Revane()
   await revane
@@ -157,24 +156,15 @@ test('should start server', async (t) => {
     .register('test')
     .initialize()
   const url = 'http://localhost:' + revane.port()
-  await new Promise((resolve, reject) => {
-    request(url, (error, response, _) => {
-      t.falsy(error)
-      t.is(response.statusCode, 200)
-      revane.tearDown()
-        .then(() => {
-          t.pass('tearDown() successful')
-          resolve(null)
-        })
-        .catch(reject)
-    })
-  })
+  const response = await fetch(url)
+  t.is(response.status, 200)
+  await revane.tearDown()
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
 
 test('should call ready handler', async (t) => {
-  t.plan(4)
+  t.plan(2)
 
   const revane = new Revane()
   await revane
@@ -186,24 +176,15 @@ test('should call ready handler', async (t) => {
     .ready(() => t.pass())
     .initialize()
   const url = 'http://localhost:' + revane.port()
-  await new Promise((resolve, reject) => {
-    request(url, (error, response, _) => {
-      t.falsy(error)
-      t.is(response.statusCode, 200)
-      revane.tearDown()
-        .then(() => {
-          t.pass('tearDown() successful')
-          resolve(null)
-        })
-        .catch(reject)
-    })
-  })
+  const response = await fetch(url)
+  t.is(response.status, 200)
+  await revane.tearDown()
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
 
 test('should start server with error handlers #1', async (t) => {
-  t.plan(3)
+  t.plan(1)
 
   const revane = new Revane()
   await revane
@@ -217,24 +198,15 @@ test('should start server with error handlers #1', async (t) => {
     .disableAutoConfiguration()
     .initialize()
   const url = 'http://localhost:' + revane.port()
-  await new Promise((resolve, reject) => {
-    request(url, (error, response, _) => {
-      t.falsy(error)
-      t.is(response.statusCode, 500)
-      revane.tearDown()
-        .then(() => {
-          t.pass('tearDown() successful')
-          resolve(null)
-        })
-        .catch(reject)
-    })
-  })
+  const response = await fetch(url)
+  t.is(response.status, 500)
+  await revane.tearDown()
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
 
 test('should start server with error handlers #2', async (t) => {
-  t.plan(3)
+  t.plan(1)
 
   const revane = new Revane()
   await revane
@@ -249,24 +221,15 @@ test('should start server with error handlers #2', async (t) => {
     .disableAutoConfiguration()
     .initialize()
   const url = 'http://localhost:' + revane.port() + '/test'
-  await new Promise((resolve, reject) => {
-    request(url, (error, response, _) => {
-      t.falsy(error)
-      t.is(response.statusCode, 404)
-      revane.tearDown()
-        .then(() => {
-          t.pass('tearDown() successful')
-          resolve(null)
-        })
-        .catch(reject)
-    })
-  })
+  const response = await fetch(url)
+  t.is(response.status, 404)
+  await revane.tearDown()
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
 
 test('should start server with error handlers #3', async (t) => {
-  t.plan(3)
+  t.plan(1)
 
   const revane = new Revane()
   await revane
@@ -279,18 +242,9 @@ test('should start server with error handlers #3', async (t) => {
     .disableAutoConfiguration()
     .initialize()
   const url = 'http://localhost:' + revane.port() + '/test'
-  await new Promise((resolve, reject) => {
-    request(url, (error, response, _) => {
-      t.falsy(error)
-      t.is(response.statusCode, 404)
-      revane.tearDown()
-        .then(() => {
-          t.pass('tearDown() successful')
-          resolve(null)
-        })
-        .catch(reject)
-    })
-  })
+  const response = await fetch(url)
+  t.is(response.status, 404)
+  await revane.tearDown()
   process.removeAllListeners('SIGTERM')
   process.removeAllListeners('SIGINT')
 })
