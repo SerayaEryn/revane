@@ -1,5 +1,5 @@
 
-import { Component } from '../src/revane/Revane'
+import { Component } from '../src/revane/Revane.js'
 
 @Component
 export class Scan1 {}

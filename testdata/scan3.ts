@@ -1,4 +1,4 @@
-import { Component } from '../src/revane/Revane'
+import { Component } from '../src/revane/Revane.js'
 
 @Component({ dependencies: ['scan1'], id: 'scan3' })
 export class Scan3 {

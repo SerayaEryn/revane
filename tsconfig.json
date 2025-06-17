@@ -2,8 +2,8 @@
   "compilerOptions": {
     "outDir": "./bin/",
     "sourceMap": false,
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "removeComments": true,
     "target": "ES2023",
     "importHelpers": true,

@@ -5,31 +5,34 @@
   "main": "bin/src/revane/Revane.js",
   "scripts": {
     "unit": "ava bin/test/**/*Test.js",
-    "test": "npm run lint && npm run compile && npm run unit",
+    "test": "npm run lint && npm run compile && npm run postbuild && npm run unit",
     "lint": "npx eslint ./**/*.ts",
     "coveralls": "npm run compile && nyc npm test",
     "coverage": "nyc npm test && nyc report --reporter=html",
     "compile": "tsc -d",
-    "prepublishOnly": "npm run compile -s"
+    "prepublishOnly": "npm run compile -s",
+    "postbuild": "cpy 'testdata/**/*.xml' bin/testdata && cpy 'testdata/**/*.yml' bin/testdata && cpy 'testdata/**/*.json' bin/testdata"
   },
   "engines": {
     "node": ">=24.2.0"
   },
   "author": "Denis Fäcke",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SerayaEryn/revane.git"
   },
   "dependencies": {
-    "revane-fastify": "^5.0.0-rc.13",
-    "revane-ioc": "^2.0.0-rc.17",
+    "revane-fastify": "^5.0.0-rc.14",
+    "revane-ioc": "^2.0.0-rc.18",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
     "@types/node": "^24.0.3",
     "ava": "^6.4.0",
+    "cpy-cli": "^5.0.0",
     "eslint": "^9.29.0",
     "nyc": "^17.1.0",
     "request": "^2.88.0",

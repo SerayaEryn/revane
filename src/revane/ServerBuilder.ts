@@ -1,6 +1,6 @@
 import RevaneIOC, { ApplicationContext } from 'revane-ioc'
 import { RevaneFastify, revaneFastify, RevaneFastifyContext } from 'revane-fastify'
-import { Command } from './Command'
+import { Command } from './Command.js'
 
 export class ServerBuilder {
   private commands: Command[]

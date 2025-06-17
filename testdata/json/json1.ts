@@ -1,4 +1,4 @@
-module.exports = class Test {
+export default class Json1 {
   plugin (fastify, opts, next) {
     fastify.get('/', (request, reply) => {
       reply.send(new Error('booom'))

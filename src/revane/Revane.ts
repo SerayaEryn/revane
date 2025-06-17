@@ -23,7 +23,7 @@ import RevaneIOC, {
   PreDestroy,
   RevaneConfiguration
 } from 'revane-ioc'
-import { revaneBuilder } from './RevaneBuilder'
+import { revaneBuilder } from './RevaneBuilder.js'
 import {
   All,
   Get,
@@ -50,7 +50,7 @@ import {
   ErrorHandler,
   ResponseStatus
 } from 'revane-fastify'
-import { Command } from './Command'
+import { Command } from './Command.js'
 
 export class Revane {
   private serverCommands: Command[] = []

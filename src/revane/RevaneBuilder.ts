@@ -1,6 +1,6 @@
-import { ServerBuilder } from './ServerBuilder'
-import { ContainerBuilder } from './ContainerBuilder'
-import { Command } from './Command'
+import { ServerBuilder } from './ServerBuilder.js'
+import { ContainerBuilder } from './ContainerBuilder.js'
+import { Command } from './Command.js'
 
 export function revaneBuilder (): RevaneBuilder {
   return new RevaneBuilder()
