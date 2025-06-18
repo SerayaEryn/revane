@@ -247,3 +247,23 @@ test("should start server with error handlers #3", async (t) => {
   process.removeAllListeners("SIGTERM");
   process.removeAllListeners("SIGINT");
 });
+
+test("should use error handler", async (t) => {
+  t.plan(2);
+
+  const instance = await revane()
+    .basePackage(join(import.meta.dirname, "../testdata"))
+    .jsonFile("../../testdata/json/config.json")
+    .configurationDir(join(import.meta.dirname, "../../testdata/config"))
+    .silent(true)
+    .initialize();
+  const url = "http://localhost:" + instance.port() + "/testerror/";
+  const response = await fetch(url);
+  const data = await response.text()
+  t.is(response.status, 500);
+  t.is(data, 'error handled')
+  await instance.tearDown();
+  process.removeAllListeners("SIGTERM");
+  process.removeAllListeners("SIGINT");
+});
+
