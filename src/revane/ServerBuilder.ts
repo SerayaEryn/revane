@@ -1,81 +1,87 @@
-import RevaneIOC, { ApplicationContext } from 'revane-ioc'
-import { RevaneFastify, revaneFastify, RevaneFastifyContext } from 'revane-fastify'
-import { Command } from './Command.js'
+import RevaneIOC, { ApplicationContext } from "revane-ioc";
+import {
+  RevaneFastify,
+  revaneFastify,
+  RevaneFastifyContext,
+} from "revane-fastify";
+import { Command } from "./Command.js";
 
 export class ServerBuilder {
-  private commands: Command[]
-  private optionCommands: Command[]
-  private revaneIOC: RevaneIOC
-  private options: any = {}
-  private server: RevaneFastify
+  private commands: Command[];
+  private optionCommands: Command[];
+  private revaneIOC: RevaneIOC;
+  private options: any = {};
+  private server: RevaneFastify;
 
-  constructor (optionCommands, commands) {
-    this.optionCommands = optionCommands
-    this.commands = commands
+  constructor(optionCommands, commands) {
+    this.optionCommands = optionCommands;
+    this.commands = commands;
   }
 
-  container (container: RevaneIOC): ServerBuilder {
-    this.revaneIOC = container
-    return this
+  container(container: RevaneIOC): ServerBuilder {
+    this.revaneIOC = container;
+    return this;
   }
 
-  register (id: string | any, options?: any): void {
-    this.server.register(id, options)
+  register(id: string | any, options?: any): void {
+    this.server.register(id, options);
   }
 
-  registerControllers (): void {
-    this.server.registerControllers()
+  registerControllers(): void {
+    this.server.registerControllers();
   }
 
-  setErrorHandler (id: string | any): void {
-    this.server.setErrorHandler(id)
+  setErrorHandler(id: string | any): void {
+    this.server.setErrorHandler(id);
   }
 
-  setNotFoundHandler (id: string | any): void {
-    this.server.setNotFoundHandler(id)
+  setNotFoundHandler(id: string | any): void {
+    this.server.setNotFoundHandler(id);
   }
 
-  ready (handler: (error: Error) => void) {
-    this.server.ready(handler)
+  ready(handler: (error: Error) => void) {
+    this.server.ready(handler);
   }
 
-  silent (isSilent?: boolean): void {
-    this.options.silent = isSilent
+  silent(isSilent?: boolean): void {
+    this.options.silent = isSilent;
   }
 
-  name (aName?: string): void {
-    this.options.name = aName
+  name(aName?: string): void {
+    this.options.name = aName;
   }
 
-  async build (): Promise<RevaneFastify> {
+  async build(): Promise<RevaneFastify> {
     if (this.commands.length === 0) {
-      return Promise.resolve(null)
+      return Promise.resolve(null);
     }
 
-    this.#processComamands(this.optionCommands)
-    await this.#createServer()
-    this.#processComamands(this.commands)
+    this.#processComamands(this.optionCommands);
+    await this.#createServer();
+    this.#processComamands(this.commands);
 
-    await this.server.listen('configuration')
-    return this.server
+    await this.server.listen("configuration");
+    return this.server;
   }
 
-  #processComamands (commands: Command[]) {
+  #processComamands(commands: Command[]) {
     for (const command of commands) {
-      this[command.type](...command.args)
+      this[command.type](...command.args);
     }
   }
 
-  async #createServer () {
-    const context = new Context(this.revaneIOC.getContext())
-    const configuration = await context.getById('configuration')
-    if (configuration.get('revane.original-profile') == null) {
-      const logger = await context.getById('rootLogger')
+  async #createServer() {
+    const context = new Context(this.revaneIOC.getContext());
+    const configuration = await context.getById("configuration");
+    if (configuration.get("revane.original-profile") == null) {
+      const logger = await context.getById("rootLogger");
       if (logger != null) {
-        logger.info(`No active profile set, falling back to default profiles: default`)
+        logger.info(
+          `No active profile set, falling back to default profiles: default`,
+        );
       }
     }
-    this.server = revaneFastify(this.options, context)
+    this.server = revaneFastify(this.options, context);
   }
 }
 
@@ -83,14 +89,14 @@ class Context implements RevaneFastifyContext {
   constructor(private applicationContext: ApplicationContext) {}
 
   public hasById(id: string): Promise<boolean> {
-    return this.applicationContext.hasById(id)
+    return this.applicationContext.hasById(id);
   }
 
   public getByComponentType(type: string): Promise<any[]> {
-    return this.applicationContext.getByType(type)
+    return this.applicationContext.getByType(type);
   }
 
   public getById(id: string): Promise<any> {
-    return this.applicationContext.getById(id)
+    return this.applicationContext.getById(id);
   }
 }
