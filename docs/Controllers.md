@@ -72,7 +72,7 @@ import { Controller, Get, Param } from 'revane';
 export class RabbitController {
   // ...
 
-  @Get('/rabbits/:id')
+  @Get('/rabbits/:id/')
   find(@Param id: string): string[] {
     return 'white rabbit';
   }

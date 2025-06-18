@@ -10,7 +10,7 @@ For a running example take a look at [revane-example](https://github.com/SerayaE
 
 ## Prerequisites
 
-Please make sure that Node.js (>= 12.13.0) is installed on your operating
+Please make sure that Node.js (>= 24.2.0) is installed on your operating
 system.
 
 ## Setup
@@ -19,8 +19,8 @@ system.
 
 Install the dependencies:
 ```ts
-npm i revane@next
-npm i typescript @types/node tslib --save-dev
+npm i revane tslib -S
+npm i typescript @types/node -D
 ```
 
 ### Typescript Compiler Configuration
@@ -32,12 +32,13 @@ Create a configuration file for the Typescript compiler `./ts.config.json` with 
   "compilerOptions": {
     "outDir": "./bin/",
     "noImplicitAny": false,
-    "module": "CommonJS",
-    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "importHelpers": true,
     "alwaysStrict": true,
-    "lib": ["es2020"],
-    "experimentalDecorators": true
+    "lib": ["es2023"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }
 ```
@@ -63,7 +64,7 @@ It is recommended to add scripts, that compile and start the application:
 {
   // ...
   "scripts": {
-    "compile": "tsc",
+    "compile": "tsc -d",
     "start": "node ./bin/Application.js"
   }
 }

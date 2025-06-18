@@ -16,4 +16,4 @@ class RabbitService {
 
 | Life cycle decorator | Event triggering the method call            |
 | `@PostConstruct`     | Called when the component has been created. |
-| `@PreDestroy`        | Called the application is terminating.      |
+| `@PreDestroy`        | Called when the application is terminating. |
