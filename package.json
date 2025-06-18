@@ -8,7 +8,7 @@
     "test": "npm run lint && npm run compile && npm run postbuild && npm run unit",
     "lint": "npx eslint ./**/*.ts",
     "prettier": "npx prettier src test --write",
-    "coverage": "c8 npm test",
+    "coverage": "c8 --reporter=lcov npm test",
     "compile": "tsc -d",
     "prepublishOnly": "npm run compile -s",
     "postbuild": "cpy 'testdata/**/*.xml' bin/testdata && cpy 'testdata/**/*.yml' bin/testdata && cpy 'testdata/**/*.json' bin/testdata"
