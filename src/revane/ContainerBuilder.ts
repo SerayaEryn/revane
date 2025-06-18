@@ -10,6 +10,7 @@ import RevaneIOC, {
   JsonFileLoaderOptions,
 } from "revane-ioc";
 import { join } from "path";
+import { log } from "console";
 
 export class ContainerBuilder {
   private commands;
@@ -78,6 +79,7 @@ export class ContainerBuilder {
   }
 
   async build(): Promise<RevaneIOC> {
+    const startedAt = Date.now();
     for (const command of this.commands) {
       this[command.type](...command.args);
     }
@@ -86,6 +88,14 @@ export class ContainerBuilder {
     }
     const container = new RevaneIOC(this.options);
     await container.initialize();
+    const finishedAt = Date.now();
+    const logger = await container.get("rootLogger");
+    if (logger != null) {
+      const duration = finishedAt - startedAt;
+      logger.info(
+        `Root ApplicationContext: initialization completed in ${duration} ms`,
+      );
+    }
     return container;
   }
 
