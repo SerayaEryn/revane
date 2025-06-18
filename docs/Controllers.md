@@ -78,3 +78,35 @@ export class RabbitController {
   }
 }
 ```
+
+## Error Handlers
+
+### Per Controller
+
+```ts
+import { Controller, ErrorHandler, ResponseStatus } from 'revane'
+
+@Controller
+export class RabbitController [
+  @ErrorHandler('A_ERROR_CODE') 
+  @ResponseStatus(505)
+  async handleError1 (ignore, request, reply): Promise<string> {
+    return 'something went wrong'
+  }
+]
+```
+
+## Global
+
+```ts
+import { Controller, ErrorHandler, ResponseStatus } from 'revane'
+
+@ControllerAdvice
+export class GlobalErrorHandler {
+  @ErrorHandler
+  @ResponseStatus(500)
+  public async globalErrorHandler(error: Error): Promise<string> {
+    return 'something went wrong'
+  }
+}
+```

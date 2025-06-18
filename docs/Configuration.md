@@ -34,3 +34,4 @@ The following Revane properties can be specified in your configuration files:
 | revane.logging.format                        | The log forrmat: `JSON`, `SIMPLE` | `SIMPLE`    |
 | revane.main.allow-bean-definition-overriding |                                   | `false      |
 | revane.access-logging.enabled                | Enables basic access logging.     | `true`      |
+| revane.scheduling.enabled                    | Enables the scheduling.           | `false`     |
