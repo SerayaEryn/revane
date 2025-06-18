@@ -53,7 +53,7 @@ export class ServerBuilder {
     }
 
     this.#processComamands(this.optionCommands)
-    this.#createServer()
+    await this.#createServer()
     this.#processComamands(this.commands)
 
     await this.server.listen('configuration')
@@ -66,8 +66,16 @@ export class ServerBuilder {
     }
   }
 
-  #createServer () {
-    this.server = revaneFastify(this.options, new Context(this.revaneIOC.getContext()))
+  async #createServer () {
+    const context = new Context(this.revaneIOC.getContext())
+    const configuration = await context.getById('configuration')
+    if (configuration.get('revane.original-profile') == null) {
+      const logger = await context.getById('rootLogger')
+      if (logger != null) {
+        logger.info(`No active profile set, falling back to default profiles: default`)
+      }
+    }
+    this.server = revaneFastify(this.options, context)
   }
 }
 
