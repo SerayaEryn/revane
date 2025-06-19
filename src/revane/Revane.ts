@@ -199,7 +199,7 @@ export class Revane {
   }
 
   private async logUncaughtError(event: string, reason: Error) {
-    if (await this.container.has("logger")) {
+    if (await this.container.has("rootLogger")) {
       const logger = await this.container.get("rootLogger");
       logger.error(`Caught ${event} event:`, reason);
     } else {
