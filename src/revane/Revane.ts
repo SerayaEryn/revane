@@ -184,7 +184,7 @@ export class Revane {
   }
 
   private async shutdownGracefully(event: string) {
-    if (await this.container.has("logger")) {
+    if (await this.container.has("rootLogger")) {
       const logger = await this.container.get("rootLogger");
       logger.info(`Received ${event} event. Shutdown in progress...`);
     } else {
