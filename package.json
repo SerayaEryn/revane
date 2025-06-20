@@ -11,7 +11,7 @@
     "coverage": "c8 --reporter=lcov npm test",
     "compile": "tsc -d",
     "prepublishOnly": "npm run compile -s",
-    "postbuild": "cpy 'testdata/**/*.xml' bin/testdata && cpy 'testdata/**/*.yml' bin/testdata && cpy 'testdata/**/*.json' bin/testdata"
+    "postbuild": "cpy 'testdata/**/*.xml' bin/testdata && cpy 'testdata/**/*.yml' bin/testdata && cpy 'testdata/**/*.json' bin/testdata && cpy 'testdata/**/*.ico' bin/testdata"
   },
   "engines": {
     "node": ">=24.2.0"
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "revane-fastify": "^5.0.0",
-    "revane-ioc": "^2.1.1",
+    "revane-ioc": "^2.1.2",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
