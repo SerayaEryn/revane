@@ -33,7 +33,7 @@ The following Revane properties can be specified in your configuration files:
 | revane.logging.file                          |                                                 |             |
 | revane.logging.path                          |                                                 |             |
 | revane.logging.format                        | The log forrmat: `JSON`, `SIMPLE`               | `SIMPLE`    |
-| revane.main.allow-bean-definition-overriding |                                                 | `false      |
+| revane.main.allow-bean-definition-overriding | Allow overriding of beans.                      | `false`     |
 | revane.access-logging.enabled                | Enables basic access logging.                   | `true`      |
 | revane.scheduling.enabled                    | Enables the scheduling.                         | `false`     |
 | revane.favicon.enabled                       | Enables loading a `favicon.ico` from `./static` | `true`      |
