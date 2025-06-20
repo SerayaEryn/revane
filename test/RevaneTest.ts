@@ -162,6 +162,24 @@ test("should start server", async (t) => {
   process.removeAllListeners("SIGINT");
 });
 
+test("should return favicon", async (t) => {
+  t.plan(1);
+
+  const revane = new Revane();
+  await revane
+    .basePackage(join(import.meta.dirname, "../testdata"))
+    .configurationDir(join(import.meta.dirname, "../../testdata/config"))
+    .xmlFile("../../testdata/xml/config.xml")
+    .register("test")
+    .initialize();
+  const url = "http://localhost:" + revane.port() + '/favicon.ico';
+  const response = await fetch(url);
+  t.is(response.status, 200);
+  await revane.tearDown();
+  process.removeAllListeners("SIGTERM");
+  process.removeAllListeners("SIGINT");
+});
+
 test("should call ready handler", async (t) => {
   t.plan(2);
 
@@ -259,11 +277,10 @@ test("should use error handler", async (t) => {
     .initialize();
   const url = "http://localhost:" + instance.port() + "/testerror/";
   const response = await fetch(url);
-  const data = await response.text()
+  const data = await response.text();
   t.is(response.status, 500);
-  t.is(data, 'error handled')
+  t.is(data, "error handled");
   await instance.tearDown();
   process.removeAllListeners("SIGTERM");
   process.removeAllListeners("SIGINT");
 });
-

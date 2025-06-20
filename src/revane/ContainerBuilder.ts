@@ -10,7 +10,6 @@ import RevaneIOC, {
   JsonFileLoaderOptions,
 } from "revane-ioc";
 import { join } from "path";
-import { log } from "console";
 
 export class ContainerBuilder {
   private commands;
@@ -39,6 +38,7 @@ export class ContainerBuilder {
         this.absolutePath(path),
         excludeFilters,
         includeFilters,
+        []
       ),
     );
   }
@@ -83,8 +83,12 @@ export class ContainerBuilder {
     for (const command of this.commands) {
       this[command.type](...command.args);
     }
+    console.log(import.meta.dirname)
     if (this.options.autoConfiguration == null) {
       this.options.autoConfiguration = true;
+      const controller = await import('./FaviconController.js')
+      console.log(controller)
+      this.options.modulesToScan = [controller]
     }
     const container = new RevaneIOC(this.options);
     await container.initialize();
