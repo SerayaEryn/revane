@@ -172,12 +172,39 @@ test("should return favicon", async (t) => {
     .xmlFile("../../testdata/xml/config.xml")
     .register("test")
     .initialize();
-  const url = "http://localhost:" + revane.port() + '/favicon.ico';
+  const url = "http://localhost:" + revane.port() + "/favicon.ico";
   const response = await fetch(url);
   t.is(response.status, 200);
   await revane.tearDown();
   process.removeAllListeners("SIGTERM");
   process.removeAllListeners("SIGINT");
+});
+
+test("should throw error if port already used", async (t) => {
+  t.plan(2);
+
+  process.env.PORT = "" + Math.floor(Math.random() * 10000);
+  const revane1 = new Revane();
+  await revane1
+    .basePackage(join(import.meta.dirname, "../testdata"))
+    .configurationDir(join(import.meta.dirname, "../../testdata/config2"))
+    .xmlFile("../../testdata/xml/config.xml")
+    .initialize();
+  const url = "http://localhost:" + revane1.port() + "/favicon.ico";
+  const response = await fetch(url);
+  t.is(response.status, 200);
+
+  const revane2 = new Revane();
+  await revane2
+    .basePackage(join(import.meta.dirname, "../testdata"))
+    .configurationDir(join(import.meta.dirname, "../../testdata/config2"))
+    .xmlFile("../../testdata/xml/config.xml")
+    .initialize();
+  process.removeAllListeners("SIGTERM");
+  process.removeAllListeners("SIGINT");
+  await revane1.tearDown();
+  t.is(process.exitCode, 1);
+  process.exitCode = undefined;
 });
 
 test("should call ready handler", async (t) => {

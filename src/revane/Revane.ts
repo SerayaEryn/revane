@@ -51,42 +51,44 @@ import {
   ResponseStatus,
 } from "revane-fastify";
 import { Command } from "./Command.js";
+import { RevaneFailureAnalyzer } from "./revane-failure-analyzer/RevaneFailureAnalyzer.js";
 
 export class Revane {
-  private serverCommands: Command[] = [];
-  private serverOptionCommands: Command[] = [];
-  private containerCommands: Command[] = [];
-  private server: RevaneFastify;
-  private container: RevaneIOC;
+  #serverCommands: Command[] = [];
+  #serverOptionCommands: Command[] = [];
+  #containerCommands: Command[] = [];
+  #server: RevaneFastify;
+  #container: RevaneIOC;
   #name: string = applicationName();
+  #logger: Logger | null;
 
   public register(id: string | any, options?: any): Revane {
-    this.serverCommands.push({ type: "register", args: [id, options] });
+    this.#serverCommands.push({ type: "register", args: [id, options] });
     return this;
   }
 
   public registerControllers(): Revane {
-    this.serverCommands.push({ type: "registerControllers", args: [] });
+    this.#serverCommands.push({ type: "registerControllers", args: [] });
     return this;
   }
 
   public setErrorHandler(id: string): Revane {
-    this.serverCommands.push({ type: "setErrorHandler", args: [id] });
+    this.#serverCommands.push({ type: "setErrorHandler", args: [id] });
     return this;
   }
 
   public setNotFoundHandler(id: string): Revane {
-    this.serverCommands.push({ type: "setNotFoundHandler", args: [id] });
+    this.#serverCommands.push({ type: "setNotFoundHandler", args: [id] });
     return this;
   }
 
   public ready(handler: (err: Error) => void): Revane {
-    this.serverCommands.push({ type: "ready", args: [handler] });
+    this.#serverCommands.push({ type: "ready", args: [handler] });
     return this;
   }
 
   public basePackage(path: string): Revane {
-    this.containerCommands.push({ type: "basePackage", args: [path] });
+    this.#containerCommands.push({ type: "basePackage", args: [path] });
     return this;
   }
 
@@ -95,7 +97,7 @@ export class Revane {
     excludeFilters?: RegexFilter[],
     includeFilters?: RegexFilter[],
   ): Revane {
-    this.containerCommands.push({
+    this.#containerCommands.push({
       type: "componentScan",
       args: [path, excludeFilters, includeFilters],
     });
@@ -103,17 +105,17 @@ export class Revane {
   }
 
   public xmlFile(file: string): Revane {
-    this.containerCommands.push({ type: "xmlFile", args: [file] });
+    this.#containerCommands.push({ type: "xmlFile", args: [file] });
     return this;
   }
 
   public jsonFile(file: string): Revane {
-    this.containerCommands.push({ type: "jsonFile", args: [file] });
+    this.#containerCommands.push({ type: "jsonFile", args: [file] });
     return this;
   }
 
   public noRedefinition(noRedefinition?: boolean): Revane {
-    this.containerCommands.push({
+    this.#containerCommands.push({
       type: "noRedefinition",
       args: [noRedefinition],
     });
@@ -121,72 +123,82 @@ export class Revane {
   }
 
   public configurationDir(path: string): Revane {
-    this.containerCommands.push({ type: "configurationDir", args: [path] });
+    this.#containerCommands.push({ type: "configurationDir", args: [path] });
     return this;
   }
 
   public disableAutoConfiguration(): Revane {
-    this.containerCommands.push({ type: "disableAutoConfiguration", args: [] });
+    this.#containerCommands.push({
+      type: "disableAutoConfiguration",
+      args: [],
+    });
     return this;
   }
 
   public silent(isSilent: boolean): Revane {
-    this.serverOptionCommands.push({ type: "silent", args: [isSilent] });
+    this.#serverOptionCommands.push({ type: "silent", args: [isSilent] });
     return this;
   }
 
   public async initialize(): Promise<Revane> {
     if (
-      this.serverCommands.filter(
+      this.#serverCommands.filter(
         (command) => command.type === "registerControllers",
       ).length === 0
     ) {
       this.registerControllers();
     }
-    this.serverCommands.push({ type: "name", args: [this.#name] });
-    const { container, server } = await revaneBuilder()
-      .container(this.containerCommands)
-      .server(this.serverOptionCommands, this.serverCommands)
-      .build();
-    this.container = container;
-    this.server = server;
-    process.on("SIGINT", () => this.shutdownGracefully("SIGINT"));
-    process.on("SIGTERM", () => this.shutdownGracefully("SIGTERM"));
-    process.on("multipleResolves", (type, promise, reason: Error) =>
-      this.logUncaughtError("multipleResolves", reason),
-    );
-    process.on("rejectionHandled", (reason: Error) =>
-      this.logUncaughtError("rejectionHandled", reason),
-    );
-    process.on("uncaughtException", (reason: Error) =>
-      this.logUncaughtError("uncaughtException", reason),
-    );
-    this.disposeCommands();
+    this.#serverCommands.push({ type: "name", args: [this.#name] });
+    try {
+      const { container, server } = await revaneBuilder()
+        .container(this.#containerCommands)
+        .server(this.#serverOptionCommands, this.#serverCommands)
+        .build();
+      this.#container = container;
+      this.#server = server;
+      if (await this.#container.has("rootLogger")) {
+        this.#logger = await this.#container.get("rootLogger");
+      }
+      process.on("SIGINT", () => this.shutdownGracefully("SIGINT"));
+      process.on("SIGTERM", () => this.shutdownGracefully("SIGTERM"));
+      process.on("multipleResolves", (type, promise, reason: Error) =>
+        this.#logUncaughtError("multipleResolves", reason),
+      );
+      process.on("rejectionHandled", (reason: Error) =>
+        this.#logUncaughtError("rejectionHandled", reason),
+      );
+      process.on("uncaughtException", (reason: Error) =>
+        this.#logUncaughtError("uncaughtException", reason),
+      );
+      this.#disposeCommands();
+    } catch (error) {
+      new RevaneFailureAnalyzer(this.#logger).analyzeFailure(error);
+      process.exitCode = 1;
+    }
     return this;
   }
 
   public async getBean(id: string): Promise<any> {
-    return this.container.get(id);
+    return this.#container.get(id);
   }
 
   public port(): number {
-    if (this.server) {
-      return this.server.port();
+    if (this.#server) {
+      return this.#server.port();
     }
     return null;
   }
 
   public async tearDown(): Promise<void> {
-    if (this.server) {
-      await this.server.close();
+    if (this.#server) {
+      await this.#server.close();
     }
-    await this.container.close();
+    await this.#container.close();
   }
 
   private async shutdownGracefully(event: string) {
-    if (await this.container.has("rootLogger")) {
-      const logger = await this.container.get("rootLogger");
-      logger.info(`Received ${event} event. Shutdown in progress...`);
+    if (this.#logger != null) {
+      this.#logger.info(`Received ${event} event. Shutdown in progress...`);
     } else {
       console.log(`Received ${event} event. Shutdown in progress...`);
     }
@@ -198,10 +210,9 @@ export class Revane {
       });
   }
 
-  private async logUncaughtError(event: string, reason: Error) {
-    if (await this.container.has("rootLogger")) {
-      const logger = await this.container.get("rootLogger");
-      logger.error(`Caught ${event} event:`, reason);
+  async #logUncaughtError(event: string, reason: Error) {
+    if (this.#logger != null) {
+      this.#logger.error(`Caught ${event} event:`, reason);
     } else {
       console.error(`Caught ${event} event:`, reason);
     }
@@ -213,10 +224,10 @@ export class Revane {
       });
   }
 
-  private disposeCommands(): void {
-    this.serverCommands = null;
-    this.serverOptionCommands = null;
-    this.containerCommands = null;
+  #disposeCommands(): void {
+    this.#serverCommands = null;
+    this.#serverOptionCommands = null;
+    this.#containerCommands = null;
   }
 }
 
