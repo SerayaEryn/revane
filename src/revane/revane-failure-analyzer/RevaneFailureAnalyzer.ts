@@ -2,12 +2,18 @@ import { Logger } from "revane-ioc";
 import { FailureAnalyzer } from "./FailureAnalyzer.js";
 import { FailureAnalysis } from "./FailureAnalysis.js";
 import { AddressAlreadyInUseFailureAnalyzer } from "./AddressAlreadyInUseFailureAnalyzer.js";
+import { DependencyNotFoundFailureAnalyser } from "./DependencyNotFoundFailureAnalyser.js";
+import { ConflictingBeanDefinitionFailureAnalyzer } from "./ConflictingBeanDefinitionFailureAnalyzer.js";
 
 export { FailureAnalyzer };
 
 export class RevaneFailureAnalyzer {
   #logger: Logger | null;
-  #analyzers: FailureAnalyzer[] = [new AddressAlreadyInUseFailureAnalyzer()];
+  #analyzers: FailureAnalyzer[] = [
+    new AddressAlreadyInUseFailureAnalyzer(),
+    new DependencyNotFoundFailureAnalyser(),
+    new ConflictingBeanDefinitionFailureAnalyzer(),
+  ];
 
   constructor(logger: Logger | null) {
     this.#logger = logger;
