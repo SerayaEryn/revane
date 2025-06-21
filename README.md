@@ -6,6 +6,10 @@
 
 Framework for building web applications with dependency injection without boilerplate code.
 
+## Example
+
+* Example project: [revane-example](https://github.com/SerayaEryn/revane-example)
+
 ## Documentation
 
 * [First Steps](https://github.com/SerayaEryn/revane/blob/master/docs/First_Steps.md)
