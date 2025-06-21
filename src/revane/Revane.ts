@@ -22,6 +22,10 @@ import RevaneIOC, {
   PostConstruct,
   PreDestroy,
   RevaneConfiguration,
+  Conditional,
+  ConditionalOnProperty,
+  ConditionalOnResource,
+  Condition,
 } from "revane-ioc";
 import { revaneBuilder } from "./RevaneBuilder.js";
 import {
@@ -272,6 +276,10 @@ export {
   ConfigurationProperties,
   ApplicationContext,
   ConditionalOnMissingBean,
+  Conditional,
+  ConditionalOnProperty,
+  ConditionalOnResource,
+  Condition,
   Scheduled,
   Scheduler,
   ErrorHandler,
