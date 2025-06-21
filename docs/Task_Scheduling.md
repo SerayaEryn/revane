@@ -6,7 +6,7 @@ The scheduling can be enabled by setting the property `revane.scheduling.enabled
 
 The `@Scheduled()` decorator allows to create tasks that are being executed on a certain schedule.
 
-Refer to [cron](https://github.com/kelektiv/node-cron) for documentation of the cron patterns.
+Refer to [croner](https://github.com/hexagon/croner?tab=readme-ov-file#pattern) for documentation of the cron patterns.
 
 ```ts
 import { Component, Scheduled } from 'revane'
