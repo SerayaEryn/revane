@@ -2,6 +2,7 @@ import test from "ava";
 import { AddressAlreadyInUseFailureAnalyzer } from "../src/revane/revane-failure-analyzer/AddressAlreadyInUseFailureAnalyzer.js";
 import { DependencyNotFoundFailureAnalyser } from "../src/revane/revane-failure-analyzer/DependencyNotFoundFailureAnalyser.js";
 import { ConflictingBeanDefinitionFailureAnalyzer } from "../src/revane/revane-failure-analyzer/ConflictingBeanDefinitionFailureAnalyzer.js";
+import { BeanCreationFailureAnalyzer } from "../src/revane/revane-failure-analyzer/BeanCreationFailureAnalyzer.js";
 
 test("should analyze EADDRINUSE", async (t) => {
   const error = new Error();
@@ -59,4 +60,25 @@ test("should analyze REV_ERR_DEFINED_TWICE", async (t) => {
     "ApplicationContext failed to start. Bean with id 'userRepository' conflicts with existing bean definition of same id.",
   );
   t.is(analysis.action, "Consider renaming the bean with id 'userRepository'.");
+});
+
+test("should analyze REV_ERR_DEPENDENCY_REGISTER", async (t) => {
+  const error = new Error();
+  error["code"] = "REV_ERR_DEPENDENCY_REGISTER";
+  error["id"] = "userRepository";
+
+  const analyzer = new BeanCreationFailureAnalyzer();
+
+  t.true(analyzer.matches(error));
+  t.false(analyzer.matches(new Error()));
+
+  const analysis = analyzer.analyze(error);
+  t.is(
+    analysis.description,
+    "ApplicationContext failed to start. Bean with id 'userRepository' encountered a problem during its creation.",
+  );
+  t.is(
+    analysis.action,
+    "Consider analyzing the stacktrace for furrther information.",
+  );
 });
