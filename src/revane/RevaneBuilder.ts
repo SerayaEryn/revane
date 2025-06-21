@@ -28,7 +28,11 @@ export class RevaneBuilder {
 
   async build() {
     const container = await this.containerBuilder.build();
+    let logger = null;
+    if (await container.has("rootLogger")) {
+      logger = await container.get("rootLogger");
+    }
     const server = await this.serverBuilder.container(container).build();
-    return { container, server };
+    return { container, server, logger };
   }
 }

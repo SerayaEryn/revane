@@ -150,15 +150,13 @@ export class Revane {
     }
     this.#serverCommands.push({ type: "name", args: [this.#name] });
     try {
-      const { container, server } = await revaneBuilder()
+      const { container, server, logger } = await revaneBuilder()
         .container(this.#containerCommands)
         .server(this.#serverOptionCommands, this.#serverCommands)
         .build();
       this.#container = container;
       this.#server = server;
-      if (await this.#container.has("rootLogger")) {
-        this.#logger = await this.#container.get("rootLogger");
-      }
+      this.#logger = logger;
       process.on("SIGINT", () => this.shutdownGracefully("SIGINT"));
       process.on("SIGTERM", () => this.shutdownGracefully("SIGTERM"));
       process.on("multipleResolves", (type, promise, reason: Error) =>
