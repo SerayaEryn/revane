@@ -67,3 +67,12 @@ A component has one the following scopes:
 |-----------|-----------------------|---------------------------------------------------------------------------------------------------------|
 | singleton | `@Scope('singleton')` | A single instance of the component is shared in the applicaton. The singleton scope is used by default. |
 | prototype | `@Scope('prototype')` | A new instance of the component is created for each other component depending on it.                    |
+
+## Conditional beans
+
+There multiple decorators that allow to control the creation of beans by conditions:
+
+- `@Conditional(condition)`
+- `@ConditionalOnMissingBean('id')`
+- `@ConditionalOnProperty('a.configuration.property', true)`
+- `@ConditionalOnResource('./relative/path/to/file.json')`
