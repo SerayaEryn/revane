@@ -1,7 +1,12 @@
 # Components
 
-Controllers handle HTTP request
-Components are classes declared to a component by a decorator.
+Components are classes declared to be a component by one of the following decorators:
+
+- `@Component`
+- `@Service`
+- `@Repository`
+- `@Controller`
+- `@ControllerAdvice`
 
 Lets create a `RabbitService`, that stores our rabbits for now and will be
 injected into the `RabbitController`.
@@ -58,6 +63,7 @@ used to resolve dependencies.
 
 A component has one the following scopes:
 
-| Scope     | Decorator             | |
+| Scope     | Decorator             | Description                                                                                             |
+|-----------|-----------------------|---------------------------------------------------------------------------------------------------------|
 | singleton | `@Scope('singleton')` | A single instance of the component is shared in the applicaton. The singleton scope is used by default. |
-| prototype | `@Scope('prototype')` | A new instance of the component is created for each other component depending on it.
+| prototype | `@Scope('prototype')` | A new instance of the component is created for each other component depending on it.                    |
