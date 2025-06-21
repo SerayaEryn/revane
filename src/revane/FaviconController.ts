@@ -15,7 +15,6 @@ export default class FaviconController {
   #basePackage;
 
   constructor(configuration: RevaneConfiguration) {
-    console.log("TEST");
     this.#basePackage = configuration.getString("revane.basePackage");
   }
 
