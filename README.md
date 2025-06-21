@@ -6,6 +6,14 @@
 
 Framework for building web applications with dependency injection without boilerplate code.
 
+## Features
+
+* Inversion of control container
+* Depencency injection
+* Declaration of controllers using decorators
+* Integrated logging
+* Task scheduling
+
 ## Example
 
 * Example project: [revane-example](https://github.com/SerayaEryn/revane-example)
