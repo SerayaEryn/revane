@@ -7,7 +7,8 @@ export class ConflictingBeanDefinitionFailureAnalyzer
   analyze(cause: NodeJS.ErrnoException): FailureAnalysis {
     const id = cause["id"];
     return new FailureAnalysis(
-      `ApplicationContext failed to start. Bean with id '${id}' conflicts with existing bean definition of same id.`,
+      `ApplicationContext failed to start. Bean with id '${id}' ` +
+        `conflicts with existing bean definition of same id.`,
       `Consider renaming the bean with id '${id}'.`,
       cause,
     );

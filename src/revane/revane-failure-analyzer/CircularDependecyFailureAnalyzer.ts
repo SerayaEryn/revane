@@ -5,7 +5,8 @@ export class CircularDependecyFailureAnalyzer implements FailureAnalyzer {
   analyze(cause: NodeJS.ErrnoException): FailureAnalysis {
     const ids = cause["ids"] ?? [];
     return new FailureAnalysis(
-      `ApplicationContext failed to start. Bean with id '${ids[0]}' has a circular dependency on itself (${ids.join(" -> ")}]).`,
+      `ApplicationContext failed to start. Bean with id '${ids[0]}' has a ` +
+        `circular dependency on itself (${ids.join(" -> ")}]).`,
       `Consider checking the dependencies of the bean with id '${ids[0]}'.`,
       cause,
     );

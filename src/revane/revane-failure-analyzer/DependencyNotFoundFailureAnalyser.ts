@@ -6,7 +6,8 @@ export class DependencyNotFoundFailureAnalyser implements FailureAnalyzer {
     const id = cause["id"];
     const parentId = cause["parentId"];
     return new FailureAnalysis(
-      `ApplicationContext failed to start. Bean with id '${parentId}' required a bean with id ${id} that could not be found.`,
+      `ApplicationContext failed to start. Bean with id '${parentId}' ` +
+        `required a bean with id ${id} that could not be found.`,
       `Consider providing a bean with id '${id}'.`,
       cause,
     );

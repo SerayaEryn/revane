@@ -6,6 +6,8 @@ import { DependencyNotFoundFailureAnalyser } from "./DependencyNotFoundFailureAn
 import { ConflictingBeanDefinitionFailureAnalyzer } from "./ConflictingBeanDefinitionFailureAnalyzer.js";
 import { BeanCreationFailureAnalyzer } from "./BeanCreationFailureAnalyzer.js";
 import { CircularDependecyFailureAnalyzer } from "./CircularDependecyFailureAnalyzer.js";
+import { InvalidScopeFailureAnalyser } from "./InvalidScopeFailureAnalyser.js";
+import { InvalidCronPatternFailureAnalyser } from "./InvalidCronPatternFailureAnalyser.js";
 
 export { FailureAnalyzer };
 
@@ -17,6 +19,8 @@ export class RevaneFailureAnalyzer {
     new ConflictingBeanDefinitionFailureAnalyzer(),
     new BeanCreationFailureAnalyzer(),
     new CircularDependecyFailureAnalyzer(),
+    new InvalidScopeFailureAnalyser(),
+    new InvalidCronPatternFailureAnalyser(),
   ];
 
   constructor(logger: Logger | null) {

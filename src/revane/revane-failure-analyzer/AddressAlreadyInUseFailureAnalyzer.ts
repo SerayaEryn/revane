@@ -6,7 +6,8 @@ export class AddressAlreadyInUseFailureAnalyzer implements FailureAnalyzer {
     const port = cause["port"];
     return new FailureAnalysis(
       `Web server failed to start. Port ${port} was already in use.`,
-      `Identify and stop the process that's listing on port ${port} or configure this application to listen on another port.`,
+      `Identify and stop the process that's listing on port ${port} or ` +
+        `configure this application to listen on another port.`,
       cause,
     );
   }

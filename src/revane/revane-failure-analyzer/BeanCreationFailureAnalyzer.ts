@@ -5,7 +5,8 @@ export class BeanCreationFailureAnalyzer implements FailureAnalyzer {
   analyze(cause: NodeJS.ErrnoException): FailureAnalysis {
     const id = cause["id"];
     return new FailureAnalysis(
-      `ApplicationContext failed to start. Bean with id '${id}' encountered a problem during its creation.`,
+      `ApplicationContext failed to start. Bean with id '${id}' ` +
+        `encountered a problem during its creation.`,
       `Consider analyzing the stacktrace for further information.`,
       cause,
     );
