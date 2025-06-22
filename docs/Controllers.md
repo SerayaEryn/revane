@@ -110,3 +110,33 @@ export class GlobalErrorHandler {
   }
 }
 ```
+
+## ModelAttribute
+
+The `@ModelAttribute` decorator allows to bind request parameters, path variables, and more onto a model object:
+
+```ts
+import { Controller, Get, ModelAttribute } from 'revane'
+
+@Controller
+export class RabbitController {
+  @Get('/rabbits/:id/')
+  find(@ModelAttribute rabbit: Rabbit | null): string {
+    return rabbit?.name;
+  }
+}
+```
+
+```ts
+import { Component, Param, ModelAttribute } from 'revane'
+
+@Component
+export class RabbitLoader {
+  constructor(public rabbitRepository: RabbitRepository) {}
+
+  @ModelAttribut("rabbit")
+  public async getRabbit(@Param id: string): Rabbit | null {
+    return await this.rabbitRepository.findById(id)
+  }
+}
+```
