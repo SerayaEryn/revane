@@ -3,6 +3,7 @@ import { AddressAlreadyInUseFailureAnalyzer } from "../src/revane/revane-failure
 import { DependencyNotFoundFailureAnalyser } from "../src/revane/revane-failure-analyzer/DependencyNotFoundFailureAnalyser.js";
 import { ConflictingBeanDefinitionFailureAnalyzer } from "../src/revane/revane-failure-analyzer/ConflictingBeanDefinitionFailureAnalyzer.js";
 import { BeanCreationFailureAnalyzer } from "../src/revane/revane-failure-analyzer/BeanCreationFailureAnalyzer.js";
+import { CircularDependecyFailureAnalyzer } from "../src/revane/revane-failure-analyzer/CircularDependecyFailureAnalyzer.js";
 
 test("should analyze EADDRINUSE", async (t) => {
   const error = new Error();
@@ -79,6 +80,27 @@ test("should analyze REV_ERR_DEPENDENCY_REGISTER", async (t) => {
   );
   t.is(
     analysis.action,
-    "Consider analyzing the stacktrace for furrther information.",
+    "Consider analyzing the stacktrace for further information.",
+  );
+});
+
+test("should analyze REV_ERR_CIRCULAR_DEPENDENCY", async (t) => {
+  const error = new Error();
+  error["code"] = "REV_ERR_CIRCULAR_DEPENDENCY";
+  error["ids"] = ["userRepository", "userRepository"];
+
+  const analyzer = new CircularDependecyFailureAnalyzer();
+
+  t.true(analyzer.matches(error));
+  t.false(analyzer.matches(new Error()));
+
+  const analysis = analyzer.analyze(error);
+  t.is(
+    analysis.description,
+    "ApplicationContext failed to start. Bean with id 'userRepository' has a circular dependency on itself (userRepository -> userRepository]).",
+  );
+  t.is(
+    analysis.action,
+    "Consider checking the dependencies of the bean with id 'userRepository'.",
   );
 });

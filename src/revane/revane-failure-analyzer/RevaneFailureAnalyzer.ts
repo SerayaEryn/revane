@@ -5,6 +5,7 @@ import { AddressAlreadyInUseFailureAnalyzer } from "./AddressAlreadyInUseFailure
 import { DependencyNotFoundFailureAnalyser } from "./DependencyNotFoundFailureAnalyser.js";
 import { ConflictingBeanDefinitionFailureAnalyzer } from "./ConflictingBeanDefinitionFailureAnalyzer.js";
 import { BeanCreationFailureAnalyzer } from "./BeanCreationFailureAnalyzer.js";
+import { CircularDependecyFailureAnalyzer } from "./CircularDependecyFailureAnalyzer.js";
 
 export { FailureAnalyzer };
 
@@ -15,6 +16,7 @@ export class RevaneFailureAnalyzer {
     new DependencyNotFoundFailureAnalyser(),
     new ConflictingBeanDefinitionFailureAnalyzer(),
     new BeanCreationFailureAnalyzer(),
+    new CircularDependecyFailureAnalyzer(),
   ];
 
   constructor(logger: Logger | null) {

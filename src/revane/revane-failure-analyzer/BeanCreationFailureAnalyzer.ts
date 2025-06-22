@@ -6,7 +6,7 @@ export class BeanCreationFailureAnalyzer implements FailureAnalyzer {
     const id = cause["id"];
     return new FailureAnalysis(
       `ApplicationContext failed to start. Bean with id '${id}' encountered a problem during its creation.`,
-      `Consider analyzing the stacktrace for furrther information.`,
+      `Consider analyzing the stacktrace for further information.`,
       cause,
     );
   }
