@@ -56,15 +56,15 @@ export class ServerBuilder {
       return Promise.resolve(null);
     }
 
-    this.#processComamands(this.optionCommands);
+    this.#processCommands(this.optionCommands);
     await this.#createServer();
-    this.#processComamands(this.commands);
+    this.#processCommands(this.commands);
 
     await this.server.listen("configuration");
     return this.server;
   }
 
-  #processComamands(commands: Command[]) {
+  #processCommands(commands: Command[]) {
     for (const command of commands) {
       this[command.type](...command.args);
     }
