@@ -88,15 +88,19 @@ export class ServerBuilder {
 class Context implements RevaneFastifyContext {
   constructor(private applicationContext: ApplicationContext) {}
 
-  public hasById(id: string): Promise<boolean> {
+  public async hasById(id: string): Promise<boolean> {
     return this.applicationContext.hasById(id);
   }
 
-  public getByComponentType(type: string): Promise<any[]> {
+  public asyncgetByComponentType(type: string): Promise<any[]> {
     return this.applicationContext.getByType(type);
   }
 
-  public getById(id: string): Promise<any> {
+  public async getById(id: string): Promise<any> {
     return this.applicationContext.getById(id);
+  }
+
+  public async getByMetadata(metadata: string | symbol): Promise<any[]> {
+    return this.applicationContext.getByMetadata(metadata);
   }
 }
