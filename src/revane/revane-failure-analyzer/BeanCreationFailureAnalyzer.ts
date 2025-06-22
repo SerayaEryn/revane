@@ -1,3 +1,4 @@
+import { errorCodes } from "revane-ioc";
 import { FailureAnalysis } from "./FailureAnalysis.js";
 import { FailureAnalyzer } from "./FailureAnalyzer.js";
 
@@ -13,6 +14,6 @@ export class BeanCreationFailureAnalyzer implements FailureAnalyzer {
   }
 
   matches(cause: NodeJS.ErrnoException): boolean {
-    return cause.code == "REV_ERR_DEPENDENCY_REGISTER";
+    return cause.code == errorCodes.REV_ERR_DEPENDENCY_REGISTER;
   }
 }

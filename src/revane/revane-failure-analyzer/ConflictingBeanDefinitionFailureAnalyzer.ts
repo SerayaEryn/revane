@@ -1,3 +1,4 @@
+import { errorCodes } from "revane-ioc";
 import { FailureAnalysis } from "./FailureAnalysis.js";
 import { FailureAnalyzer } from "./FailureAnalyzer.js";
 
@@ -15,6 +16,6 @@ export class ConflictingBeanDefinitionFailureAnalyzer
   }
 
   matches(cause: NodeJS.ErrnoException): boolean {
-    return cause.code === "REV_ERR_DEFINED_TWICE";
+    return cause.code === errorCodes.REV_ERR_DEFINED_TWICE;
   }
 }

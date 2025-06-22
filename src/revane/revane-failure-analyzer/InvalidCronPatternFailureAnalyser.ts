@@ -1,3 +1,4 @@
+import { errorCodes } from "revane-ioc";
 import { FailureAnalysis } from "./FailureAnalysis.js";
 import { FailureAnalyzer } from "./FailureAnalyzer.js";
 
@@ -16,6 +17,6 @@ export class InvalidCronPatternFailureAnalyser implements FailureAnalyzer {
   }
 
   matches(cause: NodeJS.ErrnoException): boolean {
-    return cause.code === "REV_ERR_INVALID_CRON_PATTERN_PROVIDED";
+    return cause.code === errorCodes.REV_ERR_INVALID_CRON_PATTERN_PROVIDED;
   }
 }
