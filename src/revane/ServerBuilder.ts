@@ -92,7 +92,7 @@ class Context implements RevaneFastifyContext {
     return this.applicationContext.hasById(id);
   }
 
-  public asyncgetByComponentType(type: string): Promise<any[]> {
+  public async getByComponentType(type: string): Promise<any[]> {
     return this.applicationContext.getByType(type);
   }
 
