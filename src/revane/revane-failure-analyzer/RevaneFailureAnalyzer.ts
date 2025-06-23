@@ -8,6 +8,8 @@ import { BeanCreationFailureAnalyzer } from "./BeanCreationFailureAnalyzer.js";
 import { CircularDependecyFailureAnalyzer } from "./CircularDependecyFailureAnalyzer.js";
 import { InvalidScopeFailureAnalyser } from "./InvalidScopeFailureAnalyser.js";
 import { InvalidCronPatternFailureAnalyser } from "./InvalidCronPatternFailureAnalyser.js";
+import { MissingModelAttributeFailureAnalyser } from "./MissingModelAttributeFailureAnalyser.js";
+import { DuplicateModelAttributeFailureAnalyser } from "./DuplicateModelAttributeFailureAnalyser copy.js";
 
 export { FailureAnalyzer };
 
@@ -21,6 +23,8 @@ export class RevaneFailureAnalyzer {
     new CircularDependecyFailureAnalyzer(),
     new InvalidScopeFailureAnalyser(),
     new InvalidCronPatternFailureAnalyser(),
+    new MissingModelAttributeFailureAnalyser(),
+    new DuplicateModelAttributeFailureAnalyser(),
   ];
 
   constructor(logger: Logger | null) {

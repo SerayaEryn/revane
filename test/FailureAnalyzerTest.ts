@@ -6,6 +6,8 @@ import { BeanCreationFailureAnalyzer } from "../src/revane/revane-failure-analyz
 import { CircularDependecyFailureAnalyzer } from "../src/revane/revane-failure-analyzer/CircularDependecyFailureAnalyzer.js";
 import { InvalidScopeFailureAnalyser } from "../src/revane/revane-failure-analyzer/InvalidScopeFailureAnalyser.js";
 import { InvalidCronPatternFailureAnalyser } from "../src/revane/revane-failure-analyzer/InvalidCronPatternFailureAnalyser.js";
+import { DuplicateModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/DuplicateModelAttributeFailureAnalyser copy.js";
+import { MissingModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/MissingModelAttributeFailureAnalyser.js";
 
 test("should analyze EADDRINUSE", async (t) => {
   const error = new Error();
@@ -148,5 +150,47 @@ test("should analyze REV_ERR_INVALID_CRON_PATTERN_PROVIDED", async (t) => {
   t.is(
     analysis.action,
     "Consider checking the cron pattern. Refer to https://github.com/hexagon/croner?tab=readme-ov-file#pattern for details on the cron pattern syntax.",
+  );
+});
+
+test("should analyze REV_ERR_MISSING_MODEL_ATTRIBUTE_CONVERTER", async (t) => {
+  const error = new Error();
+  error["code"] = "REV_ERR_MISSING_MODEL_ATTRIBUTE_CONVERTER";
+  error["name"] = "userRepository";
+
+  const analyzer = new MissingModelAttributeFailureAnalyser();
+
+  t.true(analyzer.matches(error));
+  t.false(analyzer.matches(new Error()));
+
+  const analysis = analyzer.analyze(error);
+  t.is(
+    analysis.description,
+    "ApplicationContext failed to start. There is no ModelAttribute Converter defined for the ModelAttribute with name 'userRepository'.",
+  );
+  t.is(
+    analysis.action,
+    "Define a ModelAttribute Converter with name 'userRepository'.",
+  );
+});
+
+test("should analyze REV_ERR_DUPLICATE_MODEL_ATTRIBUTE_CONVERTER", async (t) => {
+  const error = new Error();
+  error["code"] = "REV_ERR_DUPLICATE_MODEL_ATTRIBUTE_CONVERTER";
+  error["name"] = "userRepository";
+
+  const analyzer = new DuplicateModelAttributeFailureAnalyser();
+
+  t.true(analyzer.matches(error));
+  t.false(analyzer.matches(new Error()));
+
+  const analysis = analyzer.analyze(error);
+  t.is(
+    analysis.description,
+    "ApplicationContext failed to start. There is more than one ModelAttribute Converter defined for the ModelAttribute with name 'userRepository'.",
+  );
+  t.is(
+    analysis.action,
+    "Consider checking all ModelAttribute Converters with name 'userRepository'.",
   );
 });
