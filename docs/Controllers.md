@@ -79,6 +79,22 @@ export class RabbitController {
 }
 ```
 
+There are the following decorators that allow to access request data:
+
+| decorator                      | description                             |
+|--------------------------------|-----------------------------------------|
+| `@Query("<name>")`, `@Query`   | provides the value of a query parameter |
+| `@Param("<name>")`, `@Param`   | provides the value of a path variable   |
+| `@Cookie("<name>")`, `@Cookie` | provides the value of a cookie          |
+| `@Header("<name>")`, `@Header` | provides the value of a headers         |
+| `@Request`                     | provides the request                    |
+| `@Cookies`                     | provides all cookies                    |
+| `@Params`                      | provides all path variables             |
+| `@Headers`                     | provides all headers                    |
+| `@QueryParameters`             | provides all query parameters           |
+| `@Body`                        | provides the body of a post request     |
+| `@Log`                         | provides a logger                       |
+
 ## Error Handlers
 
 ### Per Controller
