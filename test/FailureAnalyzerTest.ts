@@ -8,6 +8,7 @@ import { InvalidScopeFailureAnalyser } from "../src/revane/revane-failure-analyz
 import { InvalidCronPatternFailureAnalyser } from "../src/revane/revane-failure-analyzer/InvalidCronPatternFailureAnalyser.js";
 import { DuplicateModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/DuplicateModelAttributeFailureAnalyser copy.js";
 import { MissingModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/MissingModelAttributeFailureAnalyser.js";
+import { ConfigKeyTypeMismatchFailureAnalyzer } from "../src/revane/revane-failure-analyzer/ConfigKeyTypeMismatchFailureAnalyzer.js";
 
 test("should analyze EADDRINUSE", async (t) => {
   const error = new Error();
@@ -192,5 +193,27 @@ test("should analyze REV_ERR_DUPLICATE_MODEL_ATTRIBUTE_CONVERTER", async (t) => 
   t.is(
     analysis.action,
     "Consider checking all ModelAttribute Converters with name 'userRepository'.",
+  );
+});
+
+test("should analyze REV_ERR_KEY_TYPE_MISMATCH", async (t) => {
+  const error = new Error();
+  error["code"] = "REV_ERR_KEY_TYPE_MISMATCH";
+  error["key"] = "a.property";
+  error["type"] = "string";
+
+  const analyzer = new ConfigKeyTypeMismatchFailureAnalyzer();
+
+  t.true(analyzer.matches(error));
+  t.false(analyzer.matches(new Error()));
+
+  const analysis = analyzer.analyze(error);
+  t.is(
+    analysis.description,
+    "ApplicationContext failed to start. The value of the property key 'a.property' is unexpectedly a string.",
+  );
+  t.is(
+    analysis.action,
+    "Consider checking the provided value for the property key 'a.property'.",
   );
 });
