@@ -123,3 +123,19 @@ There multiple decorators that allow to control the creation of beans by conditi
 *since `3.1.0`*
 
 ...
+
+## @Bean
+
+An alternative way to declare a bean is using the `@Bean` decorator on a method in a component.
+
+```ts
+import { Component, Bean } from "revane"
+
+@Component
+class Example {
+  @Bean
+  public bean() {
+    return new ExampleImpl()
+  }
+}
+```
