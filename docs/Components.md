@@ -126,6 +126,8 @@ There multiple decorators that allow to control the creation of beans by conditi
 
 ## @Bean
 
+*since `2.0.0`*
+
 An alternative way to declare a bean is using the `@Bean` decorator on a method in a component.
 
 ```ts
