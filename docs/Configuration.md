@@ -22,10 +22,10 @@ REVANE_PROFILE=example node bin/ExampleApplication.js
 The Configuration can be accessed by injecting it:
 
 ```ts
-import { Configuration, Component, Type } from 'revane'
+import { RevaneConfiguration, Component, Type } from 'revane'
 
 class Example {
-  constructor(@Type(Configuration) configuration: Configuration) {
+  constructor(@Type(RevaneConfiguration) configuration: RevaneConfiguration) {
     configuration.getString("a.property.of.type.string")
   }
 }
