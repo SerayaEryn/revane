@@ -1,5 +1,7 @@
 # Logging
 
+*since `3.0.0`*
+
 ## Obtaining a logger
 
 A logger instance can be obtained by adding a logger parameter to your class contructor:

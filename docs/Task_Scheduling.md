@@ -1,5 +1,7 @@
 # Task Scheduling
 
+*since `3.0.0`*
+
 The scheduling can be enabled by setting the property `revane.scheduling.enabled=true`.
 
 ## Creating cron jobs

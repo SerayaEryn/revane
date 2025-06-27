@@ -129,6 +129,8 @@ export class GlobalErrorHandler {
 
 ## ModelAttribute
 
+*since `3.2.0`*
+
 The `@ModelAttribute` decorator allows to bind request parameters, path variables, and more onto a model object:
 
 ```ts
