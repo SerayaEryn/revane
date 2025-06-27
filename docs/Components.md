@@ -89,7 +89,9 @@ constructor(private rabbitService: RabbitService) {}
 
 ## Scopes
 
-A component has one the following scopes:
+*since `1.0.0`*
+
+A component can have one the following scopes that can be set by the `@Scope()` decorator:
 
 | Scope     | Decorator             | Description                                                                                             |
 |-----------|-----------------------|---------------------------------------------------------------------------------------------------------|
@@ -104,27 +106,84 @@ There multiple decorators that allow to control the creation of beans by conditi
 
 *since `3.1.0`*
 
-...
+Beans can be created conditionally with a custom condition:
+
+```ts
+import { Condition } from "revane"
+
+class NodeVersionCondition implements Condition {
+  constructor(configuration: RevaneConfiguration) {
+    // ...
+  }
+
+  async matches(data: {
+    value: string | number | boolean;
+    property: string;
+  }): Promise<boolean> {
+    return process.version.startsWith("v20")
+  }
+}
+```
+
+```ts
+import { Component, Conditional } from "revane"
+
+@Component
+@Conditional(NodeVersionCondition)
+class Bean {
+  // ...
+}
+```
 
 ### @ConditionalOnMissingBean('id')
 
 *since `3.0.0`*
 
-...
+A bean can be created conditionally on a bean not exitsting by adding `@ConditionalOnMissingBean()` to a bean:
+
+```ts
+import { Component, ConditionalOnResource } from "revane"
+
+@Component
+@ConditionalOnMissingBean("beanId")
+class Bean {
+  // ...
+}
+```
 
 ### @ConditionalOnProperty('a.configuration.property', true)
 
 *since `3.1.0`*
 
-...
+A bean can be created conditionally on a configuration property having a value by adding `@ConditionalOnProperty()` to a bean:
+
+```ts
+import { Component, ConditionalOnResource } from "revane"
+
+@Component
+@ConditionalOnProperty("a.property", true)
+class Bean {
+  // ...
+}
+```
 
 ### @ConditionalOnResource('./relative/path/to/file.json')
 
 *since `3.1.0`*
 
-...
+A bean can be created conditionally on the existance of a file by adding `@ConditionalOnResource()` to a bean:
 
-## @Bean
+```ts
+import { Component, ConditionalOnResource } from "revane"
+
+@Component
+@ConditionalOnResource("./file.json")
+class Bean {
+  // ...
+}
+```
+
+## Bean Factories
 
 *since `2.0.0`*
 
