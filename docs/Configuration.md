@@ -35,7 +35,31 @@ class Example {
 
 *since `3.0.0`*
 
-...
+Given the following configuration file:
+
+```yml
+example:
+  value1: 42
+  value2: test
+```
+
+The properties can be loaded from the configuration with the `@ConfigurationProperties` decorator.
+
+```ts
+@ConfigurationProperties({ prefix: 'example' })
+export class ConfigurationPropertiesExample {
+  value1: number
+  value2: string
+
+  setValue1 (value1: number) {
+    this.value1 = value1
+  }
+
+  setValue2 (value2: string) {
+    this.value2 = value2
+  }
+}
+```
 
 
 ## Properties
