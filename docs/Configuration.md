@@ -1,5 +1,7 @@
 # Configuration
 
+*since `3.0.0`*
+
 Configuration files a lookup in a `./config/` folder by default.
 
 At least a `application.yml` is required. Additional configuration files for profiles can be added: `application-example.yml`.
