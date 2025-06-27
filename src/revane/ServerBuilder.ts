@@ -1,4 +1,4 @@
-import RevaneIOC, { ApplicationContext } from "revane-ioc";
+import RevaneIOC, { ApplicationContext, RevaneConfiguration } from "revane-ioc";
 import {
   RevaneFastify,
   revaneFastify,
@@ -72,7 +72,8 @@ export class ServerBuilder {
 
   async #createServer() {
     const context = new Context(this.revaneIOC.getContext());
-    const configuration = await context.getById("configuration");
+    const configuration: RevaneConfiguration =
+      await context.getById("configuration");
     if (configuration.get("revane.original-profile") == null) {
       const logger = await context.getById("rootLogger");
       if (logger != null) {
@@ -80,6 +81,21 @@ export class ServerBuilder {
           `No active profile set, falling back to default profiles: default`,
         );
       }
+    }
+    if (configuration.has("revane.server.body-limit")) {
+      this.options.bodyLimit = configuration.getNumber(
+        "revane.server.body-limit",
+      );
+    }
+    if (configuration.has("revane.server.case-sensitive")) {
+      this.options.bodyLimit = configuration.getBoolean(
+        "revane.server.case-sensitive",
+      );
+    }
+    if (configuration.has("revane.server.request-id-header")) {
+      this.options.bodyLimit = configuration.getString(
+        "revane.server.request-id-header",
+      );
     }
     this.server = revaneFastify(this.options, context);
   }
