@@ -1,6 +1,6 @@
 import { FailureAnalysis } from "./FailureAnalysis.js";
 import { FailureAnalyzer } from "./FailureAnalyzer.js";
-import { REV_ERR_DUPLICATE_MODEL_ATTRIBUTE_CONVERTER } from "revane-fastify";
+import { errorCodes } from "revane-fastify";
 
 export class DuplicateModelAttributeFailureAnalyser implements FailureAnalyzer {
   analyze(cause: NodeJS.ErrnoException): FailureAnalysis {
@@ -13,6 +13,8 @@ export class DuplicateModelAttributeFailureAnalyser implements FailureAnalyzer {
   }
 
   matches(cause: NodeJS.ErrnoException): boolean {
-    return cause.code === REV_ERR_DUPLICATE_MODEL_ATTRIBUTE_CONVERTER;
+    return (
+      cause.code === errorCodes.REV_ERR_DUPLICATE_MODEL_ATTRIBUTE_CONVERTER
+    );
   }
 }

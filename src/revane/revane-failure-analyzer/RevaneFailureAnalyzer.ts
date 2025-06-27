@@ -9,7 +9,8 @@ import { CircularDependecyFailureAnalyzer } from "./CircularDependecyFailureAnal
 import { InvalidScopeFailureAnalyser } from "./InvalidScopeFailureAnalyser.js";
 import { InvalidCronPatternFailureAnalyser } from "./InvalidCronPatternFailureAnalyser.js";
 import { MissingModelAttributeFailureAnalyser } from "./MissingModelAttributeFailureAnalyser.js";
-import { DuplicateModelAttributeFailureAnalyser } from "./DuplicateModelAttributeFailureAnalyser copy.js";
+import { DuplicateModelAttributeFailureAnalyser } from "./DuplicateModelAttributeFailureAnalyser.js";
+import { ConfigKeyTypeMismatchFailureAnalyzer } from "./ConfigKeyTypeMismatchFailureAnalyzer.js";
 
 export { FailureAnalyzer };
 
@@ -25,6 +26,7 @@ export class RevaneFailureAnalyzer {
     new InvalidCronPatternFailureAnalyser(),
     new MissingModelAttributeFailureAnalyser(),
     new DuplicateModelAttributeFailureAnalyser(),
+    new ConfigKeyTypeMismatchFailureAnalyzer(),
   ];
 
   constructor(logger: Logger | null) {

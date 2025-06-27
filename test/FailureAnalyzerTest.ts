@@ -6,7 +6,7 @@ import { BeanCreationFailureAnalyzer } from "../src/revane/revane-failure-analyz
 import { CircularDependecyFailureAnalyzer } from "../src/revane/revane-failure-analyzer/CircularDependecyFailureAnalyzer.js";
 import { InvalidScopeFailureAnalyser } from "../src/revane/revane-failure-analyzer/InvalidScopeFailureAnalyser.js";
 import { InvalidCronPatternFailureAnalyser } from "../src/revane/revane-failure-analyzer/InvalidCronPatternFailureAnalyser.js";
-import { DuplicateModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/DuplicateModelAttributeFailureAnalyser copy.js";
+import { DuplicateModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/DuplicateModelAttributeFailureAnalyser.js";
 import { MissingModelAttributeFailureAnalyser } from "../src/revane/revane-failure-analyzer/MissingModelAttributeFailureAnalyser.js";
 import { ConfigKeyTypeMismatchFailureAnalyzer } from "../src/revane/revane-failure-analyzer/ConfigKeyTypeMismatchFailureAnalyzer.js";
 

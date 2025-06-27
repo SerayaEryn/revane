@@ -1,6 +1,6 @@
 import { FailureAnalysis } from "./FailureAnalysis.js";
 import { FailureAnalyzer } from "./FailureAnalyzer.js";
-import { REV_ERR_MISSING_MODEL_ATTRIBUTE_CONVERTER } from "revane-fastify";
+import { errorCodes } from "revane-fastify";
 
 export class MissingModelAttributeFailureAnalyser implements FailureAnalyzer {
   analyze(cause: NodeJS.ErrnoException): FailureAnalysis {
@@ -14,6 +14,6 @@ export class MissingModelAttributeFailureAnalyser implements FailureAnalyzer {
   }
 
   matches(cause: NodeJS.ErrnoException): boolean {
-    return cause.code === REV_ERR_MISSING_MODEL_ATTRIBUTE_CONVERTER;
+    return cause.code === errorCodes.REV_ERR_MISSING_MODEL_ATTRIBUTE_CONVERTER;
   }
 }
