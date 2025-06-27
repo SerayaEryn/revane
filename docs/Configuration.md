@@ -17,6 +17,20 @@ The Profile can be passed to the application by providing the `REVANE_PROFILE` e
 REVANE_PROFILE=example node bin/ExampleApplication.js
 ```
 
+## Accesing Configuration Properties
+
+The Configuration can be accessed by injecting it:
+
+```ts
+import { Configuration, Component, Type } from 'revane'
+
+class Example {
+  constructor(@Type(Configuration) configuration: Configuration) {
+    configuration.getString("a.property.of.type.string")
+  }
+}
+```
+
 ## Properties
 
 The following Revane properties can be specified in your configuration files:
