@@ -1,6 +1,6 @@
-# Components
+# Beans
 
-Components are classes declared to be a component by one of the following decorators:
+Beans are classes declared to be a bean by one of the following decorators:
 
 - `@Component`
 - `@Service`
@@ -85,7 +85,7 @@ constructor(private rabbitService: RabbitService) {}
 
 > [!NOTE]
 > The id of a bean is the name of the bean with the first character being small.
-> Example: `class RabbitServie {}` has the id `rabbitService`
+> Example: `class RabbitService {}` has the id `rabbitService`
 
 ## Scopes
 
@@ -93,10 +93,10 @@ constructor(private rabbitService: RabbitService) {}
 
 A component can have one the following scopes that can be set by the `@Scope()` decorator:
 
-| Scope     | Decorator             | Description                                                                                             |
-|-----------|-----------------------|---------------------------------------------------------------------------------------------------------|
-| singleton | `@Scope('singleton')` | A single instance of the component is shared in the applicaton. The singleton scope is used by default. |
-| prototype | `@Scope('prototype')` | A new instance of the component is created for each other component depending on it.                    |
+| Scope     | Decorator             | Description                                                                                          |
+|-----------|-----------------------|------------------------------------------------------------------------------------------------------|
+| singleton | `@Scope('singleton')` | A single instance of the class is shared in the application. The singleton scope is used by default. |
+| prototype | `@Scope('prototype')` | A new instance of the class is created for each other bean depending on it.                          |
 
 ## Conditional beans
 
@@ -139,7 +139,7 @@ class Bean {
 
 *since `3.0.0`*
 
-A bean can be created conditionally on a bean not exitsting by adding `@ConditionalOnMissingBean()` to a bean:
+A bean can be created conditionally on a bean not existing by adding `@ConditionalOnMissingBean()` to a bean:
 
 ```ts
 import { Component, ConditionalOnResource } from "revane"
@@ -171,7 +171,7 @@ class Bean {
 
 *since `3.1.0`*
 
-A bean can be created conditionally on the existance of a file by adding `@ConditionalOnResource()` to a bean:
+A bean can be created conditionally on the existence of a file by adding `@ConditionalOnResource()` to a bean:
 
 ```ts
 import { Component, ConditionalOnResource } from "revane"
