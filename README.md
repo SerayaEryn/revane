@@ -23,7 +23,7 @@ Framework for building web applications with dependency injection without boiler
 
 * [First Steps](https://github.com/SerayaEryn/revane/blob/master/docs/First_Steps.md)
 * [Controllers](https://github.com/SerayaEryn/revane/blob/master/docs/Controllers.md)
-* [Components](https://github.com/SerayaEryn/revane/blob/master/docs/Components.md)
+* [Beans](https://github.com/SerayaEryn/revane/blob/master/docs/Beans.md)
 * [Lifecycle events](https://github.com/SerayaEryn/revane/blob/master/docs/Lifecycle_Events.md)
 * [Configuration](https://github.com/SerayaEryn/revane/blob/master/docs/Configuration.md)
 * [Task scheduling](https://github.com/SerayaEryn/revane/blob/master/docs/Task_Scheduling.md)
