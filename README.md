@@ -11,6 +11,7 @@ Framework for building web applications with dependency injection without boiler
 * Inversion of control container
 * Depencency injection
 * Declaration of controllers using decorators
+* Integrated web framework
 * Integrated logging
 * Task scheduling
 
